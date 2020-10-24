@@ -6,10 +6,8 @@ using System.Text;
 
 namespace DatabaseManager.Models
 {
-    public class User
+    public class User : EntityBase
     {
-        [Key]
-        public int Id { get; set; }
         [MaxLength(128)]
         public string FirstName { get; set; }
         [MaxLength(128)]
