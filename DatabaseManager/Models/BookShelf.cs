@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,7 +6,7 @@ using System.Text;
 
 namespace DatabaseManager.Models
 {
-    public class Order
+    public class BookShelf
     {
         [Key]
         public int Id { get; set; }
@@ -15,8 +14,5 @@ namespace DatabaseManager.Models
         public User User { get; set; }
         public int UserFK { get; set; }
         public ICollection<Book> Books { get; set; }
-        [Range(0, 100000)]
-        public double Bill { get; set; }
-        public OrderStatus Status { get; set; }
     }
 }
