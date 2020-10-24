@@ -26,6 +26,9 @@ namespace DatabaseManager.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(128);
 
+                    b.Property<int?>("BookShelfId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int?>("OrderId")
                         .HasColumnType("INTEGER");
 
@@ -38,9 +41,27 @@ namespace DatabaseManager.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BookShelfId");
+
                     b.HasIndex("OrderId");
 
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("DatabaseManager.Models.BookShelf", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserFK")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserFK");
+
+                    b.ToTable("BookShelves");
                 });
 
             modelBuilder.Entity("DatabaseManager.Models.Order", b =>
@@ -72,8 +93,10 @@ namespace DatabaseManager.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("AdminPermission")
-                        .HasColumnType("INTEGER")
-                        .HasMaxLength(128);
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BookShelfFK")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("TEXT")
@@ -93,21 +116,45 @@ namespace DatabaseManager.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BookShelfFK");
+
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("DatabaseManager.Models.Book", b =>
                 {
+                    b.HasOne("DatabaseManager.Models.BookShelf", null)
+                        .WithMany("Books")
+                        .HasForeignKey("BookShelfId");
+
                     b.HasOne("DatabaseManager.Models.Order", null)
                         .WithMany("Books")
                         .HasForeignKey("OrderId");
                 });
 
-            modelBuilder.Entity("DatabaseManager.Models.Order", b =>
+            modelBuilder.Entity("DatabaseManager.Models.BookShelf", b =>
                 {
                     b.HasOne("DatabaseManager.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DatabaseManager.Models.Order", b =>
+                {
+                    b.HasOne("DatabaseManager.Models.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DatabaseManager.Models.User", b =>
+                {
+                    b.HasOne("DatabaseManager.Models.BookShelf", "BookShelf")
+                        .WithMany()
+                        .HasForeignKey("BookShelfFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
