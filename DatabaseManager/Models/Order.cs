@@ -7,10 +7,9 @@ using System.Text;
 
 namespace DatabaseManager.Models
 {
-    public class Order
+    [Serializable]
+    public class Order : EntityBase
     {
-        [Key]
-        public int Id { get; set; }
         [ForeignKey("UserFK")]
         public User User { get; set; }
         public int UserFK { get; set; }

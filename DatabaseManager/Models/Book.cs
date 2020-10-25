@@ -5,10 +5,9 @@ using System.Text;
 
 namespace DatabaseManager.Models
 {
-    public class Book
+    [Serializable]
+    public class Book : EntityBase
     {
-        [Key]
-        public int Id { get; set; }
         [MaxLength(128)]
         public string Title { get; set; }
         [MaxLength(128)]

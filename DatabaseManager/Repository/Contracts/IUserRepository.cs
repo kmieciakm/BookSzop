@@ -7,6 +7,6 @@ namespace DatabaseManager.Repository.Contracts
 {
     public interface IUserRepository : IRepositoryBase<User>
     {
-
+        bool CheckUserCredentials(string login, string password);
     }
 }

@@ -6,13 +6,12 @@ using System.Text;
 
 namespace DatabaseManager.Models
 {
-    public class BookShelf
+    [Serializable]
+    public class BookShelf : EntityBase
     {
-        [Key]
-        public int Id { get; set; }
         [ForeignKey("UserFK")]
         public User User { get; set; }
-        public int UserFK { get; set; }
+        public int? UserFK { get; set; }
         public ICollection<Book> Books { get; set; }
     }
 }

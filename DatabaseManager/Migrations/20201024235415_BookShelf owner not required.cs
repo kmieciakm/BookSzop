@@ -2,7 +2,7 @@
 
 namespace DatabaseManager.Migrations
 {
-    public partial class AddedclassBookshelfandconstraintswhereneeded : Migration
+    public partial class BookShelfownernotrequired : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,7 +47,7 @@ namespace DatabaseManager.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    UserFK = table.Column<int>(nullable: false)
+                    UserFK = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,7 +57,7 @@ namespace DatabaseManager.Migrations
                         column: x => x.UserFK,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
