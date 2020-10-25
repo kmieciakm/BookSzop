@@ -5,6 +5,7 @@ using System.Text;
 
 namespace DatabaseManager.Models
 {
+    [Serializable]
     public abstract class EntityBase
     {
         [Key]

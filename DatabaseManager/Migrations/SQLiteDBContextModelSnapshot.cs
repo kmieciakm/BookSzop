@@ -54,7 +54,7 @@ namespace DatabaseManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserFK")
+                    b.Property<int?>("UserFK")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -136,9 +136,7 @@ namespace DatabaseManager.Migrations
                 {
                     b.HasOne("DatabaseManager.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserFK");
                 });
 
             modelBuilder.Entity("DatabaseManager.Models.Order", b =>

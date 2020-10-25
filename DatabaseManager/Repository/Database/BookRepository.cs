@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DatabaseManager.Repository
+namespace DatabaseManager.Repository.Database
 {
     public class BookRepository : RepositoryBase<Book>, IBookRepository
     {

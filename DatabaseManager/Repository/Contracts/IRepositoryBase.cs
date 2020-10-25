@@ -12,6 +12,5 @@ namespace DatabaseManager.Repository.Contracts
         bool Update(T entity);
         bool Delete(T entity);
         bool Exists(int id);
-        bool Save();
     }
 }

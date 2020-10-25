@@ -5,6 +5,7 @@ using System.Text;
 
 namespace DatabaseManager.Models
 {
+    [Serializable]
     public class Book : EntityBase
     {
         [MaxLength(128)]

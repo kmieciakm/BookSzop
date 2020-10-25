@@ -7,6 +7,5 @@ namespace DatabaseManager.Repository.Contracts
 {
     interface IBookShelfRepository : IRepositoryBase<BookShelf>
     {
-
     }
 }

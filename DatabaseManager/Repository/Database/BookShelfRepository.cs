@@ -5,11 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DatabaseManager.Repository
+namespace DatabaseManager.Repository.Database
 {
-    public class OrderRepository : RepositoryBase<Order>, IOrderRepository
+    public class BookShelfRepository : RepositoryBase<BookShelf>, IBookShelfRepository
     {
-        public OrderRepository(DbContext dbContext) : base(dbContext)
+        public BookShelfRepository(DbContext dbContext) : base(dbContext)
         {
         }
     }

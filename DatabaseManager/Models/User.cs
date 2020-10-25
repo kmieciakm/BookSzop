@@ -6,6 +6,7 @@ using System.Text;
 
 namespace DatabaseManager.Models
 {
+    [Serializable]
     public class User : EntityBase
     {
         [MaxLength(128)]

@@ -7,6 +7,7 @@ using System.Text;
 
 namespace DatabaseManager.Models
 {
+    [Serializable]
     public class Order : EntityBase
     {
         [ForeignKey("UserFK")]

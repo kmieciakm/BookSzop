@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DatabaseManager.Repository
+namespace DatabaseManager.Repository.Database
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : EntityBase
     {
@@ -50,7 +50,7 @@ namespace DatabaseManager.Repository
             return _DbContext.Set<T>().Any(element => element.Id == id);
         }
 
-        public bool Save()
+        protected bool Save()
         {
             return _DbContext.SaveChanges() > 0;
         }
