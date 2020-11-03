@@ -16,7 +16,12 @@ namespace ShopService
 
         public bool CheckUserCredentials(string login, string password)
         {
-            return _UserRepository.CheckUserCredentials(login, password);
+            var user = _UserRepository.GetUserByLogin(login);
+            if (user?.Password == password)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

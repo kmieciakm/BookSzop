@@ -17,5 +17,6 @@ namespace DatabaseManager.Models
         [Range(0, 100000)]
         public double Bill { get; set; }
         public OrderStatus Status { get; set; }
+        public DateTime PlacedDate { get; set; }
     }
 }

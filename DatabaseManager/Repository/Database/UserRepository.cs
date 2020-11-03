@@ -15,11 +15,11 @@ namespace DatabaseManager.Repository.Database
         {
         }
 
-        public bool CheckUserCredentials(string login, string password)
+        public User GetUserByLogin(string login)
         {
             var user = _DbContext.Set<User>()
-                .FirstOrDefault(user => user.Login == login && user.Password == password);
-            return user != null;
+                .FirstOrDefault(user => user.Login == login);
+            return user;
         }
     }
 }
