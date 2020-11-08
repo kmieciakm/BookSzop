@@ -1,6 +1,8 @@
-﻿using ShopService;
+﻿using DatabaseManager.Models;
+using ShopService;
 using System;
 using System.Collections.Generic;
+using System.Security.Authentication;
 using System.Text;
 using Xunit;
 
@@ -26,6 +28,53 @@ namespace ShopService_UnitTests
         public void AuthenticateUser_WrongCredentials()
         {
             Assert.False(AuthenticationManager.CheckUserCredentials("hacker", "hacker123"));
+        }
+
+        [Fact]
+        public void CheckAdminAccess_Admin()
+        {
+            Assert.True(AuthenticationManager.CheckAdminAccess(1));
+        }
+
+        [Fact]
+        public void CheckAdminAccess_NotAdmin()
+        {
+            Assert.False(AuthenticationManager.CheckAdminAccess(2));
+        }
+
+        [Fact]
+        public void RegisterUser_CorrectUser()
+        {
+            User newUser = new User()
+            {
+                Id = 257841,
+                FirstName = "NewUser",
+                LastName = "The New",
+                Login = "newTestUser",
+                Password = "test",
+                BookShelfFK = 3,
+                AdminPermission = false
+            };
+
+            AuthenticationManager.RegisterUser(newUser);
+            Assert.True(AuthenticationManager.CheckUserCredentials(newUser.Login, newUser.Password));
+        }
+
+        [Fact]
+        public void RegisterUser_WrongUser()
+        {
+            User newUser = new User()
+            {
+                Id = 789432,
+                FirstName = "User",
+                LastName = "The User",
+                Login = "user",
+                Password = "123",
+                BookShelfFK = 3,
+                AdminPermission = false
+            };
+
+            Assert.Throws<AuthenticationException>(() => AuthenticationManager.RegisterUser(newUser));
         }
     }
 }

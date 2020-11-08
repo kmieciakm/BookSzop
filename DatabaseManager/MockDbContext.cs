@@ -40,6 +40,12 @@ namespace DatabaseManager
                        User = null,
                        UserFK = null,
                        Books = new List<Book>()
+                    },
+                    new BookShelf() {
+                        Id = 3,
+                        User = null,
+                        UserFK = null,
+                        Books = new List<Book>()
                     }
                 }
              );
@@ -57,7 +63,8 @@ namespace DatabaseManager
                         LastName = "The Admin",
                         Login = "admin",
                         Password = "admin123",
-                        BookShelfFK = 1
+                        BookShelfFK = 1,
+                        AdminPermission = true
                     },
                     new User() {
                         Id = 2,
@@ -65,7 +72,8 @@ namespace DatabaseManager
                         LastName = "The User",
                         Login = "user",
                         Password = "user123",
-                        BookShelfFK = 2
+                        BookShelfFK = 2,
+                        AdminPermission = false
                     }
                 }
             );

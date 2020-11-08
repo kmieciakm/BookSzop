@@ -1,6 +1,9 @@
-﻿using DatabaseManager.Repository.Contracts;
+﻿using DatabaseManager.Models;
+using DatabaseManager.Repository.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
+using System.Security.Authentication;
 using System.Text;
 
 namespace ShopService
@@ -22,6 +25,26 @@ namespace ShopService
                 return true;
             }
             return false;
+        }
+
+        public bool CheckAdminAccess(int userId)
+        {
+            var user = _UserRepository.FindById(userId);
+            return user.AdminPermission == true;
+        }
+
+        public void RegisterUser(User user)
+        {
+            if (!_UserRepository.IsLoginFree(user.Login))
+            {
+                throw new AuthenticationException($"User of login {user.Login} already exists.");
+            }
+
+            var userCreated = _UserRepository.Create(user);
+            if (!userCreated)
+            {
+                throw new AuthenticationException("Somthing went wrong. Registration not succeeded.");
+            }
         }
     }
 }
