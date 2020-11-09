@@ -21,5 +21,10 @@ namespace DatabaseManager.Repository.Database
                 .FirstOrDefault(user => user.Login == login);
             return user;
         }
+
+        public bool IsLoginFree(string login)
+        {
+            return GetUserByLogin(login) == null;
+        }
     }
 }

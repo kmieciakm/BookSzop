@@ -8,5 +8,6 @@ namespace DatabaseManager.Repository.Contracts
     public interface IUserRepository : IRepositoryBase<User>
     {
         User GetUserByLogin(string login);
+        bool IsLoginFree(string login);
     }
 }
