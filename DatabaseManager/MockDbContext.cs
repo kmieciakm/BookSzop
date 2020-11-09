@@ -18,10 +18,33 @@ namespace DatabaseManager
         {
         }
 
+        private List<Book> _Books = new List<Book>()
+        {
+            new Book()
+            {
+                Title = "War and Peace",
+                Author = "Leo Tolstoy",
+                Price = 420
+            },
+            new Book()
+            {
+                Title = "Master and Margarita",
+                Author = "Mihail Bulhakov",
+                Price = 69
+            }
+        };
+
         public void SeedData()
         {
+            SeedBooks();
             SeedBookShelves();
             SeedUsers();
+        }
+
+        private void SeedBooks()
+        {
+            ClearSet(Books);
+            Books.AddRange(_Books);
         }
 
         private void SeedBookShelves()
@@ -31,20 +54,14 @@ namespace DatabaseManager
                 new List<BookShelf>() {
                     new BookShelf() {
                        Id = 1,
-                       User = null,
-                       UserFK = null,
                        Books = new List<Book>()
                     },
                     new BookShelf() {
                        Id = 2,
-                       User = null,
-                       UserFK = null,
-                       Books = new List<Book>()
+                       Books = _Books
                     },
                     new BookShelf() {
                         Id = 3,
-                        User = null,
-                        UserFK = null,
                         Books = new List<Book>()
                     }
                 }

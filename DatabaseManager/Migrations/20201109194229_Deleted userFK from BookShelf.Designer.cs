@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatabaseManager.Migrations
 {
     [DbContext(typeof(SQLiteDBContext))]
-    [Migration("20201102165503_Added PlacedDate to Order")]
-    partial class AddedPlacedDatetoOrder
+    [Migration("20201109194229_Deleted userFK from BookShelf")]
+    partial class DeleteduserFKfromBookShelf
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -56,12 +56,7 @@ namespace DatabaseManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("UserFK")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserFK");
 
                     b.ToTable("BookShelves");
                 });
@@ -135,13 +130,6 @@ namespace DatabaseManager.Migrations
                     b.HasOne("DatabaseManager.Models.Order", null)
                         .WithMany("Books")
                         .HasForeignKey("OrderId");
-                });
-
-            modelBuilder.Entity("DatabaseManager.Models.BookShelf", b =>
-                {
-                    b.HasOne("DatabaseManager.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserFK");
                 });
 
             modelBuilder.Entity("DatabaseManager.Models.Order", b =>

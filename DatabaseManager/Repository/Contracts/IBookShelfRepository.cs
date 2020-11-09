@@ -5,7 +5,8 @@ using System.Text;
 
 namespace DatabaseManager.Repository.Contracts
 {
-    interface IBookShelfRepository : IRepositoryBase<BookShelf>
+    public interface IBookShelfRepository : IRepositoryBase<BookShelf>
     {
+        List<Book> GetBooksByUser(int userId);
     }
 }
