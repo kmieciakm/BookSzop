@@ -1,26 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DatabaseManager.Migrations
 {
-    public partial class BookShelfownernotrequired : Migration
+    public partial class DeleteduserFKfromBookShelf : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Books",
+                name: "BookShelves",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(maxLength: 128, nullable: true),
-                    Author = table.Column<string>(maxLength: 128, nullable: true),
-                    Price = table.Column<float>(nullable: false),
-                    BookShelfId = table.Column<int>(nullable: true),
-                    OrderId = table.Column<int>(nullable: true)
+                        .Annotation("Sqlite:Autoincrement", true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Books", x => x.Id);
+                    table.PrimaryKey("PK_BookShelves", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -39,25 +35,12 @@ namespace DatabaseManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BookShelves",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserFK = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BookShelves", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BookShelves_Users_UserFK",
-                        column: x => x.UserFK,
-                        principalTable: "Users",
+                        name: "FK_Users_BookShelves_BookShelfFK",
+                        column: x => x.BookShelfFK,
+                        principalTable: "BookShelves",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,7 +51,8 @@ namespace DatabaseManager.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     UserFK = table.Column<int>(nullable: false),
                     Bill = table.Column<double>(nullable: false),
-                    Status = table.Column<int>(nullable: false)
+                    Status = table.Column<int>(nullable: false),
+                    PlacedDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,6 +63,35 @@ namespace DatabaseManager.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Books",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(maxLength: 128, nullable: true),
+                    Author = table.Column<string>(maxLength: 128, nullable: true),
+                    Price = table.Column<float>(nullable: false),
+                    BookShelfId = table.Column<int>(nullable: true),
+                    OrderId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Books", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Books_BookShelves_BookShelfId",
+                        column: x => x.BookShelfId,
+                        principalTable: "BookShelves",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Books_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -92,11 +105,6 @@ namespace DatabaseManager.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookShelves_UserFK",
-                table: "BookShelves",
-                column: "UserFK");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserFK",
                 table: "Orders",
                 column: "UserFK");
@@ -105,38 +113,10 @@ namespace DatabaseManager.Migrations
                 name: "IX_Users_BookShelfFK",
                 table: "Users",
                 column: "BookShelfFK");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Books_BookShelves_BookShelfId",
-                table: "Books",
-                column: "BookShelfId",
-                principalTable: "BookShelves",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Books_Orders_OrderId",
-                table: "Books",
-                column: "OrderId",
-                principalTable: "Orders",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Users_BookShelves_BookShelfFK",
-                table: "Users",
-                column: "BookShelfFK",
-                principalTable: "BookShelves",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Users_BookShelves_BookShelfFK",
-                table: "Users");
-
             migrationBuilder.DropTable(
                 name: "Books");
 
@@ -144,10 +124,10 @@ namespace DatabaseManager.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "BookShelves");
+                name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "BookShelves");
         }
     }
 }

@@ -9,9 +9,6 @@ namespace DatabaseManager.Models
     [Serializable]
     public class BookShelf : EntityBase
     {
-        [ForeignKey("UserFK")]
-        public User User { get; set; }
-        public int? UserFK { get; set; }
         public ICollection<Book> Books { get; set; }
     }
 }

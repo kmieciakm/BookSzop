@@ -19,9 +19,11 @@ namespace ShopService_UnitTests
                 new DbContextFactory().CreateMockDbContext());
 
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IBookShelfRepository, BookShelfRepository>();
 
             // ShopService
             services.AddTransient<IAuthenticationManager, AuthenticationManager>();
+            services.AddTransient<IShelfService, ShelfService>();
         }
     }
 }
