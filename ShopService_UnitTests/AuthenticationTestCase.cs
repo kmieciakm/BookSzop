@@ -52,7 +52,6 @@ namespace ShopService_UnitTests
                 LastName = "The New",
                 Login = "newTestUser",
                 Password = "test",
-                BookShelfFK = 3,
                 AdminPermission = false
             };
 
@@ -70,7 +69,6 @@ namespace ShopService_UnitTests
                 LastName = "The User",
                 Login = "user",
                 Password = "123",
-                BookShelfFK = 3,
                 AdminPermission = false
             };
 
