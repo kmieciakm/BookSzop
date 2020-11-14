@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DatabaseManager
+namespace ShopService_UnitTests.MockDb
 {
     public class MockDbContext : DbContext
     {

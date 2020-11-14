@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
 
-namespace DatabaseManager
+namespace ShopService_UnitTests.MockDb
 {
     public class DbContextFactory : IDisposable
     {

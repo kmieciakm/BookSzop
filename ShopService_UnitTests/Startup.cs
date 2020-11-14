@@ -1,9 +1,9 @@
-﻿using DatabaseManager;
-using DatabaseManager.Repository.Contracts;
+﻿using DatabaseManager.Repository.Contracts;
 using DatabaseManager.Repository.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ShopService;
+using ShopService_UnitTests.MockDb;
 using System;
 using System.Collections.Generic;
 using System.Text;
