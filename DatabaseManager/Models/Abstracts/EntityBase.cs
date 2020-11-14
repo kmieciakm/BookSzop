@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace DatabaseManager.Models
+namespace DatabaseManager.Models.Abstracts
 {
     [Serializable]
     public abstract class EntityBase

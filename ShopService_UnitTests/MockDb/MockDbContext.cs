@@ -10,9 +10,8 @@ namespace ShopService_UnitTests.MockDb
     public class MockDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
-        public DbSet<Order> Orders { get; set; }
+        public DbSet<Event> Orders { get; set; }
         public DbSet<Book> Books { get; set; }
-        public DbSet<BookShelf> BookShelves { get; set; }
 
         public MockDbContext(DbContextOptions<MockDbContext> options) : base(options)
         {
@@ -23,21 +22,18 @@ namespace ShopService_UnitTests.MockDb
             new Book()
             {
                 Title = "War and Peace",
-                Author = "Leo Tolstoy",
-                Price = 420
+                Author = "Leo Tolstoy"
             },
             new Book()
             {
                 Title = "Master and Margarita",
-                Author = "Mihail Bulhakov",
-                Price = 69
+                Author = "Mihail Bulhakov"
             }
         };
 
         public void SeedData()
         {
             SeedBooks();
-            SeedBookShelves();
             SeedUsers();
         }
 
@@ -45,27 +41,6 @@ namespace ShopService_UnitTests.MockDb
         {
             ClearSet(Books);
             Books.AddRange(_Books);
-        }
-
-        private void SeedBookShelves()
-        {
-            ClearSet(BookShelves);
-            BookShelves.AddRange(
-                new List<BookShelf>() {
-                    new BookShelf() {
-                       Id = 1,
-                       Books = new List<Book>()
-                    },
-                    new BookShelf() {
-                       Id = 2,
-                       Books = _Books
-                    },
-                    new BookShelf() {
-                        Id = 3,
-                        Books = new List<Book>()
-                    }
-                }
-             );
         }
 
         private void SeedUsers()
@@ -80,7 +55,6 @@ namespace ShopService_UnitTests.MockDb
                         LastName = "The Admin",
                         Login = "admin",
                         Password = "admin123",
-                        BookShelfFK = 1,
                         AdminPermission = true
                     },
                     new User() {
@@ -89,7 +63,6 @@ namespace ShopService_UnitTests.MockDb
                         LastName = "The User",
                         Login = "user",
                         Password = "user123",
-                        BookShelfFK = 2,
                         AdminPermission = false
                     }
                 }

@@ -1,4 +1,4 @@
-﻿using DatabaseManager.Models;
+﻿using DatabaseManager.Models.Abstracts;
 using DatabaseManager.Repository.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;

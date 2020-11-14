@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatabaseManager.Migrations
 {
     [DbContext(typeof(SQLiteDBContext))]
-    [Migration("20201109194229_Deleted userFK from BookShelf")]
-    partial class DeleteduserFKfromBookShelf
+    [Migration("20201114150025_New Models")]
+    partial class NewModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,62 +28,62 @@ namespace DatabaseManager.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(128);
 
-                    b.Property<int?>("BookShelfId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<float>("Price")
-                        .HasColumnType("REAL");
-
                     b.Property<string>("Title")
                         .HasColumnType("TEXT")
                         .HasMaxLength(128);
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookShelfId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("Books");
+                    b.ToTable("Catalogs");
                 });
 
-            modelBuilder.Entity("DatabaseManager.Models.BookShelf", b =>
+            modelBuilder.Entity("DatabaseManager.Models.BookBundle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("EventId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.ToTable("BookShelves");
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("States");
                 });
 
-            modelBuilder.Entity("DatabaseManager.Models.Order", b =>
+            modelBuilder.Entity("DatabaseManager.Models.Event", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("Bill")
-                        .HasColumnType("REAL");
+                    b.Property<int>("EventType")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("PlacedDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("UserFK")
+                    b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserFK");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("DatabaseManager.Models.User", b =>
@@ -93,9 +93,6 @@ namespace DatabaseManager.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("AdminPermission")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BookShelfFK")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("FirstName")
@@ -116,36 +113,27 @@ namespace DatabaseManager.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookShelfFK");
-
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DatabaseManager.Models.Book", b =>
+            modelBuilder.Entity("DatabaseManager.Models.BookBundle", b =>
                 {
-                    b.HasOne("DatabaseManager.Models.BookShelf", null)
-                        .WithMany("Books")
-                        .HasForeignKey("BookShelfId");
-
-                    b.HasOne("DatabaseManager.Models.Order", null)
-                        .WithMany("Books")
-                        .HasForeignKey("OrderId");
-                });
-
-            modelBuilder.Entity("DatabaseManager.Models.Order", b =>
-                {
-                    b.HasOne("DatabaseManager.Models.User", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserFK")
+                    b.HasOne("DatabaseManager.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("DatabaseManager.Models.Event", null)
+                        .WithMany("BookBundles")
+                        .HasForeignKey("EventId");
                 });
 
-            modelBuilder.Entity("DatabaseManager.Models.User", b =>
+            modelBuilder.Entity("DatabaseManager.Models.Event", b =>
                 {
-                    b.HasOne("DatabaseManager.Models.BookShelf", "BookShelf")
-                        .WithMany()
-                        .HasForeignKey("BookShelfFK")
+                    b.HasOne("DatabaseManager.Models.User", "User")
+                        .WithMany("Events")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
