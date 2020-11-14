@@ -3,20 +3,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DatabaseManager.Migrations
 {
-    public partial class DeleteduserFKfromBookShelf : Migration
+    public partial class NewModels : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "BookShelves",
+                name: "Catalogs",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(maxLength: 128, nullable: true),
+                    Author = table.Column<string>(maxLength: 128, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BookShelves", x => x.Id);
+                    table.PrimaryKey("PK_Catalogs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -29,105 +31,91 @@ namespace DatabaseManager.Migrations
                     LastName = table.Column<string>(maxLength: 128, nullable: true),
                     Login = table.Column<string>(maxLength: 128, nullable: true),
                     Password = table.Column<string>(maxLength: 128, nullable: true),
-                    AdminPermission = table.Column<bool>(nullable: false),
-                    BookShelfFK = table.Column<int>(nullable: false)
+                    AdminPermission = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_BookShelves_BookShelfFK",
-                        column: x => x.BookShelfFK,
-                        principalTable: "BookShelves",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
+                name: "Events",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    UserFK = table.Column<int>(nullable: false),
-                    Bill = table.Column<double>(nullable: false),
-                    Status = table.Column<int>(nullable: false),
-                    PlacedDate = table.Column<DateTime>(nullable: false)
+                    PlacedDate = table.Column<DateTime>(nullable: false),
+                    EventType = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.PrimaryKey("PK_Events", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_Users_UserFK",
-                        column: x => x.UserFK,
+                        name: "FK_Events_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Books",
+                name: "States",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(maxLength: 128, nullable: true),
-                    Author = table.Column<string>(maxLength: 128, nullable: true),
-                    Price = table.Column<float>(nullable: false),
-                    BookShelfId = table.Column<int>(nullable: true),
-                    OrderId = table.Column<int>(nullable: true)
+                    BookId = table.Column<int>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
+                    Price = table.Column<double>(nullable: false),
+                    EventId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Books", x => x.Id);
+                    table.PrimaryKey("PK_States", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Books_BookShelves_BookShelfId",
-                        column: x => x.BookShelfId,
-                        principalTable: "BookShelves",
+                        name: "FK_States_Catalogs_BookId",
+                        column: x => x.BookId,
+                        principalTable: "Catalogs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Books_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
+                        name: "FK_States_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Books_BookShelfId",
-                table: "Books",
-                column: "BookShelfId");
+                name: "IX_Events_UserId",
+                table: "Events",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Books_OrderId",
-                table: "Books",
-                column: "OrderId");
+                name: "IX_States_BookId",
+                table: "States",
+                column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_UserFK",
-                table: "Orders",
-                column: "UserFK");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_BookShelfFK",
-                table: "Users",
-                column: "BookShelfFK");
+                name: "IX_States_EventId",
+                table: "States",
+                column: "EventId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Books");
+                name: "States");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "Catalogs");
+
+            migrationBuilder.DropTable(
+                name: "Events");
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "BookShelves");
         }
     }
 }
