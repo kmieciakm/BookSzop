@@ -14,6 +14,6 @@ namespace DatabaseManager.Models
         [MaxLength(128)]
         public string Author { get; set; }
 
-        ICollection<BookBundle> BookBundles { get; set; }
+        public ICollection<BookBundle> BookBundles { get; set; }
     }
 }
