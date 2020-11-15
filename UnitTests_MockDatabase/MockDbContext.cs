@@ -39,7 +39,7 @@ namespace UnitTests_MockDatabase
 
         private void SeedBooks()
         {
-            List<Book> books = new List<Book>()
+            var books = new List<Book>()
             {
                 new Book()
                 {
@@ -60,7 +60,7 @@ namespace UnitTests_MockDatabase
 
         private void SeedBookBundles()
         {
-            List<BookBundle> bookBundles = new List<BookBundle>()
+            var bookBundles = new List<BookBundle>()
             {
                 new BookBundle()
                 {
@@ -101,7 +101,13 @@ namespace UnitTests_MockDatabase
 
         private void SeedEvents()
         {
-            List<Event> events = new List<Event>()
+            var orderedAndRefundBooks = new List<BookBundle>()
+            {
+                BookBundles.FirstOrDefault(bookBundle => bookBundle.Id == 3),
+                BookBundles.FirstOrDefault(bookBundle => bookBundle.Id == 4)
+            };
+
+            var events = new List<Event>()
             {
                 new Event()
                 {
@@ -109,11 +115,7 @@ namespace UnitTests_MockDatabase
                     UserId = 10,
                     User = new User() { Id = 10 },
                     EventType = EventType.Order,
-                    BookBundles = new List<BookBundle>()
-                    {
-                        BookBundles.FirstOrDefault(bookBundle => bookBundle.Id == 3),
-                        BookBundles.FirstOrDefault(bookBundle => bookBundle.Id == 4)
-                    }
+                    BookBundles = orderedAndRefundBooks
                 },
                 new Event()
                 {
@@ -121,11 +123,7 @@ namespace UnitTests_MockDatabase
                     UserId = 20,
                     User = new User() { Id = 20 },
                     EventType = EventType.Refund,
-                    BookBundles = new List<BookBundle>()
-                    {
-                        BookBundles.FirstOrDefault(bookBundle => bookBundle.Id == 3),
-                        BookBundles.FirstOrDefault(bookBundle => bookBundle.Id == 4)
-                    }
+                    BookBundles = orderedAndRefundBooks
                 },
                 new Event()
                 {
@@ -145,10 +143,6 @@ namespace UnitTests_MockDatabase
 
         private void SeedUsers()
         {
-            var events = new List<Event>();
-            events.Add(Events.FirstOrDefault(e => e.Id == 1));
-            events.Add(Events.FirstOrDefault(e => e.Id == 2));
-            events.Add(Events.FirstOrDefault(e => e.Id == 3));
             var users = new List<User>()
             {
                 new User()
@@ -167,9 +161,8 @@ namespace UnitTests_MockDatabase
                     LastName = "The User",
                     Login = "user",
                     Password = "user123",
-                    AdminPermission = false,
-                    Events = events
-                }
+                    AdminPermission = false
+                }       
             };
             Users.AddRange(users);
             SaveChanges();
@@ -181,12 +174,11 @@ namespace UnitTests_MockDatabase
         {
             Events.FirstOrDefault(eve => eve.Id == 1).User = Users.FirstOrDefault(user => user.Id == 2);
             Events.FirstOrDefault(eve => eve.Id == 1).UserId = Users.FirstOrDefault(user => user.Id == 2).Id;
-
             Events.FirstOrDefault(eve => eve.Id == 2).User = Users.FirstOrDefault(user => user.Id == 2);
             Events.FirstOrDefault(eve => eve.Id == 2).UserId = Users.FirstOrDefault(user => user.Id == 2).Id;
-
             Events.FirstOrDefault(eve => eve.Id == 3).User = Users.FirstOrDefault(user => user.Id == 2);
             Events.FirstOrDefault(eve => eve.Id == 3).UserId = Users.FirstOrDefault(user => user.Id == 2).Id;
+
             SaveChanges();
         }
 

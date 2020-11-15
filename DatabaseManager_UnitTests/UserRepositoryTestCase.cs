@@ -14,7 +14,7 @@ namespace DatabaseManager_UnitTests
         }
 
         [Fact]
-        public void Test_Passed()
+        public void TestSetup_InjectedRepositoryCorrectly()
         {
             Assert.NotNull(_UserRepository);
         }
