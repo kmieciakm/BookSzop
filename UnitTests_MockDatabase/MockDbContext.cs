@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ShopService_UnitTests.MockDb
+namespace UnitTests_MockDatabase
 {
     public class MockDbContext : DbContext
     {
@@ -31,6 +31,28 @@ namespace ShopService_UnitTests.MockDb
             }
         };
 
+        private List<User> _Users = new List<User>()
+        {
+            new User()
+            {
+                 Id = 1,
+                FirstName = "Nimda",
+                LastName = "The Admin",
+                Login = "admin",
+                Password = "admin123",
+                AdminPermission = true
+            },
+            new User()
+            {
+                Id = 2,
+                FirstName = "Resu",
+                LastName = "The User",
+                Login = "user",
+                Password = "user123",
+                AdminPermission = false
+            }
+        };
+
         public void SeedData()
         {
             SeedBooks();
@@ -46,27 +68,7 @@ namespace ShopService_UnitTests.MockDb
         private void SeedUsers()
         {
             ClearSet(Users);
-            Users.AddRange(
-                new List<User>()
-                {
-                    new User() {
-                        Id = 1,
-                        FirstName = "Nimda",
-                        LastName = "The Admin",
-                        Login = "admin",
-                        Password = "admin123",
-                        AdminPermission = true
-                    },
-                    new User() {
-                        Id = 2,
-                        FirstName = "Resu",
-                        LastName = "The User",
-                        Login = "user",
-                        Password = "user123",
-                        AdminPermission = false
-                    }
-                }
-            );
+            Users.AddRange(_Users);
         }
 
         private void ClearSet<T>(DbSet<T> dbSet) where T : class
