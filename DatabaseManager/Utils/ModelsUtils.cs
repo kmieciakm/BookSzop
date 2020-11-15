@@ -10,14 +10,8 @@ namespace DatabaseManager.Utils
 {
     public static class ModelsUtils
     {
-        public static T DeepClone<T>(this T obj)
+        public static T DeepClone<T>(T obj)
         {
-            if (!obj.GetType().GetCustomAttributes(false).Contains((typeof(SerializableAttribute))))
-            {
-                throw new NotSupportedException(
-                    $"Class {typeof(T)} does not contain required attribute {nameof(SerializableAttribute)}");
-            }
-
             using (var ms = new MemoryStream())
             {
                 var formatter = new BinaryFormatter();
@@ -28,9 +22,9 @@ namespace DatabaseManager.Utils
             }
         }
 
-        public static ICollection<T> DeepCloneCollection<T>(this ICollection<T> collection)
+        public static ICollection<T> DeepCloneCollection<T>(ICollection<T> collection)
         {
-            List<T> newCollection = new List<T>(0);
+            List<T> newCollection = new List<T>();
             foreach (var element in collection)
             {
                 newCollection.Add(DeepClone<T>(element));

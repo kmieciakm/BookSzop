@@ -16,5 +16,19 @@ namespace DatabaseManager.Models
         public int Quantity { get; set; }
         [Range(0, 10000)]
         public double Price { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is BookBundle bundle &&
+                   Book.Equals(bundle.Book) &&
+                   BookId == bundle.BookId &&
+                   Quantity == bundle.Quantity &&
+                   Price == bundle.Price;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Book, BookId, Quantity, Price);
+        }
     }
 }

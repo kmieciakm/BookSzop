@@ -21,7 +21,7 @@ namespace UnitTests_MockDatabase
         {
             if (_connection == null)
             {
-                _connection = new SqliteConnection("DataSource=file::memory:?cache=shared");
+                _connection = new SqliteConnection("DataSource=file::memory:");
                 _connection.Open();
 
                 var options = CreateOptions();
@@ -29,7 +29,6 @@ namespace UnitTests_MockDatabase
                 {
                     context.Database.EnsureCreated();
                     context.SeedData();
-                    context.SaveChanges();
                 }
             }
 

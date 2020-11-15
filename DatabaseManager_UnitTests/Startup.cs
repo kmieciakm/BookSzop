@@ -15,9 +15,10 @@ namespace DatabaseManager_UnitTests
         public void ConfigureServices(IServiceCollection services)
         {
             // Database access
-            services.AddSingleton<DbContext>((serviceProvider) =>
+            services.AddScoped<DbContext>((serviceProvider) =>
                 new DbContextFactory().CreateMockDbContext());
 
+            services.AddTransient<IBookBundleRepositiory, BookBundleRepositiory>();
             services.AddTransient<IUserRepository, UserRepository>();
         }
     }
