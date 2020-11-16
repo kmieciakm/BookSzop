@@ -27,7 +27,7 @@ namespace DatabaseManager.Models
         [NotMapped]
         public List<Event> Orders {
             get {
-                return Events.Where(e => e.EventType == EventType.Order).ToList();
+                return Events?.Where(e => e.EventType == EventType.Order).ToList();
             }
         }
         [NotMapped]
@@ -35,7 +35,7 @@ namespace DatabaseManager.Models
         {
             get
             {
-                return Events.Where(e => e.EventType == EventType.Refund).ToList();
+                return Events?.Where(e => e.EventType == EventType.Refund).ToList();
             }
         }
         [NotMapped]

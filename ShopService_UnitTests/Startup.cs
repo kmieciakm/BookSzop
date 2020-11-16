@@ -20,6 +20,7 @@ namespace ShopService_UnitTests
             services.AddScoped<DbContext>((serviceProvider) =>
                 new DbContextFactory().CreateMockDbContext());
 
+            services.AddTransient<IBookBundleRepositiory, BookBundleRepositiory>();
             services.AddTransient<IEventsRepository, EventsRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 
