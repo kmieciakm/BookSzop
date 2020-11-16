@@ -22,7 +22,7 @@ namespace ShopService_UnitTests.TestCases
         [Fact]
         public void GetAllOrders()
         {
-            Assert.Equal(3, _PurchaseService.GetAllOrders().Count);
+            Assert.Equal(3, _PurchaseService.GetAllPurchases().Count);
         }
 
         [Fact]
@@ -32,51 +32,51 @@ namespace ShopService_UnitTests.TestCases
         }
         #endregion
 
-        #region GetOrdersOfUser
+        #region GetUserPurchases
         [Fact]
-        public void GetOrdersOfUser_UserWithPlacedOrders()
+        public void GetUserPurchases_UserWithPlacedOrders()
         {
-            Assert.Equal(2, _PurchaseService.GetOrdersOfUser(2).Count);
+            Assert.Equal(2, _PurchaseService.GetUserPurchases(2).Count);
         }
 
         [Fact]
-        public void GetOrdersOfUser_UserWithNoOrders()
+        public void GetUserPurchases_UserWithNoOrders()
         {
-            Assert.False(_PurchaseService.GetOrdersOfUser(1).Any());
+            Assert.False(_PurchaseService.GetUserPurchases(1).Any());
         }
 
         [Fact]
-        public void GetOrdersOfUser_WrongUserId()
+        public void GetUserPurchases_WrongUserId()
         {
-            Assert.False(_PurchaseService.GetOrdersOfUser(999).Any());
-        }
-        #endregion
-
-        #region GetRefundsOfUser
-        [Fact]
-        public void GetRefundsOfUser_UserWithRefunds()
-        {
-            Assert.Single(_PurchaseService.GetRefundsOfUser(2));
-        }
-
-        [Fact]
-        public void GetRefundsOfUser_UserWithNoRefunds()
-        {
-            Assert.False(_PurchaseService.GetRefundsOfUser(1).Any());
-        }
-
-        [Fact]
-        public void GetRefundsOfUser_WrongUserId()
-        {
-            Assert.False(_PurchaseService.GetRefundsOfUser(999).Any());
+            Assert.False(_PurchaseService.GetUserPurchases(999).Any());
         }
         #endregion
 
-        #region PlaceOrder
+        #region GetUserRefunds
         [Fact]
-        public void PlaceOrder_WrongUserId()
+        public void GetUserRefunds_UserWithRefunds()
         {
-            var ordersBooks = new List<BookOrderCreate>()
+            Assert.Single(_PurchaseService.GetUserRefunds(2));
+        }
+
+        [Fact]
+        public void GetUserRefunds_UserWithNoRefunds()
+        {
+            Assert.False(_PurchaseService.GetUserRefunds(1).Any());
+        }
+
+        [Fact]
+        public void GetUserRefunds_WrongUserId()
+        {
+            Assert.False(_PurchaseService.GetUserRefunds(999).Any());
+        }
+        #endregion
+
+        #region MakePurchase
+        [Fact]
+        public void MakePurchase_WrongUserId()
+        {
+            var orderedBooks = new List<BookOrderCreate>()
             {
                 new BookOrderCreate()
                 {
@@ -85,13 +85,13 @@ namespace ShopService_UnitTests.TestCases
                 }
             };
 
-            Assert.Throws<PurchaseException>(() => _PurchaseService.PlaceOrder(999, ordersBooks));
+            Assert.Throws<PurchaseException>(() => _PurchaseService.MakePurchase(999, orderedBooks));
         }
 
         [Fact]
-        public void PlaceOrder_WrongBookBundleId()
+        public void MakePurchase_WrongBookBundleId()
         {
-            var ordersBooks = new List<BookOrderCreate>()
+            var orderedBooks = new List<BookOrderCreate>()
             {
                 new BookOrderCreate()
                 {
@@ -100,13 +100,13 @@ namespace ShopService_UnitTests.TestCases
                 }
             };
 
-            Assert.Throws<PurchaseException>(() => _PurchaseService.PlaceOrder(1, ordersBooks));
+            Assert.Throws<PurchaseException>(() => _PurchaseService.MakePurchase(1, orderedBooks));
         }
 
         [Fact]
-        public void PlaceOrder_TooManyBooksRequested()
+        public void MakePurchase_TooManyBooksRequested()
         {
-            var ordersBooks = new List<BookOrderCreate>()
+            var orderedBooks = new List<BookOrderCreate>()
             {
                 new BookOrderCreate()
                 {
@@ -115,13 +115,13 @@ namespace ShopService_UnitTests.TestCases
                 }
             };
 
-            Assert.Throws<PurchaseException>(() => _PurchaseService.PlaceOrder(1, ordersBooks));
+            Assert.Throws<PurchaseException>(() => _PurchaseService.MakePurchase(1, orderedBooks));
         }
 
         [Fact]
-        public void PlaceOrder_AllCorrect()
+        public void MakePurchase_AllCorrect()
         {
-            var ordersBooks = new List<BookOrderCreate>()
+            var orderedBooks = new List<BookOrderCreate>()
             {
                 new BookOrderCreate()
                 {
@@ -135,9 +135,9 @@ namespace ShopService_UnitTests.TestCases
                 },
             };
 
-            _PurchaseService.PlaceOrder(1, ordersBooks);
+            _PurchaseService.MakePurchase(1, orderedBooks);
 
-            Assert.Single(_PurchaseService.GetOrdersOfUser(1));
+            Assert.Single(_PurchaseService.GetUserPurchases(1));
         }
         #endregion
 
@@ -159,7 +159,7 @@ namespace ShopService_UnitTests.TestCases
         {
             var userId = 3;
             _PurchaseService.PlaceRefund(userId, 4);
-            Assert.Single(_PurchaseService.GetRefundsOfUser(userId));
+            Assert.Single(_PurchaseService.GetUserRefunds(userId));
         }
         #endregion
     }

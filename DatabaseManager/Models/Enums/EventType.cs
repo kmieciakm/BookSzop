@@ -6,7 +6,7 @@ namespace DatabaseManager.Models.Enums
 {
     public enum EventType
     {
-        Order,
+        Purchase,
         Refund
     }
 }

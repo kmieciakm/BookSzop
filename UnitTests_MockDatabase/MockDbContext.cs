@@ -124,7 +124,7 @@ namespace UnitTests_MockDatabase
                     Id = 1,
                     UserId = 10,
                     User = new User() { Id = 10 },
-                    EventType = EventType.Order,
+                    EventType = EventType.Purchase,
                     OrderedBooks = orderedAndRefundBooks
                 },
                 new Event()
@@ -140,7 +140,7 @@ namespace UnitTests_MockDatabase
                     Id = 3,
                     UserId = 30,
                     User = new User() { Id = 30 },
-                    EventType = EventType.Order,
+                    EventType = EventType.Purchase,
                     OrderedBooks = new List<BookOrder>()
                     {
                         Orders.FirstOrDefault(order => order.Id == 1)
@@ -151,7 +151,7 @@ namespace UnitTests_MockDatabase
                     Id = 4,
                     UserId = 40,
                     User = new User() { Id = 40 },
-                    EventType = EventType.Order,
+                    EventType = EventType.Purchase,
                     OrderedBooks = new List<BookOrder>()
                     {
                         Orders.FirstOrDefault(order => order.Id == 2)

@@ -23,11 +23,11 @@ namespace ShopService.Purchase
             _BookBundleRepository = bookBundleRepositiory;
         }
 
-        public List<Event> GetAllOrders()
+        public List<Event> GetAllPurchases()
         {
             return _EventsRepository
                 .FindAll()
-                .Where(@event => @event.EventType == EventType.Order)
+                .Where(@event => @event.EventType == EventType.Purchase)
                 .ToList();
         }
 
@@ -39,17 +39,17 @@ namespace ShopService.Purchase
                 .ToList();
         }
 
-        public List<Event> GetOrdersOfUser(int userId)
+        public List<Event> GetUserPurchases(int userId)
         {
             return _EventsRepository
                .FindAll()
                .Where(@event =>
-                    @event.EventType == EventType.Order &&
+                    @event.EventType == EventType.Purchase &&
                     @event.UserId == userId)
                .ToList();
         }
 
-        public List<Event> GetRefundsOfUser(int userId)
+        public List<Event> GetUserRefunds(int userId)
         {
             return _EventsRepository
                .FindAll()
@@ -59,7 +59,7 @@ namespace ShopService.Purchase
                .ToList();
         }
 
-        public void PlaceOrder(int userId, List<BookOrderCreate> booksToOrder)
+        public void MakePurchase(int userId, List<BookOrderCreate> booksToOrder)
         {
             if (!_UserRepository.Exists(userId))
             {
@@ -91,15 +91,15 @@ namespace ShopService.Purchase
                 );
             }
 
-            Event @event = new Event()
+            Event purchase = new Event()
             {
-                EventType = EventType.Order,
+                EventType = EventType.Purchase,
                 PlacedDate = DateTime.UtcNow,
                 UserId = userId,
                 OrderedBooks = orderedBooks
             };
 
-            var orderPlacedResult = _EventsRepository.Create(@event);
+            var orderPlacedResult = _EventsRepository.Create(purchase);
 
             if (!orderPlacedResult)
             {
@@ -115,8 +115,8 @@ namespace ShopService.Purchase
                 throw new PurchaseException($"Refund unavailable, wrong {nameof(userId)} {userId}");
             };
 
-            Event order = user.Orders?.FirstOrDefault(order => order.Id == eventId);
-            if (order == null)
+            Event purchase = user.Purchases?.FirstOrDefault(order => order.Id == eventId);
+            if (purchase == null)
             {
                 throw new PurchaseException($"Refund unavailable, user does not have order of id {eventId}");
             };
@@ -126,7 +126,7 @@ namespace ShopService.Purchase
                 EventType = EventType.Refund,
                 PlacedDate = DateTime.UtcNow,
                 UserId = userId,
-                OrderedBooks = order.OrderedBooks
+                OrderedBooks = purchase.OrderedBooks
             };
 
             var refundPlacedResult = _EventsRepository.Create(refund);
