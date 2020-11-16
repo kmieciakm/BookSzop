@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ShopService.Exceptions.Authentication;
 using ShopService.Purchase;
+using ShopService.StoreManagement;
 using ShopService.UserServ;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,10 @@ namespace ShopService_UnitTests
         public void ConfigureServices(IServiceCollection services)
         {
             // Database access
-            services.AddScoped<DbContext>((serviceProvider) =>
+            services.AddTransient<DbContext>((serviceProvider) =>
                 new DbContextFactory().CreateMockDbContext());
 
+            services.AddTransient<IBookRepository, BookRepository>();
             services.AddTransient<IBookBundleRepositiory, BookBundleRepositiory>();
             services.AddTransient<IEventsRepository, EventsRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
@@ -28,6 +30,7 @@ namespace ShopService_UnitTests
             services.AddTransient<IAuthenticationManager, AuthenticationManager>();
             services.AddTransient<IPurchaseService, PurchaseService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IStoreManagementService, StoreManagementService>();
         }
     }
 }
