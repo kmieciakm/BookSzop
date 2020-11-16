@@ -22,7 +22,7 @@ namespace ShopService_UnitTests.TestCases
         [Fact]
         public void GetAllOrders()
         {
-            Assert.Equal(2, _PurchaseService.GetAllOrders().Count);
+            Assert.Equal(3, _PurchaseService.GetAllPurchases().Count);
         }
 
         [Fact]
@@ -32,43 +32,134 @@ namespace ShopService_UnitTests.TestCases
         }
         #endregion
 
-        #region GetOrdersOfUser
+        #region GetUserPurchases
         [Fact]
-        public void GetOrdersOfUser_UserWithPlacedOrders()
+        public void GetUserPurchases_UserWithPlacedOrders()
         {
-            Assert.Equal(2, _PurchaseService.GetOrdersOfUser(2).Count);
+            Assert.Equal(2, _PurchaseService.GetUserPurchases(2).Count);
         }
 
         [Fact]
-        public void GetOrdersOfUser_UserWithNoOrders()
+        public void GetUserPurchases_UserWithNoOrders()
         {
-            Assert.False(_PurchaseService.GetOrdersOfUser(1).Any());
+            Assert.False(_PurchaseService.GetUserPurchases(1).Any());
         }
 
         [Fact]
-        public void GetOrdersOfUser_WrongUserId()
+        public void GetUserPurchases_WrongUserId()
         {
-            Assert.False(_PurchaseService.GetOrdersOfUser(999).Any());
+            Assert.False(_PurchaseService.GetUserPurchases(999).Any());
         }
         #endregion
 
-        #region GetRefundsOfUser
+        #region GetUserRefunds
         [Fact]
-        public void GetRefundsOfUser_UserWithRefunds()
+        public void GetUserRefunds_UserWithRefunds()
         {
-            Assert.Single(_PurchaseService.GetRefundsOfUser(2));
+            Assert.Single(_PurchaseService.GetUserRefunds(2));
         }
 
         [Fact]
-        public void GetRefundsOfUser_UserWithNoRefunds()
+        public void GetUserRefunds_UserWithNoRefunds()
         {
-            Assert.False(_PurchaseService.GetRefundsOfUser(1).Any());
+            Assert.False(_PurchaseService.GetUserRefunds(1).Any());
         }
 
         [Fact]
-        public void GetRefundsOfUser_WrongUserId()
+        public void GetUserRefunds_WrongUserId()
         {
-            Assert.False(_PurchaseService.GetRefundsOfUser(999).Any());
+            Assert.False(_PurchaseService.GetUserRefunds(999).Any());
+        }
+        #endregion
+
+        #region MakePurchase
+        [Fact]
+        public void MakePurchase_WrongUserId()
+        {
+            var orderedBooks = new List<BookOrderCreate>()
+            {
+                new BookOrderCreate()
+                {
+                    BookBundleId = 1,
+                    Quantity = 2
+                }
+            };
+
+            Assert.Throws<PurchaseException>(() => _PurchaseService.MakePurchase(999, orderedBooks));
+        }
+
+        [Fact]
+        public void MakePurchase_WrongBookBundleId()
+        {
+            var orderedBooks = new List<BookOrderCreate>()
+            {
+                new BookOrderCreate()
+                {
+                    BookBundleId = 200,
+                    Quantity = 2
+                }
+            };
+
+            Assert.Throws<PurchaseException>(() => _PurchaseService.MakePurchase(1, orderedBooks));
+        }
+
+        [Fact]
+        public void MakePurchase_TooManyBooksRequested()
+        {
+            var orderedBooks = new List<BookOrderCreate>()
+            {
+                new BookOrderCreate()
+                {
+                    BookBundleId = 200,
+                    Quantity = 2000
+                }
+            };
+
+            Assert.Throws<PurchaseException>(() => _PurchaseService.MakePurchase(1, orderedBooks));
+        }
+
+        [Fact]
+        public void MakePurchase_AllCorrect()
+        {
+            var orderedBooks = new List<BookOrderCreate>()
+            {
+                new BookOrderCreate()
+                {
+                    BookBundleId = 1,
+                    Quantity = 1
+                },
+                new BookOrderCreate()
+                {
+                    BookBundleId = 2,
+                    Quantity = 1
+                },
+            };
+
+            _PurchaseService.MakePurchase(1, orderedBooks);
+
+            Assert.Single(_PurchaseService.GetUserPurchases(1));
+        }
+        #endregion
+
+        #region PlaceRefund
+        [Fact]
+        public void PlaceRefund_WrongUserId()
+        {
+            Assert.Throws<PurchaseException>(() => _PurchaseService.PlaceRefund(999, 1));
+        }
+
+        [Fact]
+        public void PlaceRefund_WrongEventId()
+        {
+            Assert.Throws<PurchaseException>(() => _PurchaseService.PlaceRefund(1, 999));
+        }
+
+        [Fact]
+        public void PlaceRefund_AllCorrect()
+        {
+            var userId = 3;
+            _PurchaseService.PlaceRefund(userId, 4);
+            Assert.Single(_PurchaseService.GetUserRefunds(userId));
         }
         #endregion
     }

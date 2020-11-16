@@ -124,7 +124,7 @@ namespace UnitTests_MockDatabase
                     Id = 1,
                     UserId = 10,
                     User = new User() { Id = 10 },
-                    EventType = EventType.Order,
+                    EventType = EventType.Purchase,
                     OrderedBooks = orderedAndRefundBooks
                 },
                 new Event()
@@ -140,10 +140,21 @@ namespace UnitTests_MockDatabase
                     Id = 3,
                     UserId = 30,
                     User = new User() { Id = 30 },
-                    EventType = EventType.Order,
+                    EventType = EventType.Purchase,
                     OrderedBooks = new List<BookOrder>()
                     {
                         Orders.FirstOrDefault(order => order.Id == 1)
+                    }
+                },
+                new Event()
+                {
+                    Id = 4,
+                    UserId = 40,
+                    User = new User() { Id = 40 },
+                    EventType = EventType.Purchase,
+                    OrderedBooks = new List<BookOrder>()
+                    {
+                        Orders.FirstOrDefault(order => order.Id == 2)
                     }
                 }
             };
@@ -172,7 +183,16 @@ namespace UnitTests_MockDatabase
                     Login = "user",
                     Password = "user123",
                     AdminPermission = false
-                }       
+                },
+                new User()
+                {
+                    Id = 3,
+                    FirstName = "TestRefund",
+                    LastName = "The Refund Guy",
+                    Login = "refund",
+                    Password = "mymoney",
+                    AdminPermission = false
+                }
             };
             Users.AddRange(users);
             SaveChanges();
@@ -182,12 +202,17 @@ namespace UnitTests_MockDatabase
 
         private void UpdateEvents()
         {
+            // UserId = 2 events
             Events.FirstOrDefault(eve => eve.Id == 1).User = Users.FirstOrDefault(user => user.Id == 2);
             Events.FirstOrDefault(eve => eve.Id == 1).UserId = Users.FirstOrDefault(user => user.Id == 2).Id;
             Events.FirstOrDefault(eve => eve.Id == 2).User = Users.FirstOrDefault(user => user.Id == 2);
             Events.FirstOrDefault(eve => eve.Id == 2).UserId = Users.FirstOrDefault(user => user.Id == 2).Id;
             Events.FirstOrDefault(eve => eve.Id == 3).User = Users.FirstOrDefault(user => user.Id == 2);
             Events.FirstOrDefault(eve => eve.Id == 3).UserId = Users.FirstOrDefault(user => user.Id == 2).Id;
+
+            // UserId = 3 events
+            Events.FirstOrDefault(eve => eve.Id == 4).User = Users.FirstOrDefault(user => user.Id == 3);
+            Events.FirstOrDefault(eve => eve.Id == 4).UserId = Users.FirstOrDefault(user => user.Id == 3).Id;
 
             SaveChanges();
         }

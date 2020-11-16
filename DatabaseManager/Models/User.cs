@@ -25,9 +25,9 @@ namespace DatabaseManager.Models
         public ICollection<Event> Events { get; set; }
 
         [NotMapped]
-        public List<Event> Orders {
+        public List<Event> Purchases {
             get {
-                return Events.Where(e => e.EventType == EventType.Order).ToList();
+                return Events?.Where(e => e.EventType == EventType.Purchase).ToList();
             }
         }
         [NotMapped]
@@ -35,19 +35,19 @@ namespace DatabaseManager.Models
         {
             get
             {
-                return Events.Where(e => e.EventType == EventType.Refund).ToList();
+                return Events?.Where(e => e.EventType == EventType.Refund).ToList();
             }
         }
         [NotMapped]
         public List<Book> OwnedBooks {
             get
             {
-                return Orders
-                    .Select(order => order.OrderedBooks)
+                return Purchases
+                    .Select(purchase => purchase.OrderedBooks)
                     .Except(
                         Refunds.Select(refund => refund.OrderedBooks))
-                    .SelectMany(states => states)
-                    .Select(state => state.BookBundle.Book)
+                    .SelectMany(orders => orders)
+                    .Select(order => order.BookBundle.Book)
                     .ToList();
             }
         }
