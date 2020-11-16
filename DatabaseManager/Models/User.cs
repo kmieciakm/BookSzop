@@ -43,11 +43,11 @@ namespace DatabaseManager.Models
             get
             {
                 return Orders
-                    .Select(order => order.BookBundles)
+                    .Select(order => order.OrderedBooks)
                     .Except(
-                        Refunds.Select(refund => refund.BookBundles))
+                        Refunds.Select(refund => refund.OrderedBooks))
                     .SelectMany(states => states)
-                    .Select(state => state.Book)
+                    .Select(state => state.BookBundle.Book)
                     .ToList();
             }
         }

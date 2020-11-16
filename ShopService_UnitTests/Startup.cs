@@ -2,7 +2,8 @@
 using DatabaseManager.Repository.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using ShopService;
+using ShopService.Exceptions.Authentication;
+using ShopService.Purchase;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,10 +19,12 @@ namespace ShopService_UnitTests
             services.AddScoped<DbContext>((serviceProvider) =>
                 new DbContextFactory().CreateMockDbContext());
 
+            services.AddTransient<IEventsRepository, EventsRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 
             // ShopService
             services.AddTransient<IAuthenticationManager, AuthenticationManager>();
+            services.AddTransient<IPurchaseService, PurchaseService>();
         }
     }
 }

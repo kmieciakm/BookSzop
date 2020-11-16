@@ -18,7 +18,6 @@ namespace DatabaseManager_UnitTests
             services.AddScoped<DbContext>((serviceProvider) =>
                 new DbContextFactory().CreateMockDbContext());
 
-            services.AddTransient<IBookBundleRepositiory, BookBundleRepositiory>();
             services.AddTransient<IUserRepository, UserRepository>();
         }
     }

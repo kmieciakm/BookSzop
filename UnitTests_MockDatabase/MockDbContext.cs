@@ -14,7 +14,8 @@ namespace UnitTests_MockDatabase
         public DbSet<BookBundle> BookBundles { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<User> Users { get; set; }
-       
+        public DbSet<BookOrder> Orders { get; set; }
+
 
         public MockDbContext(DbContextOptions<MockDbContext> options) : base(options)
         {
@@ -25,6 +26,7 @@ namespace UnitTests_MockDatabase
             ClearDatabase();
             SeedBooks();
             SeedBookBundles();
+            SeedBookOrders();
             SeedEvents();
             SeedUsers();
         }
@@ -33,6 +35,7 @@ namespace UnitTests_MockDatabase
         {
             ClearSet(Books);
             ClearSet(BookBundles);
+            ClearSet(Orders);
             ClearSet(Events);
             ClearSet(Users);
         }
@@ -77,34 +80,41 @@ namespace UnitTests_MockDatabase
                     Book = Books.FirstOrDefault(book => book.Id == 2),
                     Price = 100,
                     Quantity = 45
-                },
-                new BookBundle()
-                {
-                    Id = 3,
-                    BookId = 1,
-                    Book = Books.FirstOrDefault(book => book.Id == 1),
-                    Price = 42,
-                    Quantity = 1
-                },
-                new BookBundle()
-                {
-                    Id = 4,
-                    BookId = 2,
-                    Book = Books.FirstOrDefault(book => book.Id == 2),
-                    Price = 100,
-                    Quantity = 1
                 }
             };
             BookBundles.AddRange(bookBundles);
             SaveChanges();
         }
 
+        private void SeedBookOrders()
+        {
+            var orders = new List<BookOrder>()
+            {
+                new BookOrder()
+                {
+                    Id = 1,
+                    BookBundleId = 1,
+                    BookBundle = BookBundles.FirstOrDefault(bookBundle => bookBundle.Id == 1),
+                    Quantity = 1
+                },
+                new BookOrder()
+                {
+                    Id = 2,
+                    BookBundleId = 2,
+                    BookBundle = BookBundles.FirstOrDefault(bookBundle => bookBundle.Id == 2),
+                    Quantity = 1
+                }
+            };
+            Orders.AddRange(orders);
+            SaveChanges();
+        }
+
         private void SeedEvents()
         {
-            var orderedAndRefundBooks = new List<BookBundle>()
+            var orderedAndRefundBooks = new List<BookOrder>()
             {
-                BookBundles.FirstOrDefault(bookBundle => bookBundle.Id == 3),
-                BookBundles.FirstOrDefault(bookBundle => bookBundle.Id == 4)
+                Orders.FirstOrDefault(order => order.Id == 1),
+                Orders.FirstOrDefault(order => order.Id == 2)
             };
 
             var events = new List<Event>()
@@ -115,7 +125,7 @@ namespace UnitTests_MockDatabase
                     UserId = 10,
                     User = new User() { Id = 10 },
                     EventType = EventType.Order,
-                    BookBundles = orderedAndRefundBooks
+                    OrderedBooks = orderedAndRefundBooks
                 },
                 new Event()
                 {
@@ -123,7 +133,7 @@ namespace UnitTests_MockDatabase
                     UserId = 20,
                     User = new User() { Id = 20 },
                     EventType = EventType.Refund,
-                    BookBundles = orderedAndRefundBooks
+                    OrderedBooks = orderedAndRefundBooks
                 },
                 new Event()
                 {
@@ -131,9 +141,9 @@ namespace UnitTests_MockDatabase
                     UserId = 30,
                     User = new User() { Id = 30 },
                     EventType = EventType.Order,
-                    BookBundles = new List<BookBundle>()
+                    OrderedBooks = new List<BookOrder>()
                     {
-                        BookBundles.FirstOrDefault(bookBundle => bookBundle.Id == 3)
+                        Orders.FirstOrDefault(order => order.Id == 1)
                     }
                 }
             };

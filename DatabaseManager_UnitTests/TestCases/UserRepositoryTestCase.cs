@@ -2,7 +2,7 @@ using DatabaseManager.Repository.Contracts;
 using System;
 using Xunit;
 
-namespace DatabaseManager_UnitTests
+namespace DatabaseManager_UnitTests.TestCases
 {
     public class UserRepositoryTestCase
     {

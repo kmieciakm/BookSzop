@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatabaseManager.Migrations
 {
     [DbContext(typeof(SQLiteDBContext))]
-    [Migration("20201114150025_New Models")]
-    partial class NewModels
+    [Migration("20201116174748_Added BookOrders table")]
+    partial class AddedBookOrderstable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9");
+                .HasAnnotation("ProductVersion", "5.0.0");
 
             modelBuilder.Entity("DatabaseManager.Models.Book", b =>
                 {
@@ -25,12 +25,12 @@ namespace DatabaseManager.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Author")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -46,9 +46,6 @@ namespace DatabaseManager.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("EventId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<double>("Price")
                         .HasColumnType("REAL");
 
@@ -59,9 +56,31 @@ namespace DatabaseManager.Migrations
 
                     b.HasIndex("BookId");
 
+                    b.ToTable("States");
+                });
+
+            modelBuilder.Entity("DatabaseManager.Models.BookOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BookBundleId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("EventId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookBundleId");
+
                     b.HasIndex("EventId");
 
-                    b.ToTable("States");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("DatabaseManager.Models.Event", b =>
@@ -96,20 +115,20 @@ namespace DatabaseManager.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Login")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -119,14 +138,27 @@ namespace DatabaseManager.Migrations
             modelBuilder.Entity("DatabaseManager.Models.BookBundle", b =>
                 {
                     b.HasOne("DatabaseManager.Models.Book", "Book")
-                        .WithMany()
+                        .WithMany("BookBundles")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("DatabaseManager.Models.BookOrder", b =>
+                {
+                    b.HasOne("DatabaseManager.Models.BookBundle", "BookBundle")
+                        .WithMany()
+                        .HasForeignKey("BookBundleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DatabaseManager.Models.Event", null)
-                        .WithMany("BookBundles")
+                        .WithMany("OrderedBooks")
                         .HasForeignKey("EventId");
+
+                    b.Navigation("BookBundle");
                 });
 
             modelBuilder.Entity("DatabaseManager.Models.Event", b =>
@@ -136,6 +168,23 @@ namespace DatabaseManager.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DatabaseManager.Models.Book", b =>
+                {
+                    b.Navigation("BookBundles");
+                });
+
+            modelBuilder.Entity("DatabaseManager.Models.Event", b =>
+                {
+                    b.Navigation("OrderedBooks");
+                });
+
+            modelBuilder.Entity("DatabaseManager.Models.User", b =>
+                {
+                    b.Navigation("Events");
                 });
 #pragma warning restore 612, 618
         }

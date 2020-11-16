@@ -1,12 +1,13 @@
 ﻿using DatabaseManager.Models;
-using ShopService;
+using ShopService.Exceptions.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Security.Authentication;
 using System.Text;
 using Xunit;
+using AuthenticationException = ShopService.Exceptions.Authentication.AuthenticationException;
 
-namespace ShopService_UnitTests
+namespace ShopService_UnitTests.TestCases
 {
     public class AuthenticationTestCase
     {

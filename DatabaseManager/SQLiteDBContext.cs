@@ -10,7 +10,7 @@ namespace DatabaseManager
     {
         public DbSet<User> Users { get; set; }
         /// <summary>
-        /// Orders and Refunds
+        /// Purchases and Refunds
         /// </summary>
         public DbSet<Event> Events { get; set; }
         /// <summary>
@@ -21,6 +21,10 @@ namespace DatabaseManager
         /// Content of the shop, all available books with prices
         /// </summary>
         public DbSet<BookBundle> States { get; set; }
+        /// <summary>
+        /// Orders - element of single purchase that specifies the quantity and book bundle
+        /// </summary>
+        public DbSet<BookOrder> Orders { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite("Data Source = szopDatabase.db");

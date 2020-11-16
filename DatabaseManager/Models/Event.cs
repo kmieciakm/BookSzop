@@ -19,19 +19,19 @@ namespace DatabaseManager.Models
         [ForeignKey("UserId")]
         public User User { get; set; }
         public int UserId { get; set; }
-        public ICollection<BookBundle> BookBundles { get; set; }
+        public ICollection<BookOrder> OrderedBooks { get; set; }
 
         [NotMapped]
-        public double Bill { 
+        public double Bill {
             get {
-                return BookBundles.Sum(bundle => bundle.Quantity * bundle.Price);
+                return OrderedBooks.Sum(bookOrder => bookOrder.BookBundle.Price * bookOrder.Quantity);
             }
         }
         [NotMapped]
         public int BookAmount
         {
             get {
-                return BookBundles.Sum(bundle => bundle.Quantity);
+                return OrderedBooks.Sum(bundle => bundle.Quantity);
             }
         }
 
@@ -42,12 +42,12 @@ namespace DatabaseManager.Models
                    EventType == @event.EventType &&
                    User.Equals(@event.User) &&
                    UserId == @event.UserId &&
-                   BookBundles.SequenceEqual(@event.BookBundles);
+                   OrderedBooks.SequenceEqual(@event.OrderedBooks);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(PlacedDate, EventType, User, UserId, BookBundles);
+            return HashCode.Combine(PlacedDate, EventType, User, UserId, OrderedBooks);
         }
     }
 }
