@@ -34,5 +34,20 @@ namespace DatabaseManager.Models
                 return BookBundles.Sum(bundle => bundle.Quantity);
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Event @event &&
+                   PlacedDate == @event.PlacedDate &&
+                   EventType == @event.EventType &&
+                   User.Equals(@event.User) &&
+                   UserId == @event.UserId &&
+                   BookBundles.SequenceEqual(@event.BookBundles);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(PlacedDate, EventType, User, UserId, BookBundles);
+        }
     }
 }

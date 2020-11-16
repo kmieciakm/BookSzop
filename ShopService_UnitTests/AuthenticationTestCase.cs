@@ -10,7 +10,7 @@ namespace ShopService_UnitTests
 {
     public class AuthenticationTestCase
     {
-        public IAuthenticationManager AuthenticationManager { get; }
+        private IAuthenticationManager AuthenticationManager { get; }
 
         public AuthenticationTestCase(IAuthenticationManager authenticationManager)
         {

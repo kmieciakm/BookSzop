@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
 
-namespace ShopService_UnitTests.MockDb
+namespace UnitTests_MockDatabase
 {
     public class DbContextFactory : IDisposable
     {
@@ -21,7 +21,7 @@ namespace ShopService_UnitTests.MockDb
         {
             if (_connection == null)
             {
-                _connection = new SqliteConnection("DataSource=file::memory:?cache=shared");
+                _connection = new SqliteConnection("DataSource=file::memory:");
                 _connection.Open();
 
                 var options = CreateOptions();
@@ -29,7 +29,6 @@ namespace ShopService_UnitTests.MockDb
                 {
                     context.Database.EnsureCreated();
                     context.SeedData();
-                    context.SaveChanges();
                 }
             }
 

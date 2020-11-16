@@ -51,5 +51,21 @@ namespace DatabaseManager.Models
                     .ToList();
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is User user &&
+                   FirstName == user.FirstName &&
+                   LastName == user.LastName &&
+                   Login == user.Login &&
+                   Password == user.Password &&
+                   AdminPermission == user.AdminPermission &&
+                   Events.SequenceEqual(user.Events);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(FirstName, LastName, Login, Password, AdminPermission, Events);
+        }
     }
 }

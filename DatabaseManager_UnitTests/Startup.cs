@@ -1,14 +1,14 @@
 ﻿using DatabaseManager.Repository.Contracts;
 using DatabaseManager.Repository.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
-using ShopService;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using UnitTests_MockDatabase;
 
-namespace ShopService_UnitTests
+namespace DatabaseManager_UnitTests
 {
     public class Startup
     {
@@ -18,10 +18,8 @@ namespace ShopService_UnitTests
             services.AddScoped<DbContext>((serviceProvider) =>
                 new DbContextFactory().CreateMockDbContext());
 
+            services.AddTransient<IBookBundleRepositiory, BookBundleRepositiory>();
             services.AddTransient<IUserRepository, UserRepository>();
-
-            // ShopService
-            services.AddTransient<IAuthenticationManager, AuthenticationManager>();
         }
     }
 }
