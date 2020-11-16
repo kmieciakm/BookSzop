@@ -154,7 +154,7 @@ namespace UnitTests_MockDatabase
                     EventType = EventType.Order,
                     OrderedBooks = new List<BookOrder>()
                     {
-                        Orders.FirstOrDefault(order => order.Id == 1)
+                        Orders.FirstOrDefault(order => order.Id == 2)
                     }
                 }
             };
