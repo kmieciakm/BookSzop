@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ShopService.Exceptions.Authentication;
 using ShopService.Purchase;
+using ShopService.UserServ;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,6 +26,7 @@ namespace ShopService_UnitTests
             // ShopService
             services.AddTransient<IAuthenticationManager, AuthenticationManager>();
             services.AddTransient<IPurchaseService, PurchaseService>();
+            services.AddTransient<IUserService, UserService>();
         }
     }
 }
