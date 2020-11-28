@@ -1,11 +1,11 @@
 ﻿using DatabaseManager.Models;
-using ShopService.Exceptions.Authentication;
+using ShopService.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Security.Authentication;
 using System.Text;
 using Xunit;
-using AuthenticationException = ShopService.Exceptions.Authentication.AuthenticationException;
+using AuthenticationException = ShopService.Authentication.AuthenticationException;
 
 namespace ShopService_UnitTests.TestCases
 {

@@ -2,7 +2,7 @@
 using DatabaseManager.Repository.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using ShopService.Exceptions.Authentication;
+using ShopService.Authentication;
 using ShopService.Purchase;
 using ShopService.StoreManagement;
 using ShopService.UserServ;

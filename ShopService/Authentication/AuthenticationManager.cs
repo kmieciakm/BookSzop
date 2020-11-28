@@ -6,7 +6,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Security.Authentication;
 using System.Text;
 
-namespace ShopService.Exceptions.Authentication
+namespace ShopService.Authentication
 {
     public class AuthenticationManager : IAuthenticationManager
     {

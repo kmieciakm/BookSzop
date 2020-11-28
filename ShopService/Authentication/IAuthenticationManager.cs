@@ -1,6 +1,6 @@
 ﻿using DatabaseManager.Models;
 
-namespace ShopService.Exceptions.Authentication
+namespace ShopService.Authentication
 {
     public interface IAuthenticationManager
     {
