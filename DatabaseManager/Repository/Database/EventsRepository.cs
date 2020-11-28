@@ -7,7 +7,7 @@ using System.Text;
 
 namespace DatabaseManager.Repository.Database
 {
-    public class EventsRepository : RepositoryBase<Event>, IEventsRepository
+    class EventsRepository : RepositoryBase<Event>, IEventsRepository
     {
         public EventsRepository(DbContext dbContext) : base(dbContext)
         {

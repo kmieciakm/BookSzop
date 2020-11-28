@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DatabaseManager.Repository.Database
 {
-    public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : EntityBase
+    abstract class RepositoryBase<T> : IRepositoryBase<T> where T : EntityBase
     {
         protected DbContext _DbContext { get; }
 

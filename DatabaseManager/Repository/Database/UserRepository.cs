@@ -9,7 +9,7 @@ using System.Text;
 
 namespace DatabaseManager.Repository.Database
 {
-    public class UserRepository : RepositoryBase<User>, IUserRepository
+    class UserRepository : RepositoryBase<User>, IUserRepository
     {
         public UserRepository(DbContext dbContext) : base(dbContext)
         {

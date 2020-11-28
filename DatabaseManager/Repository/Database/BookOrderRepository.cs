@@ -7,7 +7,7 @@ using System.Text;
 
 namespace DatabaseManager.Repository.Database
 {
-    public class BookOrderRepository : RepositoryBase<BookOrder>, IBookOrdersRepository
+    class BookOrderRepository : RepositoryBase<BookOrder>, IBookOrdersRepository
     {
         public BookOrderRepository(DbContext dbContext) : base(dbContext)
         {
