@@ -68,12 +68,14 @@ namespace BookSzop
                 ));
 
             // View Models
-            services.AddSingleton<LoginPageViewModel>();
-            services.AddSingleton<MainPageViewModel>();
+            services.AddTransient<UserPageViewModel>();
+            services.AddTransient<LoginPageViewModel>();
+            services.AddTransient<MainPageViewModel>();
 
             // Pages
-            services.AddSingleton<LoginPage>();
-            services.AddSingleton<MainPage>();
+            services.AddTransient<UserPage>();
+            services.AddTransient<LoginPage>();
+            services.AddTransient<MainPage>();
 
             services.AddSingleton<MainWindow>();
         }

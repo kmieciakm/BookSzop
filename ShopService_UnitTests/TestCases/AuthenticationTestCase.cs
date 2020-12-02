@@ -52,7 +52,8 @@ namespace ShopService_UnitTests.TestCases
                 FirstName = "NewUser",
                 LastName = "The New",
                 Login = "newTestUser",
-                Password = "test"
+                Password = "test",
+                ConfirmPassword = "test"
             };
 
             AuthenticationManager.RegisterUser(newUser);

@@ -10,5 +10,8 @@ namespace ShopService.Models
         string LastName { get; set; }
         string Login { get; set; }
         string Password { get; set; }
+        string ConfirmPassword { get; set; }
+
+        bool ConfirmationPasswordCorrect();
     }
 }

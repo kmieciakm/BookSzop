@@ -42,6 +42,11 @@ namespace ShopService.Authentication
 
         public void RegisterUser(IUserCreate userToCreate)
         {
+            if (!userToCreate.ConfirmationPasswordCorrect())
+            {
+                throw new AuthenticationException($"Given passwords differ.");
+            }
+
             var user = new User()
             {
                 FirstName = userToCreate.FirstName,
@@ -61,6 +66,11 @@ namespace ShopService.Authentication
             {
                 throw new AuthenticationException("Somthing went wrong. Registration not succeeded.");
             }
+        }
+
+        public int? GetUserIdByLogin(string login)
+        {
+            return _UserRepository.GetUserByLogin(login)?.Id;
         }
     }
 }

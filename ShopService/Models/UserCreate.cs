@@ -10,6 +10,7 @@ namespace ShopService.Models
         public string LastName { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
+        public string ConfirmPassword { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -24,5 +25,7 @@ namespace ShopService.Models
         {
             return HashCode.Combine(FirstName, LastName, Login, Password);
         }
+
+        public bool ConfirmationPasswordCorrect() => Password == ConfirmPassword;
     }
 }
