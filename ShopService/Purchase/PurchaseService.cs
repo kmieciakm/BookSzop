@@ -9,7 +9,7 @@ using System.Text;
 
 namespace ShopService.Purchase
 {
-    public class PurchaseService : IPurchaseService
+    class PurchaseService : IPurchaseService
     {
         private IEventsRepository _EventsRepository { get; }
         private IUserRepository _UserRepository { get; }

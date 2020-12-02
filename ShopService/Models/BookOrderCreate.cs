@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ShopService.Models
 {
-    public class BookOrderCreate : IBookOrderCreate
+    class BookOrderCreate : IBookOrderCreate
     {
         [Range(0, 1000)]
         public int Quantity { get; set; }

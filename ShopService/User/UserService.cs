@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ShopService.UserServ
 {
-    public class UserService : IUserService
+    class UserService : IUserService
     {
         private IUserRepository _UserRepository { get; }
 
@@ -15,7 +15,6 @@ namespace ShopService.UserServ
         {
             _UserRepository = userRepository;
         }
-
 
         public List<Book> GetBooksOfUser(int id)
         {

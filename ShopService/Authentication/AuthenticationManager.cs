@@ -8,7 +8,7 @@ using System.Text;
 
 namespace ShopService.Authentication
 {
-    public class AuthenticationManager : IAuthenticationManager
+    class AuthenticationManager : IAuthenticationManager
     {
         private IUserRepository _UserRepository { get; }
 

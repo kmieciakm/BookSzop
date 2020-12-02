@@ -4,10 +4,7 @@ using BookSzop.Views;
 using DatabaseManager;
 using DatabaseManager.Repository.Contracts;
 using Microsoft.Extensions.DependencyInjection;
-using ShopService.Authentication;
-using ShopService.Purchase;
-using ShopService.StoreManagement;
-using ShopService.UserServ;
+using ShopService;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -47,10 +44,25 @@ namespace BookSzop
             services.AddSingleton(provider => DbFactory.CreateEventsRepository(dbContext));
 
             // Services
-            services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IAuthenticationManager, AuthenticationManager>();
-            services.AddSingleton<IPurchaseService, PurchaseService>();
-            services.AddSingleton<IStoreManagementService, StoreManagementService>();
+            services.AddSingleton(provider =>
+                ServiceFactory.CreateAuthenticationManager(
+                    provider.GetRequiredService<IUserRepository>()
+                ));
+            services.AddSingleton(provider => 
+                ServiceFactory.CreateAuthenticationManager(
+                    provider.GetRequiredService<IUserRepository>()
+                ));
+            services.AddSingleton(provider =>
+                ServiceFactory.CreatePurchaseService(
+                    provider.GetRequiredService<IEventsRepository>(),
+                    provider.GetRequiredService<IUserRepository>(),
+                    provider.GetRequiredService<IBookBundleRepositiory>()
+                ));
+            services.AddSingleton(provider =>
+                ServiceFactory.CreateStoreManagementService(
+                    provider.GetRequiredService<IBookRepository>(),
+                    provider.GetRequiredService<IBookBundleRepositiory>()
+                ));
 
             // View Models
             services.AddSingleton<LoginPageViewModel>();
