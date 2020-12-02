@@ -76,7 +76,7 @@ namespace ShopService_UnitTests.TestCases
         [Fact]
         public void MakePurchase_WrongUserId()
         {
-            var orderedBooks = new List<BookOrderCreate>()
+            var orderedBooks = new List<IBookOrderCreate>()
             {
                 new BookOrderCreate()
                 {
@@ -91,7 +91,7 @@ namespace ShopService_UnitTests.TestCases
         [Fact]
         public void MakePurchase_WrongBookBundleId()
         {
-            var orderedBooks = new List<BookOrderCreate>()
+            var orderedBooks = new List<IBookOrderCreate>()
             {
                 new BookOrderCreate()
                 {
@@ -106,7 +106,7 @@ namespace ShopService_UnitTests.TestCases
         [Fact]
         public void MakePurchase_TooManyBooksRequested()
         {
-            var orderedBooks = new List<BookOrderCreate>()
+            var orderedBooks = new List<IBookOrderCreate>()
             {
                 new BookOrderCreate()
                 {
@@ -121,7 +121,7 @@ namespace ShopService_UnitTests.TestCases
         [Fact]
         public void MakePurchase_AllCorrect()
         {
-            var orderedBooks = new List<BookOrderCreate>()
+            var orderedBooks = new List<IBookOrderCreate>()
             {
                 new BookOrderCreate()
                 {

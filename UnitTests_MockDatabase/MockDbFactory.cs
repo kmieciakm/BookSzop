@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using DatabaseManager;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace UnitTests_MockDatabase
 {
-    public class DbContextFactory : IDisposable
+    public class MockDbFactory : IDisposable
     {
         private DbConnection _connection;
 
@@ -17,7 +18,7 @@ namespace UnitTests_MockDatabase
                 .UseSqlite(_connection).Options;
         }
 
-        public MockDbContext CreateMockDbContext()
+        public DbContextBase CreateMockDbContext()
         {
             if (_connection == null)
             {

@@ -1,7 +1,13 @@
 ﻿using BookSzop.Utils;
 using BookSzop.ViewModels;
 using BookSzop.Views;
+using DatabaseManager;
+using DatabaseManager.Repository.Contracts;
 using Microsoft.Extensions.DependencyInjection;
+using ShopService.Authentication;
+using ShopService.Purchase;
+using ShopService.StoreManagement;
+using ShopService.UserServ;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -31,11 +37,20 @@ namespace BookSzop
 
         private void ConfigureServices(IServiceCollection services)
         {
-            // TODO: Logic layer services need earlier registration of database services
-            // For now it's disabled, pending resolving references issues
+            // Database setup
+            var dbContext = DbFactory.CreateSQLiteDb();
+            services.AddSingleton(provider => dbContext);
+            services.AddSingleton(provider => DbFactory.CreateUserRepository(dbContext));
+            services.AddSingleton(provider => DbFactory.CreateBookRepository(dbContext));
+            services.AddSingleton(provider => DbFactory.CreateBookBundleRepository(dbContext));
+            services.AddSingleton(provider => DbFactory.CreateBookOrderRepository(dbContext));
+            services.AddSingleton(provider => DbFactory.CreateEventsRepository(dbContext));
 
             // Services
-            // services.AddSingleton<IAuthenticationManager, AuthenticationManager>();
+            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IAuthenticationManager, AuthenticationManager>();
+            services.AddSingleton<IPurchaseService, PurchaseService>();
+            services.AddSingleton<IStoreManagementService, StoreManagementService>();
 
             // View Models
             services.AddSingleton<LoginPageViewModel>();

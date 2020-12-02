@@ -16,11 +16,7 @@ namespace BookSzop.Utils
             {
                 navigator = value;
             }
-            get
-            {
-                return navigator;
-            }
-
+            get => navigator;
         }
 
         public static void Navigate(Page page)

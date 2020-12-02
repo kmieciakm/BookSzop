@@ -59,7 +59,7 @@ namespace ShopService.Purchase
                .ToList();
         }
 
-        public void MakePurchase(int userId, List<BookOrderCreate> booksToOrder)
+        public void MakePurchase(int userId, List<IBookOrderCreate> booksToOrder)
         {
             if (!_UserRepository.Exists(userId))
             {

@@ -1,4 +1,5 @@
-﻿using DatabaseManager.Models;
+﻿using DatabaseManager;
+using DatabaseManager.Models;
 using DatabaseManager.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,15 +9,8 @@ using System.Text;
 
 namespace UnitTests_MockDatabase
 {
-    public class MockDbContext : DbContext
+    class MockDbContext : DbContextBase
     {
-        public DbSet<Book> Books { get; set; }
-        public DbSet<BookBundle> BookBundles { get; set; }
-        public DbSet<Event> Events { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<BookOrder> Orders { get; set; }
-
-
         public MockDbContext(DbContextOptions<MockDbContext> options) : base(options)
         {
         }
@@ -33,8 +27,8 @@ namespace UnitTests_MockDatabase
 
         private void ClearDatabase()
         {
-            ClearSet(Books);
-            ClearSet(BookBundles);
+            ClearSet(Catalogs);
+            ClearSet(States);
             ClearSet(Orders);
             ClearSet(Events);
             ClearSet(Users);
@@ -57,7 +51,7 @@ namespace UnitTests_MockDatabase
                     Author = "Mihail Bulhakov"
                 }
             };
-            Books.AddRange(books);
+            Catalogs.AddRange(books);
             SaveChanges();
         }
 
@@ -69,7 +63,7 @@ namespace UnitTests_MockDatabase
                 {
                     Id = 1,
                     BookId = 1,
-                    Book = Books.FirstOrDefault(book => book.Id == 1), 
+                    Book = Catalogs.FirstOrDefault(book => book.Id == 1), 
                     Price = 42,
                     Quantity = 120
                 },
@@ -77,12 +71,12 @@ namespace UnitTests_MockDatabase
                 {
                     Id = 2,
                     BookId = 2,
-                    Book = Books.FirstOrDefault(book => book.Id == 2),
+                    Book = Catalogs.FirstOrDefault(book => book.Id == 2),
                     Price = 100,
                     Quantity = 45
                 }
             };
-            BookBundles.AddRange(bookBundles);
+            States.AddRange(bookBundles);
             SaveChanges();
         }
 
@@ -94,14 +88,14 @@ namespace UnitTests_MockDatabase
                 {
                     Id = 1,
                     BookBundleId = 1,
-                    BookBundle = BookBundles.FirstOrDefault(bookBundle => bookBundle.Id == 1),
+                    BookBundle = States.FirstOrDefault(bookBundle => bookBundle.Id == 1),
                     Quantity = 1
                 },
                 new BookOrder()
                 {
                     Id = 2,
                     BookBundleId = 2,
-                    BookBundle = BookBundles.FirstOrDefault(bookBundle => bookBundle.Id == 2),
+                    BookBundle = States.FirstOrDefault(bookBundle => bookBundle.Id == 2),
                     Quantity = 1
                 }
             };

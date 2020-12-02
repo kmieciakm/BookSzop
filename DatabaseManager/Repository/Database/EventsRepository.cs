@@ -9,7 +9,7 @@ namespace DatabaseManager.Repository.Database
 {
     class EventsRepository : RepositoryBase<Event>, IEventsRepository
     {
-        public EventsRepository(DbContext dbContext) : base(dbContext)
+        public EventsRepository(DbContextBase dbContext) : base(dbContext)
         {
         }
     }

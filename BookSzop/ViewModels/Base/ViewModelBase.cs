@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BookSzop.ViewModels.Base
 {
-    public class ViewModelBase : INotifyPropertyChanged, INotifyCollectionChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged, INotifyCollectionChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public event NotifyCollectionChangedEventHandler CollectionChanged;

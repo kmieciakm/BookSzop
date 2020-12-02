@@ -10,9 +10,9 @@ namespace DatabaseManager.Repository.Database
 {
     abstract class RepositoryBase<T> : IRepositoryBase<T> where T : EntityBase
     {
-        protected DbContext _DbContext { get; }
+        protected DbContextBase _DbContext { get; }
 
-        public RepositoryBase(DbContext dbContext)
+        public RepositoryBase(DbContextBase dbContext)
         {
             _DbContext = dbContext;
         }

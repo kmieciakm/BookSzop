@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DatabaseManager.Migrations
 {
-    [DbContext(typeof(SQLiteDBContext))]
+    [DbContext(typeof(SQLiteDbContext))]
     partial class SQLiteDBContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

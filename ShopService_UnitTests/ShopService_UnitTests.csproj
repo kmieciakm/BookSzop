@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DatabaseManager\DatabaseManager.csproj" />
     <ProjectReference Include="..\ShopService\ShopService.csproj" />
     <ProjectReference Include="..\UnitTests_MockDatabase\UnitTests_MockDatabase.csproj" />
   </ItemGroup>

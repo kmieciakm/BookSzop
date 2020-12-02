@@ -11,7 +11,7 @@ namespace DatabaseManager.Repository.Database
 {
     class UserRepository : RepositoryBase<User>, IUserRepository
     {
-        public UserRepository(DbContext dbContext) : base(dbContext)
+        public UserRepository(DbContextBase dbContext) : base(dbContext)
         {
         }
 

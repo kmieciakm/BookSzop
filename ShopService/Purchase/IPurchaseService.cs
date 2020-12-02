@@ -8,7 +8,7 @@ namespace ShopService.Purchase
 {
     public interface IPurchaseService
     {
-        void MakePurchase(int userId, List<BookOrderCreate> booksToOrder);
+        void MakePurchase(int userId, List<IBookOrderCreate> booksToOrder);
         void PlaceRefund(int userId, int eventId);
         List<Event> GetAllPurchases();
         List<Event> GetAllRefunds();

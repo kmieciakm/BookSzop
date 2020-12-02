@@ -10,13 +10,9 @@ namespace BookSzop.ViewModels
     {
         public IAuthenticationManager _AuthenticationManager { get; }
 
-        public LoginPageViewModel()
-        {
-        }
-
-        /*public LoginPageViewModel(IAuthenticationManager authenticationManager)
+        public LoginPageViewModel(IAuthenticationManager authenticationManager)
         {
             _AuthenticationManager = authenticationManager;
-        }*/
+        }
     }
 }

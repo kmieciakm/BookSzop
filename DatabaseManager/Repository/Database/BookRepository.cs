@@ -9,7 +9,7 @@ namespace DatabaseManager.Repository.Database
 {
     class BookRepository : RepositoryBase<Book>, IBookRepository
     {
-        public BookRepository(DbContext dbContext) : base(dbContext)
+        public BookRepository(DbContextBase dbContext) : base(dbContext)
         {
         }
     }
