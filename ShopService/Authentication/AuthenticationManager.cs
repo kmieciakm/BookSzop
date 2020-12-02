@@ -1,5 +1,6 @@
 ﻿using DatabaseManager.Models;
 using DatabaseManager.Repository.Contracts;
+using ShopService.Models;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
@@ -19,11 +20,17 @@ namespace ShopService.Authentication
 
         public bool CheckUserCredentials(string login, string password)
         {
+            if (login == null || password == null)
+            {
+                return false;
+            }
+
             var user = _UserRepository.GetUserByLogin(login);
             if (user?.Password == password)
             {
                 return true;
             }
+
             return false;
         }
 
@@ -33,8 +40,17 @@ namespace ShopService.Authentication
             return user.AdminPermission == true;
         }
 
-        public void RegisterUser(User user)
+        public void RegisterUser(IUserCreate userToCreate)
         {
+            var user = new User()
+            {
+                FirstName = userToCreate.FirstName,
+                LastName = userToCreate.LastName,
+                Login = userToCreate.Login,
+                Password = userToCreate.Password,
+                AdminPermission = false
+            };
+
             if (!_UserRepository.IsLoginFree(user.Login))
             {
                 throw new AuthenticationException($"User of login {user.Login} already exists.");

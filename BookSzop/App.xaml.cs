@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using UnitTests_MockDatabase;
 
 namespace BookSzop
 {
@@ -35,7 +36,9 @@ namespace BookSzop
         private void ConfigureServices(IServiceCollection services)
         {
             // Database setup
-            var dbContext = DbFactory.CreateSQLiteDb();
+            // THIS IS ONLY FOR MANUAL TESTING, REMEMBER TO DELETE PROJECT REFERENCE !!!
+            var dbContext = new MockDbFactory().CreateMockDbContext();
+            // var dbContext = DbFactory.CreateSQLiteDb();
             services.AddSingleton(provider => dbContext);
             services.AddSingleton(provider => DbFactory.CreateUserRepository(dbContext));
             services.AddSingleton(provider => DbFactory.CreateBookRepository(dbContext));

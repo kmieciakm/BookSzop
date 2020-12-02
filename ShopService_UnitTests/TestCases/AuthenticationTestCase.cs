@@ -1,5 +1,6 @@
 ﻿using DatabaseManager.Models;
 using ShopService.Authentication;
+using ShopService.Models;
 using System;
 using System.Collections.Generic;
 using System.Security.Authentication;
@@ -46,14 +47,12 @@ namespace ShopService_UnitTests.TestCases
         [Fact]
         public void RegisterUser_CorrectUser()
         {
-            User newUser = new User()
+            UserCreate newUser = new UserCreate()
             {
-                Id = 257841,
                 FirstName = "NewUser",
                 LastName = "The New",
                 Login = "newTestUser",
-                Password = "test",
-                AdminPermission = false
+                Password = "test"
             };
 
             AuthenticationManager.RegisterUser(newUser);
@@ -63,14 +62,12 @@ namespace ShopService_UnitTests.TestCases
         [Fact]
         public void RegisterUser_WrongUser()
         {
-            User newUser = new User()
+            UserCreate newUser = new UserCreate()
             {
-                Id = 789432,
                 FirstName = "User",
                 LastName = "The User",
                 Login = "user",
-                Password = "123",
-                AdminPermission = false
+                Password = "123"
             };
 
             Assert.Throws<AuthenticationException>(() => AuthenticationManager.RegisterUser(newUser));

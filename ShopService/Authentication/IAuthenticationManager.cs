@@ -1,4 +1,5 @@
 ﻿using DatabaseManager.Models;
+using ShopService.Models;
 
 namespace ShopService.Authentication
 {
@@ -6,6 +7,6 @@ namespace ShopService.Authentication
     {
         bool CheckUserCredentials(string login, string password);
         bool CheckAdminAccess(int userId);
-        void RegisterUser(User user);
+        void RegisterUser(IUserCreate user);
     }
 }

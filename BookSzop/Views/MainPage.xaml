@@ -23,9 +23,9 @@
 
         <Image Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"
                 Width="400" Height="400" Margin="20"
-                Source="..\Images\szop.png" Panel.ZIndex="5"/>
+                Source="..\Resources\szop.png" Panel.ZIndex="5"/>
 
-        <Button Grid.Column="0" Grid.Row="2" Width="200" Margin="20"
+        <Button Grid.Column="0" Grid.Row="2" MaxWidth="200" MaxHeight="40"
                 Name="continueBtn" Command="{Binding ContinueButtonCommand}"
                 Background="Pink" BorderBrush="Black" BorderThickness="1">
             Continue

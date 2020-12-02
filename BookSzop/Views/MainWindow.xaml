@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BookSzop"
         xmlns:nav="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
         mc:Ignorable="d"
-        Title="BookSzop - every szop szops here" Height="720" Width="1280">
+        Title="BookSzop - every szop szops here" Height="720" Width="1280" MinHeight="720" MinWidth="1280">
     
     <Grid>
         <nav:Frame Name="MainFrame" NavigationUIVisibility="Hidden" />

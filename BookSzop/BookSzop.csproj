@@ -7,17 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Images\*">
+    <Content Include="Resources\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ShopService\ShopService.csproj" />
+    <ProjectReference Include="..\UnitTests_MockDatabase\UnitTests_MockDatabase.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
+    <Resource Include="Resources\password.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   
 </Project>

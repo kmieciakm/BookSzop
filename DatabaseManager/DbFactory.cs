@@ -1,15 +1,22 @@
 ﻿using DatabaseManager.Repository.Contracts;
 using DatabaseManager.Repository.Database;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Text;
 
 namespace DatabaseManager
 {
-    public static class DbFactory
+    public class DbFactory
     {
         public static DbContextBase CreateSQLiteDb()
-            => new SQLiteDbContext();
+        {
+            var db = new SQLiteDbContext();
+            db.Database.EnsureCreated();
+            return db;
+        }
 
         public static IUserRepository CreateUserRepository(DbContextBase dbContext)
             => new UserRepository(dbContext);

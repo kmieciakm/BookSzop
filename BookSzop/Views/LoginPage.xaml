@@ -14,11 +14,30 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="8*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Grid.Row="0" Content="Login" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center">
+            <Label Margin="20" Content="Login" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <TextBox MaxWidth="250" Height="40" Margin="10"
+                    Text="{Binding Login}" TextAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
+            <TextBox MaxWidth="250" Height="40" Margin="10"
+                    Text="{Binding Password}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"
+                    FontFamily="..\Resources\#password"/>
+            <Button MaxWidth="200" Height="40" Margin="10"
+                    Name="continueBtn" Command="{Binding LoginCommand}"
+                    Background="Pink" BorderBrush="Black" BorderThickness="1">
+                Login
+            </Button>
+        </StackPanel>
 
-        <Label Grid.Column="1" Grid.Row="0" Content="Register" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center">
+            <Label Content="Register" FontSize="25" Margin="20" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        </StackPanel>
+
+        <Border Background="#474954" Grid.Row="1" Grid.ColumnSpan="2"/>
+        <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"
+               Content="{Binding Message}" Foreground="#fff" FontSize="20" />
     </Grid>
 </Page>
