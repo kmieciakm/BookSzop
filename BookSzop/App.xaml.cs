@@ -78,6 +78,8 @@ namespace BookSzop
             services.AddTransient<MainPage>();
 
             services.AddSingleton<MainWindow>();
+
+            services.AddTransient<INavigationHelper, NavigationHelper>();
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)

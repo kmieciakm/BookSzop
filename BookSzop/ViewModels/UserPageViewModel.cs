@@ -11,9 +11,12 @@ namespace BookSzop.ViewModels
 {
     public class UserPageViewModel : ViewModelBase
     {
-        public UserPageViewModel()
+        private INavigationHelper _navigation { get; }
+
+        public UserPageViewModel(INavigationHelper navigation)
         {
             SessionHelper.SessionChanged += UpdateLoggedInUserId;
+            _navigation = navigation;
         }
 
         #region Session
@@ -38,7 +41,7 @@ namespace BookSzop.ViewModels
         {
             get => new RelayCommand(param => {
                 SessionHelper.ClearSession();
-                NavigationHelper.NavigationService.GoBack();
+                _navigation.NavigateToLoginPage();
             });
         }
         #endregion
