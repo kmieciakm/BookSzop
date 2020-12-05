@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DatabaseManager\DatabaseManager.csproj" />
     <ProjectReference Include="..\UnitTests_MockDatabase\UnitTests_MockDatabase.csproj" />
   </ItemGroup>
 

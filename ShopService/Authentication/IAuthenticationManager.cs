@@ -1,11 +1,13 @@
 ﻿using DatabaseManager.Models;
+using ShopService.Models;
 
-namespace ShopService.Exceptions.Authentication
+namespace ShopService.Authentication
 {
     public interface IAuthenticationManager
     {
         bool CheckUserCredentials(string login, string password);
+        int? GetUserIdByLogin(string login);
         bool CheckAdminAccess(int userId);
-        void RegisterUser(User user);
+        void RegisterUser(IUserCreate user);
     }
 }

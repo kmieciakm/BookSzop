@@ -9,7 +9,7 @@ using System.Text;
 
 namespace ShopService.Purchase
 {
-    public class PurchaseService : IPurchaseService
+    class PurchaseService : IPurchaseService
     {
         private IEventsRepository _EventsRepository { get; }
         private IUserRepository _UserRepository { get; }
@@ -59,7 +59,7 @@ namespace ShopService.Purchase
                .ToList();
         }
 
-        public void MakePurchase(int userId, List<BookOrderCreate> booksToOrder)
+        public void MakePurchase(int userId, List<IBookOrderCreate> booksToOrder)
         {
             if (!_UserRepository.Exists(userId))
             {

@@ -1,8 +1,9 @@
-﻿using DatabaseManager.Repository.Contracts;
+﻿using DatabaseManager;
+using DatabaseManager.Repository.Contracts;
 using DatabaseManager.Repository.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using ShopService.Exceptions.Authentication;
+using ShopService.Authentication;
 using ShopService.Purchase;
 using ShopService.StoreManagement;
 using ShopService.UserServ;
@@ -18,8 +19,7 @@ namespace ShopService_UnitTests
         public void ConfigureServices(IServiceCollection services)
         {
             // Database access
-            services.AddScoped<DbContext>((serviceProvider) =>
-                new DbContextFactory().CreateMockDbContext());
+            services.AddScoped(serviceProvider => new MockDbFactory().CreateMockDbContext());
 
             services.AddTransient<IBookRepository, BookRepository>();
             services.AddTransient<IBookBundleRepositiory, BookBundleRepositiory>();

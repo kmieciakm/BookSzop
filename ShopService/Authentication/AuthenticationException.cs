@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace ShopService.Exceptions.Authentication
+namespace ShopService.Authentication
 {
     public class AuthenticationException : Exception
     {

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DatabaseManager.Migrations
 {
-    [DbContext(typeof(SQLiteDBContext))]
+    [DbContext(typeof(SQLiteDbContext))]
     [Migration("20201116174748_Added BookOrders table")]
     partial class AddedBookOrderstable
     {

@@ -1,4 +1,5 @@
-﻿using DatabaseManager.Repository.Contracts;
+﻿using DatabaseManager;
+using DatabaseManager.Repository.Contracts;
 using DatabaseManager.Repository.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -15,8 +16,7 @@ namespace DatabaseManager_UnitTests
         public void ConfigureServices(IServiceCollection services)
         {
             // Database access
-            services.AddScoped<DbContext>((serviceProvider) =>
-                new DbContextFactory().CreateMockDbContext());
+            services.AddScoped(serviceProvider => new MockDbFactory().CreateMockDbContext());
 
             services.AddTransient<IUserRepository, UserRepository>();
         }

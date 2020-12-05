@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DatabaseManager.Repository.Contracts
 {
-    public interface IBookOrdersRepository : IRepositoryBase<BookOrder>
+    public interface IBookOrderRepository : IRepositoryBase<BookOrder>
     {
     }
 }

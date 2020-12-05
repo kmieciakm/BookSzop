@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ShopService.StoreManagement
 {
-    public class StoreManagementService : IStoreManagementService
+    class StoreManagementService : IStoreManagementService
     {
         private IBookRepository _BookRepository { get; }
         private IBookBundleRepositiory _BookBundleRepository { get; }
