@@ -100,9 +100,23 @@ namespace ShopService.Purchase
             };
 
             var orderPlacedResult = _EventsRepository.Create(purchase);
-
             if (!orderPlacedResult)
             {
+                throw new PurchaseException($"Purchase unavailable, an unexpected error occurred.");
+            }
+
+            var bundles = new List<BookBundle>();
+            foreach (var bookToOrder in booksToOrder)
+            {
+                var bundle = _BookBundleRepository.FindById(bookToOrder.BookBundleId);
+                bundle.Quantity -= bookToOrder.Quantity;
+                bundles.Add(bundle);
+            }
+
+            var bundlesUpdateResult = _BookBundleRepository.UpdateBundles(bundles);
+            if (!bundlesUpdateResult)
+            {
+                _EventsRepository.Delete(purchase);
                 throw new PurchaseException($"Purchase unavailable, an unexpected error occurred.");
             }
         }
@@ -133,6 +147,22 @@ namespace ShopService.Purchase
 
             if (!refundPlacedResult)
             {
+                throw new PurchaseException($"Refund unavailable, an unexpected error occurred.");
+            }
+
+            var booksRefunded = purchase.OrderedBooks;
+            var bundles = new List<BookBundle>();
+            foreach (var bookOrder in booksRefunded)
+            {
+                var bundle = _BookBundleRepository.FindById(bookOrder.BookBundleId);
+                bundle.Quantity += bookOrder.Quantity;
+                bundles.Add(bundle);
+            }
+
+            var bundlesUpdateResult = _BookBundleRepository.UpdateBundles(bundles);
+            if (!bundlesUpdateResult)
+            {
+                _EventsRepository.Delete(refund);
                 throw new PurchaseException($"Refund unavailable, an unexpected error occurred.");
             }
         }
