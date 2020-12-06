@@ -52,7 +52,7 @@ namespace BookSzop
                     provider.GetRequiredService<IUserRepository>()
                 ));
             services.AddSingleton(provider => 
-                ServiceFactory.CreateAuthenticationManager(
+                ServiceFactory.CreateUserService(
                     provider.GetRequiredService<IUserRepository>()
                 ));
             services.AddSingleton(provider =>

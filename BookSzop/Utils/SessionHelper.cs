@@ -23,7 +23,7 @@ namespace BookSzop.Utils
 
         public static int? GetSessionUserId()
         {
-            return _UserId.GetValueOrDefault();
+            return _UserId;
         }
 
         public static void ClearSession()

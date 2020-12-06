@@ -6,5 +6,6 @@ namespace ShopService.UserServ
     public interface IUserService
     {
         List<Book> GetBooksOfUser(int id);
+        string GetUserName(int userId);
     }
 }

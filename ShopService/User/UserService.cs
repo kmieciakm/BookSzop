@@ -23,5 +23,10 @@ namespace ShopService.UserServ
             List<Book> ownedBooks = user.OwnedBooks;
             return ownedBooks;
         }
+
+        public string GetUserName(int userId)
+        {
+            return _UserRepository.FindById(userId).FullName;
+        }
     }
 }
