@@ -16,11 +16,13 @@ namespace BookSzop.ViewModels
     {
         private IAuthenticationManager _AuthenticationManager { get; }
         private UserPage _UserPage { get; }
+        private AdminPage _AdminPage { get; }
 
-        public LoginPageViewModel(IAuthenticationManager authenticationManager, UserPage userPage)
+        public LoginPageViewModel(IAuthenticationManager authenticationManager, UserPage userPage, AdminPage adminPage)
         {
             _AuthenticationManager = authenticationManager;
             _UserPage = userPage;
+            _AdminPage = adminPage;
             _loginModel = new LoginModel();
             _userCreateModel = new UserCreate();
         }
@@ -61,8 +63,16 @@ namespace BookSzop.ViewModels
                 var userId = _AuthenticationManager.GetUserIdByLogin(_loginModel.Login);
                 if (loginCorrect && userId.HasValue)
                 {
+                    var isAdmin = _AuthenticationManager.CheckAdminAccess(userId.Value);
                     SessionHelper.SaveUserSession(userId.Value);
-                    NavigationHelper.Navigate(_UserPage);
+                    if (isAdmin)
+                    {
+                        NavigationHelper.Navigate(_AdminPage);
+                    }
+                    else
+                    {
+                        NavigationHelper.Navigate(_UserPage);
+                    }
                 }
                 else
                 {

@@ -69,11 +69,15 @@ namespace BookSzop
 
             // View Models
             services.AddTransient<UserPageViewModel>();
+            services.AddTransient<AdminPageViewModel>();
+            services.AddTransient<PurchasePageViewModel>();
             services.AddTransient<LoginPageViewModel>();
             services.AddTransient<MainPageViewModel>();
 
             // Pages
             services.AddTransient<UserPage>();
+            services.AddTransient<AdminPage>();
+            services.AddTransient<PurchasePage>();
             services.AddTransient<LoginPage>();
             services.AddTransient<MainPage>();
 

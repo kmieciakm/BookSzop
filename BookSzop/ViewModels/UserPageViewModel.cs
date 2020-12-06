@@ -18,15 +18,17 @@ namespace BookSzop.ViewModels
     public class UserPageViewModel : ViewModelBase
     {
         private INavigationHelper _navigation { get; }
-        private IUserService _userService;
+        private IUserService _userService { get; }
+        private PurchasePage _purchasePage { get; }
 
         private UserModel _UserModel { get; }
 
-        public UserPageViewModel(INavigationHelper navigation, IUserService userService)
+        public UserPageViewModel(INavigationHelper navigation, IUserService userService, PurchasePage purchasePage)
         {
             SessionHelper.SessionChanged += UpdateUserData;
             _navigation = navigation;
             _userService = userService;
+            _purchasePage = purchasePage;
             _UserModel = new UserModel();
         }
       
@@ -41,6 +43,13 @@ namespace BookSzop.ViewModels
             {
                 SessionHelper.ClearSession();
                 _navigation.NavigateToLoginPage();
+            });
+        }
+        public ICommand PurchaseBooksCommand
+        {
+            get => new RelayCommand(param =>
+            {
+                NavigationHelper.Navigate(_purchasePage);
             });
         }
 

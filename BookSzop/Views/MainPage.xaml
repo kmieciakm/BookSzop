@@ -26,7 +26,7 @@
                 Width="400" Height="400" Margin="20"
                 Source="..\Resources\szop.png" Panel.ZIndex="5"/>
 
-        <Button Grid.Column="0" Grid.Row="2" MaxWidth="200" MaxHeight="40"
+        <Button Grid.Column="0" Grid.Row="2" MaxWidth="200" MaxHeight="40" Cursor="Hand"
                 Name="continueBtn" Command="{Binding ContinueButtonCommand}"
                 Background="White" BorderBrush="Black" BorderThickness="1">
             Continue
