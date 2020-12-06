@@ -27,6 +27,7 @@ namespace BookSzop.ViewModels
 
         #region Login
         private LoginModel _loginModel;
+
         public string Login {
             get => _loginModel.Login;
             set {
@@ -73,6 +74,7 @@ namespace BookSzop.ViewModels
 
         #region Register
         private IUserCreate _userCreateModel;
+
         public string Firstname
         {
             get => _userCreateModel.FirstName;

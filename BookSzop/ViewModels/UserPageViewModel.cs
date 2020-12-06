@@ -1,4 +1,5 @@
 ﻿using BookSzop.Commands;
+using BookSzop.Models;
 using BookSzop.Utils;
 using BookSzop.ViewModels.Base;
 using BookSzop.Views;
@@ -19,37 +20,21 @@ namespace BookSzop.ViewModels
         private INavigationHelper _navigation { get; }
         private IUserService _userService;
 
+        private UserModel _UserModel { get; }
+
         public UserPageViewModel(INavigationHelper navigation, IUserService userService)
         {
-            SessionHelper.SessionChanged += UpdateLoggedInUserData;
+            SessionHelper.SessionChanged += UpdateUserData;
             _navigation = navigation;
             _userService = userService;
+            _UserModel = new UserModel();
         }
-
-        #region Session
-        private string _welcomeMessage;
+      
         public string WelcomeMessage
         {
-            get => _welcomeMessage;
-            set
-            {
-                _welcomeMessage = value;
-                OnPropertyChanged(nameof(WelcomeMessage));
-            }
+            get => $"Welcome {_UserModel.Name}";
         }
-
-        private int? _UserId { get; set; } = null;
-        public void UpdateLoggedInUserData(object sender, EventArgs eventArgs)
-        {
-            _UserId = SessionHelper.GetSessionUserId();
-            if (_UserId.HasValue)
-            {
-                var userId = _UserId.Value;
-                _userService.GetBooksOfUser(userId)?.ForEach(b => _books.Add(b));
-                WelcomeMessage = "Welcome " + _userService.GetUserName(userId);
-            }
-        }
-
+        public ObservableCollection<Book> Books { get => _UserModel.Books; }
         public ICommand LogoutCommand
         {
             get => new RelayCommand(param =>
@@ -58,9 +43,22 @@ namespace BookSzop.ViewModels
                 _navigation.NavigateToLoginPage();
             });
         }
-        #endregion
 
-        private ObservableCollection<Book> _books { get; set; } = new ObservableCollection<Book>();
-        public ObservableCollection<Book> Books { get => _books; }
+        private void UpdateUserData(object sender, EventArgs eventArgs)
+        {
+            _UserModel.Id = SessionHelper.GetSessionUserId();
+            if (!_UserModel.Id.HasValue) return;
+
+            var userId = _UserModel.Id.Value;
+
+            // Update welcome message
+            _UserModel.Name = _userService.GetUserName(userId);
+            OnPropertyChanged(nameof(WelcomeMessage));
+
+            // Update welcome message
+            _userService
+                .GetBooksOfUser(userId)
+                ?.ForEach(book => _UserModel.Books.Add(book));
+        }
     }
 }
