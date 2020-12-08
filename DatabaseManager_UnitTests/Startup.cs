@@ -16,7 +16,7 @@ namespace DatabaseManager_UnitTests
         public void ConfigureServices(IServiceCollection services)
         {
             // Database access
-            services.AddScoped(serviceProvider => new MockDbFactory().CreateMockDbContext());
+            services.AddScoped(serviceProvider => new InMemoryDbFactory().CreateDbContext());
 
             services.AddTransient<IUserRepository, UserRepository>();
         }

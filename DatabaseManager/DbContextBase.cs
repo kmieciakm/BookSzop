@@ -25,5 +25,7 @@ namespace DatabaseManager
 
         public DbContextBase() : base() {}
         public DbContextBase(DbContextOptions options) : base(options) {}
+
+        public abstract void SeedData();
     }
 }

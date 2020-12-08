@@ -9,13 +9,13 @@ using System.Text;
 
 namespace UnitTests_MockDatabase
 {
-    class MockDbContext : DbContextBase
+    class InMemoryDbContext : DbContextBase
     {
-        public MockDbContext(DbContextOptions<MockDbContext> options) : base(options)
+        public InMemoryDbContext(DbContextOptions<InMemoryDbContext> options) : base(options)
         {
         }
 
-        public void SeedData()
+        public override void SeedData()
         {
             ClearDatabase();
             SeedBooks();

@@ -8,17 +8,17 @@ using System.Text;
 
 namespace UnitTests_MockDatabase
 {
-    public class MockDbFactory : IDisposable
+    public class InMemoryDbFactory : IDisposable
     {
         private DbConnection _connection;
 
-        private DbContextOptions<MockDbContext> CreateOptions()
+        private DbContextOptions<InMemoryDbContext> CreateOptions()
         {
-            return new DbContextOptionsBuilder<MockDbContext>()
+            return new DbContextOptionsBuilder<InMemoryDbContext>()
                 .UseSqlite(_connection).Options;
         }
 
-        public DbContextBase CreateMockDbContext()
+        public DbContextBase CreateDbContext()
         {
             if (_connection == null)
             {
@@ -26,14 +26,14 @@ namespace UnitTests_MockDatabase
                 _connection.Open();
 
                 var options = CreateOptions();
-                using (var context = new MockDbContext(options))
+                using (var context = new InMemoryDbContext(options))
                 {
                     context.Database.EnsureCreated();
                     context.SeedData();
                 }
             }
 
-            var dbContext = new MockDbContext(CreateOptions());
+            var dbContext = new InMemoryDbContext(CreateOptions());
             dbContext.SeedData();
             dbContext.SaveChanges();
             return dbContext;
