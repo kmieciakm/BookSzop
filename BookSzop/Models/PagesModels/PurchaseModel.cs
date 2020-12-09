@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
-namespace BookSzop.Models
+namespace BookSzop.Models.PagesModels
 {
     public class PurchaseModel
     {

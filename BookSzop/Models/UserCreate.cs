@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ShopService.Models.UserModel;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShopService.Models.UserModel
+namespace BookSzop.Models
 {
-    class UserCreate : IUserCreate
+    public class UserCreate : IUserCreate
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -20,12 +21,13 @@ namespace ShopService.Models.UserModel
                    FirstName == create.FirstName &&
                    LastName == create.LastName &&
                    Login == create.Login &&
-                   Password == create.Password;
+                   Password == create.Password &&
+                   ConfirmPassword == create.ConfirmPassword;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(FirstName, LastName, Login, Password);
+            return HashCode.Combine(FirstName, LastName, Login, Password, ConfirmPassword);
         }
     }
 }

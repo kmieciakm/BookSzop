@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 
-namespace BookSzop.Models
+namespace BookSzop.Models.PagesModels
 {
     public class UserModel
     {

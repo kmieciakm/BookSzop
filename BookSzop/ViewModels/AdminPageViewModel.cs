@@ -26,10 +26,10 @@ namespace BookSzop.ViewModels
             UpdateStoreData();
         }
 
-        public ObservableCollection<IBook> _Books { get; } = new ObservableCollection<IBook>();
+        private ObservableCollection<IBook> _Books { get; } = new ObservableCollection<IBook>();
         public ObservableCollection<IBook> Books { get => _Books; }
 
-        public ObservableCollection<IBookBundle> _BookBundles { get; } = new ObservableCollection<IBookBundle>();
+        private ObservableCollection<IBookBundle> _BookBundles { get; } = new ObservableCollection<IBookBundle>();
         public ObservableCollection<IBookBundle> BookBundles { get => _BookBundles; }
         public ICommand LogoutCommand
         {

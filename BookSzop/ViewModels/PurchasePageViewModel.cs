@@ -1,5 +1,6 @@
 ﻿using BookSzop.Commands;
 using BookSzop.Models;
+using BookSzop.Models.PagesModels;
 using BookSzop.Utils;
 using BookSzop.ViewModels.Base;
 using ShopService.Models.BookBundleModel;

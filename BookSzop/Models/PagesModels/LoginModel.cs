@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BookSzop.Models
+namespace BookSzop.Models.PagesModels
 {
     public class LoginModel
     {
