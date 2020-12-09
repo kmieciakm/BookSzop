@@ -2,8 +2,8 @@
 using BookSzop.Models;
 using BookSzop.Utils;
 using BookSzop.ViewModels.Base;
-using DatabaseManager.Models;
-using ShopService.Models;
+using ShopService.Models.BookBundleModel;
+using ShopService.Models.BookOrderModel;
 using ShopService.Purchase;
 using ShopService.StoreManagement;
 using System;
@@ -31,7 +31,7 @@ namespace BookSzop.ViewModels
             _purchaseModel = new PurchaseModel();
         }
 
-        public ObservableCollection<BookBundle> BookBundles { get => _purchaseModel.BookBundles; }
+        public ObservableCollection<IBookBundle> BookBundles { get => _purchaseModel.BookBundles; }
         public ObservableCollection<BasketElement> Basket { get => _purchaseModel.Basket; }
         public string TotalPrice
         {
@@ -168,7 +168,8 @@ namespace BookSzop.ViewModels
             // Update Book Bundles
             _storeManagementService
                 .GetAllBookBundles()
-                ?.ForEach(bundle => BookBundles.Add(bundle));
+                ?.ToList()
+                .ForEach(bundle => BookBundles.Add(bundle));
         }
         private void UpdateTotalPrice()
         {

@@ -1,6 +1,5 @@
-﻿using DatabaseManager.Models;
-using ShopService.Authentication;
-using ShopService.Models;
+﻿using ShopService.Authentication;
+using ShopService.Models.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Security.Authentication;

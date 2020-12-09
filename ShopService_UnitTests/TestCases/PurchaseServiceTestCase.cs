@@ -1,5 +1,4 @@
-﻿using DatabaseManager.Models;
-using ShopService.Models;
+﻿using ShopService.Models.BookOrderModel;
 using ShopService.Purchase;
 using System;
 using System.Collections.Generic;
@@ -22,7 +21,7 @@ namespace ShopService_UnitTests.TestCases
         [Fact]
         public void GetAllOrders()
         {
-            Assert.Equal(3, _PurchaseService.GetAllPurchases().Count);
+            Assert.Equal(3, _PurchaseService.GetAllPurchases().ToList().Count);
         }
 
         [Fact]
@@ -36,7 +35,7 @@ namespace ShopService_UnitTests.TestCases
         [Fact]
         public void GetUserPurchases_UserWithPlacedOrders()
         {
-            Assert.Equal(2, _PurchaseService.GetUserPurchases(2).Count);
+            Assert.Equal(2, _PurchaseService.GetUserPurchases(2).ToList().Count);
         }
 
         [Fact]

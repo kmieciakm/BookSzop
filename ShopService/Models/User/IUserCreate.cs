@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShopService.Models
+namespace ShopService.Models.UserModel
 {
     public interface IUserCreate
     {

@@ -1,5 +1,5 @@
-﻿using DatabaseManager.Models;
-using ShopService.Models;
+﻿using ShopService.Models.BookOrderModel;
+using ShopService.Models.EventModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,11 +8,11 @@ namespace ShopService.Purchase
 {
     public interface IPurchaseService
     {
-        void MakePurchase(int userId, List<IBookOrderCreate> booksToOrder);
+        void MakePurchase(int userId, IEnumerable<IBookOrderCreate> booksToOrder);
         void PlaceRefund(int userId, int eventId);
-        List<Event> GetAllPurchases();
-        List<Event> GetAllRefunds();
-        List<Event> GetUserPurchases(int userId);
-        List<Event> GetUserRefunds(int userId);
+        IEnumerable<IEvent> GetAllPurchases();
+        IEnumerable<IEvent> GetAllRefunds();
+        IEnumerable<IEvent> GetUserPurchases(int userId);
+        IEnumerable<IEvent> GetUserRefunds(int userId);
     }
 }

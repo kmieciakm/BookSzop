@@ -1,12 +1,13 @@
 ﻿using BookSzop.Commands;
 using BookSzop.Utils;
 using BookSzop.ViewModels.Base;
-using DatabaseManager.Models;
-using ShopService.Purchase;
+using ShopService.Models.BookBundleModel;
+using ShopService.Models.BookModel;
 using ShopService.StoreManagement;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
@@ -25,11 +26,11 @@ namespace BookSzop.ViewModels
             UpdateStoreData();
         }
 
-        public ObservableCollection<Book> _Books { get; } = new ObservableCollection<Book>();
-        public ObservableCollection<Book> Books { get => _Books; }
+        public ObservableCollection<IBook> _Books { get; } = new ObservableCollection<IBook>();
+        public ObservableCollection<IBook> Books { get => _Books; }
 
-        public ObservableCollection<BookBundle> _BookBundles { get; } = new ObservableCollection<BookBundle>();
-        public ObservableCollection<BookBundle> BookBundles { get => _BookBundles; }
+        public ObservableCollection<IBookBundle> _BookBundles { get; } = new ObservableCollection<IBookBundle>();
+        public ObservableCollection<IBookBundle> BookBundles { get => _BookBundles; }
         public ICommand LogoutCommand
         {
             get => new RelayCommand(param =>
@@ -46,10 +47,12 @@ namespace BookSzop.ViewModels
 
             _storeManagementService
                 .GetAllBooks()
-                ?.ForEach(book => Books.Add(book));
+                ?.ToList()
+                .ForEach(book => Books.Add(book));
             _storeManagementService
                 .GetAllBookBundles()
-                ?.ForEach(bundle => BookBundles.Add(bundle));
+                ?.ToList()
+                .ForEach(bundle => BookBundles.Add(bundle));
         }
     }
 }

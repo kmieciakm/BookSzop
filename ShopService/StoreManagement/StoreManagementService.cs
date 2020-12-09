@@ -1,5 +1,7 @@
-﻿using DatabaseManager.Models;
-using DatabaseManager.Repository.Contracts;
+﻿using DatabaseManager.Repository.Contracts;
+using ShopService.Models;
+using ShopService.Models.BookModel;
+using ShopService.Models.BookBundleModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,28 +20,36 @@ namespace ShopService.StoreManagement
             _BookBundleRepository = bookBundleRepositiory;
         }
 
-        public List<Book> GetAllBooks()
+        public IEnumerable<IBook> GetAllBooks()
         {
             return _BookRepository
                 .FindAll()
-                .ToList();
+                .Select(bookData => Mapper.DatabaseBookToServiceBook(bookData))
+                .ToList<IBook>();
         }
 
-        public List<BookBundle> GetAllBookBundles()
+        public IEnumerable<IBookBundle> GetAllBookBundles()
         {
             return _BookBundleRepository
                 .FindAll()
+                .Select(bundle => Mapper.DatabaseBookBundleToServiceBookBundle(bundle))
                 .ToList();
         }
 
-        public void RegisterBook(Book book)
+        public void RegisterBook(IBook book)
         {
             if (_BookRepository.Exists(book.Id))
             {
                 throw new StoreManagementException($"Unable to register {nameof(book)}, such {nameof(book.Id)} already exists");
             }
 
-            var registerBookResult = _BookRepository.Create(book);
+            var bookEntity = new DatabaseManager.Models.Book()
+            {
+                Title = book.Title,
+                Author = book.Author
+            };
+
+            var registerBookResult = _BookRepository.Create(bookEntity);
 
             if (!registerBookResult)
             {
@@ -64,14 +74,15 @@ namespace ShopService.StoreManagement
             }
         }
 
-        public void RegisterBookBundle(BookBundle bookBundle)
+        public void RegisterBookBundle(IBookBundle bookBundle)
         {
             if (_BookBundleRepository.Exists(bookBundle.Id))
             {
                 throw new StoreManagementException($"Unable to register {nameof(bookBundle)}, such {nameof(bookBundle.Id)} already exists");
             }
 
-            var registerBookBundleResult = _BookBundleRepository.Create(bookBundle);
+            var bookBundleEntity = Mapper.ServiceBookBundleToDatabaseBookBundle(bookBundle);
+            var registerBookBundleResult = _BookBundleRepository.Create(bookBundleEntity);
 
             if (!registerBookBundleResult)
             {

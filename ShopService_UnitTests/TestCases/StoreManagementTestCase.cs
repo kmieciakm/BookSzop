@@ -1,5 +1,5 @@
-﻿using DatabaseManager.Models;
-using ShopService.Models;
+﻿using ShopService.Models.BookBundleModel;
+using ShopService.Models.BookModel;
 using ShopService.StoreManagement;
 using System;
 using System.Collections.Generic;
@@ -24,13 +24,13 @@ namespace ShopService_UnitTests.TestCases
         [Fact, Priority(-2)]
         public void GetAllBooks()
         {
-            Assert.Equal(2, _StoreManagementService.GetAllBooks().Count);
+            Assert.Equal(2, _StoreManagementService.GetAllBooks().ToList().Count);
         }
 
         [Fact, Priority(-2)]
         public void GetAllBookBundles()
         {
-            Assert.Equal(2, _StoreManagementService.GetAllBookBundles().Count);
+            Assert.Equal(2, _StoreManagementService.GetAllBookBundles().ToList().Count);
         }
 
         [Fact, Priority(-1)]
@@ -43,7 +43,7 @@ namespace ShopService_UnitTests.TestCases
             };
             _StoreManagementService.RegisterBook(testBook);
         
-            Assert.Equal(3, _StoreManagementService.GetAllBooks().Count);
+            Assert.Equal(3, _StoreManagementService.GetAllBooks().ToList().Count);
         }
 
         [Fact]
@@ -58,13 +58,13 @@ namespace ShopService_UnitTests.TestCases
             _StoreManagementService.RegisterBook(testBook);
             _StoreManagementService.RemoveBook(3);
 
-            Assert.Equal(2, _StoreManagementService.GetAllBooks().Count);
+            Assert.Equal(2, _StoreManagementService.GetAllBooks().ToList().Count);
         }
 
         [Fact, Priority(-1)]
         public void RegisterBookBundle()
         {
-            var testBookBundle = new BookBundle()
+            IBookBundle testBookBundle = new BookBundle()
             {
                 BookId = 2,
                 Quantity = 15,
@@ -72,13 +72,13 @@ namespace ShopService_UnitTests.TestCases
             };
             _StoreManagementService.RegisterBookBundle(testBookBundle);
 
-            Assert.Equal(3, _StoreManagementService.GetAllBookBundles().Count);
+            Assert.Equal(3, _StoreManagementService.GetAllBookBundles().ToList().Count);
         }
 
         [Fact]
         public void RemoveBookBundle()
         {
-            var testBookBundle = new BookBundle()
+            IBookBundle testBookBundle = new BookBundle()
             {
                 BookId = 2,
                 Quantity = 15,
@@ -87,7 +87,7 @@ namespace ShopService_UnitTests.TestCases
             _StoreManagementService.RegisterBookBundle(testBookBundle);
             _StoreManagementService.RemoveBookBundle(3);
 
-            Assert.Equal(2, _StoreManagementService.GetAllBookBundles().Count);
+            Assert.Equal(2, _StoreManagementService.GetAllBookBundles().ToList().Count);
         }
     }
 }

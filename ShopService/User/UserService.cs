@@ -1,6 +1,6 @@
-﻿using DatabaseManager.Models;
-using DatabaseManager.Repository.Contracts;
-using ShopService.UserServ;
+﻿using DatabaseManager.Repository.Contracts;
+using ShopService.Models;
+using ShopService.Models.BookModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +17,13 @@ namespace ShopService.UserServ
             _UserRepository = userRepository;
         }
 
-        public List<Book> GetBooksOfUser(int id)
+        public IEnumerable<IBook> GetBooksOfUser(int id)
         {
             var user = _UserRepository.FindById(id);
 
-            List<Book> ownedBooks = user?.OwnedBooks;
-            return ownedBooks;
+            return user?.OwnedBooks
+                ?.Select(bookData => Mapper.DatabaseBookToServiceBook(bookData))
+                .ToList<IBook>();
         }
 
         public string GetUserName(int userId)
@@ -34,7 +35,7 @@ namespace ShopService.UserServ
         {
             var user = _UserRepository.FindById(userId);
 
-            List<BookOrder> orders = user.Purchases?
+            var orders = user.Purchases?
                     .Select(purchase => purchase.OrderedBooks)
                     .Except(
                         user.Refunds.Select(refund => refund.OrderedBooks))

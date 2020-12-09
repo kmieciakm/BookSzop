@@ -3,7 +3,6 @@ using BookSzop.Models;
 using BookSzop.Utils;
 using BookSzop.ViewModels.Base;
 using BookSzop.Views;
-using DatabaseManager.Models;
 using ShopService.UserServ;
 using System;
 using System.Collections.Generic;
@@ -77,14 +76,15 @@ namespace BookSzop.ViewModels
             _UserModel.Books.Clear();
             _userService
                 .GetBooksOfUser(userId)
-                ?.ForEach(book => _UserModel.Books.Add(
-                        new BookDetail()
-                        {
-                            Title = book.Title,
-                            Author = book.Author,
-                            Amount = _userService.GetOwnedBookAmount(userId, book.Id)
-                        }
-                    ));
+                ?.ToList()
+                .ForEach(book => _UserModel.Books.Add(
+                    new BookDetail()
+                    {
+                        Title = book.Title,
+                        Author = book.Author,
+                        Amount = _userService.GetOwnedBookAmount(userId, book.Id)
+                    }
+                ));
         }
     }
 }

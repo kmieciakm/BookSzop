@@ -1,6 +1,6 @@
 ﻿using DatabaseManager.Models;
 using DatabaseManager.Repository.Contracts;
-using ShopService.Models;
+using ShopService.Models.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;

@@ -2,6 +2,8 @@
 using DatabaseManager.Models.Enums;
 using DatabaseManager.Repository.Contracts;
 using ShopService.Models;
+using ShopService.Models.BookOrderModel;
+using ShopService.Models.EventModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,43 +25,47 @@ namespace ShopService.Purchase
             _BookBundleRepository = bookBundleRepositiory;
         }
 
-        public List<Event> GetAllPurchases()
+        public IEnumerable<IEvent> GetAllPurchases()
         {
             return _EventsRepository
                 .FindAll()
                 .Where(@event => @event.EventType == EventType.Purchase)
-                .ToList();
+                .Select(@event => Mapper.DatabaseEventToServiceEvent(@event))
+                .ToList<IEvent>();
         }
 
-        public List<Event> GetAllRefunds()
+        public IEnumerable<IEvent> GetAllRefunds()
         {
             return _EventsRepository
                 .FindAll()
                 .Where(@event => @event.EventType == EventType.Refund)
-                .ToList();
+                .Select(@event => Mapper.DatabaseEventToServiceEvent(@event))
+                .ToList<IEvent>();
         }
 
-        public List<Event> GetUserPurchases(int userId)
+        public IEnumerable<IEvent> GetUserPurchases(int userId)
         {
             return _EventsRepository
                .FindAll()
                .Where(@event =>
                     @event.EventType == EventType.Purchase &&
                     @event.UserId == userId)
-               .ToList();
+               .Select(@event => Mapper.DatabaseEventToServiceEvent(@event))
+               .ToList<IEvent>();
         }
 
-        public List<Event> GetUserRefunds(int userId)
+        public IEnumerable<IEvent> GetUserRefunds(int userId)
         {
             return _EventsRepository
                .FindAll()
                .Where(@event =>
                     @event.EventType == EventType.Refund &&
                     @event.UserId == userId)
-               .ToList();
+               .Select(@event => Mapper.DatabaseEventToServiceEvent(@event))
+               .ToList<IEvent>();
         }
 
-        public void MakePurchase(int userId, List<IBookOrderCreate> booksToOrder)
+        public void MakePurchase(int userId, IEnumerable<IBookOrderCreate> booksToOrder)
         {
             if (!_UserRepository.Exists(userId))
             {
@@ -91,7 +97,7 @@ namespace ShopService.Purchase
                 );
             }
 
-            Event purchase = new Event()
+            var purchase = new DatabaseManager.Models.Event()
             {
                 EventType = EventType.Purchase,
                 PlacedDate = DateTime.UtcNow,
@@ -129,13 +135,13 @@ namespace ShopService.Purchase
                 throw new PurchaseException($"Refund unavailable, wrong {nameof(userId)} {userId}");
             };
 
-            Event purchase = user.Purchases?.FirstOrDefault(order => order.Id == eventId);
+            var purchase = user.Purchases?.FirstOrDefault(order => order.Id == eventId);
             if (purchase == null)
             {
                 throw new PurchaseException($"Refund unavailable, user does not have order of id {eventId}");
             };
 
-            Event refund = new Event()
+            var refund = new DatabaseManager.Models.Event()
             {
                 EventType = EventType.Refund,
                 PlacedDate = DateTime.UtcNow,
