@@ -8,6 +8,7 @@ namespace BookSzop.Models
     {
         public int BookBundleId { get; set; }
         public string BookTitle { get; set; }
+        public double Price { get; set; }
         public int Quantity { get; set; } = 1;
 
         public void Increase() {

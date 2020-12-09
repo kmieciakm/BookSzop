@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace BookSzop.ViewModels
@@ -20,19 +21,36 @@ namespace BookSzop.ViewModels
         private IPurchaseService _purchaseService { get; }
         private IStoreManagementService _storeManagementService { get; }
 
+        private PurchaseModel _purchaseModel { get; }
+
         public PurchasePageViewModel(IPurchaseService purchaseService, IStoreManagementService storeManagementService)
         {
             SessionHelper.SessionChanged += UpdateBasketData;
             _purchaseService = purchaseService;
             _storeManagementService = storeManagementService;
+            _purchaseModel = new PurchaseModel();
         }
 
-        private int? _Id;
-        private ObservableCollection<BookBundle> _BookBundles { get; } = new ObservableCollection<BookBundle>();
-        private ObservableCollection<BasketElement> _Basket { get; } = new ObservableCollection<BasketElement>();
-
-        public ObservableCollection<BookBundle> BookBundles { get => _BookBundles; }
-        public ObservableCollection<BasketElement> Basket { get => _Basket; }
+        public ObservableCollection<BookBundle> BookBundles { get => _purchaseModel.BookBundles; }
+        public ObservableCollection<BasketElement> Basket { get => _purchaseModel.Basket; }
+        public string TotalPrice
+        {
+            get => _purchaseModel.TotalPrice;
+            set
+            {
+                _purchaseModel.TotalPrice = value;
+                OnPropertyChanged(nameof(TotalPrice));
+            }
+        }
+        public string Message
+        {
+            get => _purchaseModel.ErrorMessage;
+            set
+            {
+                _purchaseModel.ErrorMessage = value;
+                OnPropertyChanged(nameof(Message));
+            }
+        }
         public ICommand BackCommand
         {
             get => new RelayCommand(param =>
@@ -46,7 +64,7 @@ namespace BookSzop.ViewModels
             get => new RelayCommand(param =>
             {
                 var booksToOrder = new List<IBookOrderCreate>();
-                foreach (var element in _Basket)
+                foreach (var element in Basket)
                 {
                     booksToOrder.Add(
                         new BookOrderCreate()
@@ -59,26 +77,39 @@ namespace BookSzop.ViewModels
 
                 if (booksToOrder.Count > 0)
                 {
-                    _purchaseService.MakePurchase(_Id.Value, booksToOrder);
+                    try
+                    {
+                        _purchaseService.MakePurchase(_purchaseModel.BuyerId.Value, booksToOrder);
+                        SessionHelper.RefreshSession();
+                        NavigationHelper.NavigationService.GoBack();
+                    }
+                    catch (PurchaseException purchaseExc)
+                    {
+                        Message = $"{purchaseExc.Message}";
+                    }
                 }
-
-                SessionHelper.RefreshSession();
-                NavigationHelper.NavigationService.GoBack();
             });
         }
         public ICommand AddToCardCommand
         {
             get => new RelayCommand(id =>
             {
-                if (!_Basket.Any(element => element.BookBundleId == (int)id))
+                // if there is no item in the basket yet, add it
+                if (!Basket.Any(element => element.BookBundleId == (int)id))
                 {
-                    _Basket.Add(
-                        new BasketElement()
-                        {
-                            BookBundleId = (int)id,
-                            BookTitle = _BookBundles.First(bundle => bundle.Id == (int)id).Book.Title
-                        }
-                    );
+                    var bundle = BookBundles.FirstOrDefault(bundle => bundle.Id == (int)id);
+                    if (bundle != null)
+                    {
+                        Basket.Add(
+                            new BasketElement()
+                            {
+                                BookBundleId = (int)id,
+                                Price = bundle.Price,
+                                BookTitle = bundle?.Book.Title
+                            }
+                        );
+                        UpdateTotalPrice();
+                    }
                 }
             });
         }
@@ -86,10 +117,11 @@ namespace BookSzop.ViewModels
         {
             get => new RelayCommand(id =>
             {
-                var elementToDelete = _Basket.FirstOrDefault(element => element.BookBundleId == (int)id);
+                var elementToDelete = Basket.FirstOrDefault(element => element.BookBundleId == (int)id);
                 if (elementToDelete != null)
                 {
-                    _Basket.Remove(elementToDelete);
+                    Basket.Remove(elementToDelete);
+                    UpdateTotalPrice();
                 }
             });
         }
@@ -97,34 +129,50 @@ namespace BookSzop.ViewModels
         {
             get => new RelayCommand(id =>
             {
-                // BUG - NOT REFLECTED IN VIEW 
-                _Basket.FirstOrDefault(element => element.BookBundleId == (int)id).Increase();
+                var element = Basket.FirstOrDefault(element => element.BookBundleId == (int)id);
+                if (element != null)
+                {
+                    Basket.Remove(element);
+                    element.Increase();
+                    Basket.Add(element);
+                    UpdateTotalPrice();
+                }
             });
         }
         public ICommand DecrementCommand
         {
             get => new RelayCommand(id =>
             {
-                // BUG - NOT REFLECTED IN VIEW 
-                _Basket.FirstOrDefault(element => element.BookBundleId == (int)id)?.Decrease();
+                var element = Basket.FirstOrDefault(element => element.BookBundleId == (int)id);
+                if (element != null)
+                {
+                    Basket.Remove(element);
+                    element.Decrease();
+                    Basket.Add(element);
+                    UpdateTotalPrice();
+                }
             });
         }
 
         private void UpdateBasketData(object sender, EventArgs e)
         {
-            _Id = SessionHelper.GetSessionUserId();
-            if (!_Id.HasValue) return;
+            _purchaseModel.BuyerId = SessionHelper.GetSessionUserId();
+            if (!_purchaseModel.BuyerId.HasValue) return;
 
-            var userId = _Id.Value;
-
-            // Clear Collections
-            _Basket.Clear();
-            _BookBundles.Clear();
+            // Clear View
+            Message = string.Empty;
+            TotalPrice = string.Empty;
+            Basket.Clear();
+            BookBundles.Clear();
 
             // Update Book Bundles
             _storeManagementService
                 .GetAllBookBundles()
-                ?.ForEach(bundle => _BookBundles.Add(bundle));
+                ?.ForEach(bundle => BookBundles.Add(bundle));
+        }
+        private void UpdateTotalPrice()
+        {
+            TotalPrice = $"Total: {_purchaseModel.CalculateTotalPrice()}$";
         }
     }
 }
