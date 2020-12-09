@@ -32,9 +32,8 @@
         <Button Grid.Column="0" Height="40" Margin="0" Padding="20,0,20,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                     Command="{Binding BackCommand}" BorderThickness="0" Cursor="Hand"
                     Background="White" Foreground="Black">
-             Back
+            Back
         </Button>
-
         <Label Grid.Column="1" Grid.Row="0" Foreground="White" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"
                Content="{Binding Message}">
         </Label>
