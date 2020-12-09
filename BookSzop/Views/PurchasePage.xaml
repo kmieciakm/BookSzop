@@ -94,7 +94,7 @@
             </ListView.ItemContainerStyle>
         </ListView>
 
-        <ListView Name="BusketListBox" ItemsSource="{Binding Busket, Mode=OneWay}" Margin="10" Grid.Row="1" Grid.Column="1">
+        <ListView Name="BasketListBox" ItemsSource="{Binding Basket, Mode=OneWay}" Margin="10" Grid.Row="1" Grid.Column="1">
             <ListView.View>
                 <GridView>
                     <GridView.ColumnHeaderContainerStyle>
@@ -154,7 +154,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Width="30"
-                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.DeleteFromBusketCommand}"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.DeleteFromBasketCommand}"
                                         CommandParameter="{Binding BookBundleId}"
                                         BorderThickness="0" Cursor="Hand" Background="Black" Foreground="White"
                                         Focusable="True" IsHitTestVisible="True">

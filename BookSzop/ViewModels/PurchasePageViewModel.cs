@@ -29,10 +29,10 @@ namespace BookSzop.ViewModels
 
         private int? _Id;
         private ObservableCollection<BookBundle> _BookBundles { get; } = new ObservableCollection<BookBundle>();
-        private ObservableCollection<BusketElement> _Busket { get; } = new ObservableCollection<BusketElement>();
+        private ObservableCollection<BasketElement> _Basket { get; } = new ObservableCollection<BasketElement>();
 
         public ObservableCollection<BookBundle> BookBundles { get => _BookBundles; }
-        public ObservableCollection<BusketElement> Busket { get => _Busket; }
+        public ObservableCollection<BasketElement> Basket { get => _Basket; }
         public ICommand BackCommand
         {
             get => new RelayCommand(param =>
@@ -46,7 +46,7 @@ namespace BookSzop.ViewModels
             get => new RelayCommand(param =>
             {
                 var booksToOrder = new List<IBookOrderCreate>();
-                foreach (var element in _Busket)
+                foreach (var element in _Basket)
                 {
                     booksToOrder.Add(
                         new BookOrderCreate()
@@ -70,10 +70,10 @@ namespace BookSzop.ViewModels
         {
             get => new RelayCommand(id =>
             {
-                if (!_Busket.Any(element => element.BookBundleId == (int)id))
+                if (!_Basket.Any(element => element.BookBundleId == (int)id))
                 {
-                    _Busket.Add(
-                        new BusketElement()
+                    _Basket.Add(
+                        new BasketElement()
                         {
                             BookBundleId = (int)id,
                             BookTitle = _BookBundles.First(bundle => bundle.Id == (int)id).Book.Title
@@ -82,14 +82,14 @@ namespace BookSzop.ViewModels
                 }
             });
         }
-        public ICommand DeleteFromBusketCommand
+        public ICommand DeleteFromBasketCommand
         {
             get => new RelayCommand(id =>
             {
-                var elementToDelete = _Busket.FirstOrDefault(element => element.BookBundleId == (int)id);
+                var elementToDelete = _Basket.FirstOrDefault(element => element.BookBundleId == (int)id);
                 if (elementToDelete != null)
                 {
-                    _Busket.Remove(elementToDelete);
+                    _Basket.Remove(elementToDelete);
                 }
             });
         }
@@ -98,7 +98,7 @@ namespace BookSzop.ViewModels
             get => new RelayCommand(id =>
             {
                 // BUG - NOT REFLECTED IN VIEW 
-                _Busket.FirstOrDefault(element => element.BookBundleId == (int)id).Increase();
+                _Basket.FirstOrDefault(element => element.BookBundleId == (int)id).Increase();
             });
         }
         public ICommand DecrementCommand
@@ -106,7 +106,7 @@ namespace BookSzop.ViewModels
             get => new RelayCommand(id =>
             {
                 // BUG - NOT REFLECTED IN VIEW 
-                _Busket.FirstOrDefault(element => element.BookBundleId == (int)id)?.Decrease();
+                _Basket.FirstOrDefault(element => element.BookBundleId == (int)id)?.Decrease();
             });
         }
 
@@ -118,7 +118,7 @@ namespace BookSzop.ViewModels
             var userId = _Id.Value;
 
             // Clear Collections
-            _Busket.Clear();
+            _Basket.Clear();
             _BookBundles.Clear();
 
             // Update Book Bundles

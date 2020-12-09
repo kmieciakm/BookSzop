@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BookSzop.Models
 {
-    public class BusketElement
+    public class BasketElement
     {
         public int BookBundleId { get; set; }
         public string BookTitle { get; set; }
