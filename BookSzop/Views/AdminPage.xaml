@@ -84,6 +84,8 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Grid.Column="1" Padding="10,5,10,5" Margin="5"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.DeleteBookCommand}"
+                                        CommandParameter="{Binding Id}"
                                         BorderThickness="0" Cursor="Hand" Background="Black" Foreground="White" Focusable="True" IsHitTestVisible="True">
                                     Remove
                                 </Button>
@@ -162,6 +164,8 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Grid.Column="1" Padding="10,5,10,5" Margin="5"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.DeleteBookBundleCommand}"
+                                        CommandParameter="{Binding Id}"
                                         BorderThickness="0" Cursor="Hand" Background="Black" Foreground="White" Focusable="True" IsHitTestVisible="True">
                                     Remove
                                 </Button>

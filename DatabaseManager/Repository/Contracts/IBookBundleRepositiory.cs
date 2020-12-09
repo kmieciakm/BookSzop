@@ -7,6 +7,7 @@ namespace DatabaseManager.Repository.Contracts
 {
     public interface IBookBundleRepositiory : IRepositoryBase<BookBundle>
     {
-        public bool UpdateBundles(List<BookBundle> bundles);
+        bool UpdateBundles(List<BookBundle> bundles);
+        bool SoftDelete(BookBundle bookBundleToDelete);
     }
 }

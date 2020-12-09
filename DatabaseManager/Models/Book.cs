@@ -14,6 +14,7 @@ namespace DatabaseManager.Models
         public string Title { get; set; }
         [MaxLength(128)]
         public string Author { get; set; }
+        public bool IsAvailable { get; set; } = true;
 
         public ICollection<BookBundle> BookBundles { get; set; }
 

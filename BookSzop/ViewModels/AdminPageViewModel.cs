@@ -27,9 +27,9 @@ namespace BookSzop.ViewModels
         }
 
         private ObservableCollection<IBook> _Books { get; } = new ObservableCollection<IBook>();
-        public ObservableCollection<IBook> Books { get => _Books; }
-
         private ObservableCollection<IBookBundle> _BookBundles { get; } = new ObservableCollection<IBookBundle>();
+
+        public ObservableCollection<IBook> Books { get => _Books; }
         public ObservableCollection<IBookBundle> BookBundles { get => _BookBundles; }
         public ICommand LogoutCommand
         {
@@ -37,6 +37,43 @@ namespace BookSzop.ViewModels
             {
                 SessionHelper.ClearSession();
                 _navigation.NavigateToLoginPage();
+            });
+        }
+        public ICommand DeleteBookCommand
+        {
+            get => new RelayCommand(bookId =>
+            {
+                try
+                {
+                    _storeManagementService.RemoveBook((int)bookId);
+                    // Remove from view when database delete opertation succedeed
+                    var bookToRemove = Books.FirstOrDefault(book => book.Id == (int)bookId);
+                    Books.Remove(bookToRemove);
+                    var bundleWithRemovedBook = BookBundles.Where(bundle => bundle.BookId == (int)bookId).ToList();
+                    bundleWithRemovedBook.ForEach(bundle => BookBundles.Remove(bundle));
+                }
+                catch (StoreManagementException storeExc)
+                {
+                    
+                }
+            });
+        }
+        public ICommand DeleteBookBundleCommand
+        {
+            get => new RelayCommand(bundleId =>
+            {
+                
+                try
+                {
+                    _storeManagementService.RemoveBookBundle((int)bundleId);
+                    // Remove from view when database delete opertation succedeed
+                    var bundleToRemove = BookBundles.FirstOrDefault(bundle => bundle.Id == (int)bundleId);
+                    BookBundles.Remove(bundleToRemove);
+                }
+                catch (StoreManagementException storeExc)
+                {
+
+                }
             });
         }
 

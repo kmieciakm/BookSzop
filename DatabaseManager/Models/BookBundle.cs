@@ -16,6 +16,7 @@ namespace DatabaseManager.Models
         public int Quantity { get; set; }
         [Range(0, 10000)]
         public double Price { get; set; }
+        public bool IsAvailable { get; set; } = true;
 
         public override bool Equals(object obj)
         {

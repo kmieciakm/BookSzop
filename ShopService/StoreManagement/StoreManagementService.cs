@@ -24,6 +24,7 @@ namespace ShopService.StoreManagement
         {
             return _BookRepository
                 .FindAll()
+                .Where(book => book.IsAvailable)
                 .Select(bookData => Mapper.DatabaseBookToServiceBook(bookData))
                 .ToList<IBook>();
         }
@@ -32,6 +33,7 @@ namespace ShopService.StoreManagement
         {
             return _BookBundleRepository
                 .FindAll()
+                .Where(bundle => bundle.IsAvailable)
                 .Select(bundle => Mapper.DatabaseBookBundleToServiceBookBundle(bundle))
                 .ToList();
         }
@@ -67,7 +69,16 @@ namespace ShopService.StoreManagement
                 throw new StoreManagementException($"Unable to remove {nameof(bookToDelete)}, such {nameof(bookToDelete.Id)} doesn't exists");
             }
 
-            var deletedBook = _BookRepository.Delete(bookToDelete);
+            var deletedBook = _BookRepository.SoftDelete(bookToDelete);
+
+            // Delete all bundles that contains this book
+            var bundlesToDelete = _BookBundleRepository
+                .FindAll()
+                .Where(bundle => bundle.BookId == bookId && bundle.IsAvailable)
+                .ToList();
+
+            bundlesToDelete.ForEach(bundle => _BookBundleRepository.SoftDelete(bundle));
+
             if (!deletedBook)
             {
                 throw new StoreManagementException($"{nameof(bookToDelete)} impossible to delete, unknown error occurred");
@@ -100,7 +111,7 @@ namespace ShopService.StoreManagement
                 throw new StoreManagementException($"Unable to remove {nameof(bookBundleToDelete)}, such {nameof(bookBundleToDelete.Id)} doesn't exists");
             }
 
-            var deletedBookBundle = _BookBundleRepository.Delete(bookBundleToDelete);
+            var deletedBookBundle = _BookBundleRepository.SoftDelete(bookBundleToDelete);
 
             if (!deletedBookBundle)
             {

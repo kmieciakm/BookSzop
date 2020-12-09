@@ -12,5 +12,12 @@ namespace DatabaseManager.Repository.Database
         public BookRepository(DbContextBase dbContext) : base(dbContext)
         {
         }
+
+        public bool SoftDelete(Book bookToDelete)
+        {
+            bookToDelete.IsAvailable = false;
+            _DbContext.Set<Book>().Update(bookToDelete);
+            return Save();
+        }
     }
 }
