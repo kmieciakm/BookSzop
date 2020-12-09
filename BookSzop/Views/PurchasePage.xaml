@@ -187,7 +187,6 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-
         <Label Grid.Column="1" Grid.Row="3" Foreground="White" FontSize="18" Margin="10,0,10,0" VerticalAlignment="Center" Content="{Binding TotalPrice}"></Label>
         <Button Grid.Column="1" Grid.Row="3" Height="40" Width="200" Margin="10,0,10,0" Padding="20,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center"
                     Command="{Binding PurchaseCommand}" BorderThickness="0" Cursor="Hand"
