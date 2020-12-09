@@ -10,6 +10,6 @@ namespace BookSzop.Models
     {
         public int? Id { get; set; } = null;
         public string Name { get; set; }
-        public ObservableCollection<Book> Books { get; set; } = new ObservableCollection<Book>();
+        public ObservableCollection<BookDetail> Books { get; set; } = new ObservableCollection<BookDetail>();
     }
 }

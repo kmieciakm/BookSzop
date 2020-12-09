@@ -54,6 +54,7 @@ namespace DatabaseManager.Models
                         Refunds.Select(refund => refund.OrderedBooks))
                     .SelectMany(orders => orders)
                     .Select(order => order.BookBundle.Book)
+                    .Distinct()
                     .ToList();
             }
         }

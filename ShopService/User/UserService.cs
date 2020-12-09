@@ -3,6 +3,7 @@ using DatabaseManager.Repository.Contracts;
 using ShopService.UserServ;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ShopService.UserServ
@@ -20,13 +21,26 @@ namespace ShopService.UserServ
         {
             var user = _UserRepository.FindById(id);
 
-            List<Book> ownedBooks = user.OwnedBooks;
+            List<Book> ownedBooks = user?.OwnedBooks;
             return ownedBooks;
         }
 
         public string GetUserName(int userId)
         {
             return _UserRepository.FindById(userId).FullName;
+        }
+
+        public int GetOwnedBookAmount(int userId, int bookId)
+        {
+            var user = _UserRepository.FindById(userId);
+
+            List<BookOrder> orders = user.Purchases?
+                    .Select(purchase => purchase.OrderedBooks)
+                    .Except(
+                        user.Refunds.Select(refund => refund.OrderedBooks))
+                    .SelectMany(orders => orders).ToList();
+
+            return orders.Where(order => order.BookBundle.BookId == bookId).Sum(order => order.Quantity);
         }
     }
 }

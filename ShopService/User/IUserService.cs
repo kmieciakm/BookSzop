@@ -7,5 +7,6 @@ namespace ShopService.UserServ
     {
         List<Book> GetBooksOfUser(int id);
         string GetUserName(int userId);
+        int GetOwnedBookAmount(int userId, int bookId);
     }
 }

@@ -39,6 +39,7 @@ namespace BookSzop
             services.AddSingleton(provider => ServiceFactory.CreateStoreManagementService());
 
             // View Models
+            services.AddTransient<TransactionPageViewModel>();
             services.AddTransient<UserPageViewModel>();
             services.AddTransient<AdminPageViewModel>();
             services.AddTransient<PurchasePageViewModel>();
@@ -46,6 +47,7 @@ namespace BookSzop
             services.AddTransient<MainPageViewModel>();
 
             // Pages
+            services.AddTransient<TransactionPage>();
             services.AddTransient<UserPage>();
             services.AddTransient<AdminPage>();
             services.AddTransient<PurchasePage>();

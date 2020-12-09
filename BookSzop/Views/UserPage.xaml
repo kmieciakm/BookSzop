@@ -33,13 +33,13 @@
                 Purchase books
             </Button>
             <Button Width="200" Height="30" Margin="10" Cursor="Hand"
-                        Command="{Binding MyOrdersCommand}"
+                        Command="{Binding TransactionsCommand}"
                         Background="White" BorderBrush="Black" BorderThickness="0">
-                My orders
+                My transactions
             </Button>
         </StackPanel>
 
-        <ListBox Name="BooksListBox" Margin="10" Grid.Row="1" ItemsSource="{Binding Books}" SelectionMode="Single">
+        <ListBox Name="BooksListBox" Margin="10" Grid.Row="1" ItemsSource="{Binding Books, Mode=OneWay}" SelectionMode="Single">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -55,6 +55,8 @@
                 <TextBlock FontSize="18" FontWeight="Bold" Foreground="Black" Text="{Binding Path=SelectedItem.Title, Mode=OneWay, ElementName=BooksListBox}" />
                 <Label Content="Author: " Foreground="Black" FontSize="18"/>
                 <TextBlock FontSize="18" FontWeight="Bold" Foreground="Black" Text="{Binding Path=SelectedItem.Author, Mode=OneWay, ElementName=BooksListBox}" />
+                <Label Content="Owned copies: " Foreground="Black" FontSize="18"/>
+                <TextBlock FontSize="18" FontWeight="Bold" Foreground="Black" Text="{Binding Path=SelectedItem.Amount, Mode=OneWay, ElementName=BooksListBox}" />
             </StackPanel>
         </Border>
     </Grid>

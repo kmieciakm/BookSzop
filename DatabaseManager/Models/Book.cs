@@ -22,7 +22,7 @@ namespace DatabaseManager.Models
             return obj is Book book &&
                    Title == book.Title &&
                    Author == book.Author &&
-                   BookBundles.SequenceEqual(book.BookBundles);
+                   EqualityComparer<ICollection<BookBundle>>.Default.Equals(BookBundles, book.BookBundles);
         }
 
         public override int GetHashCode()

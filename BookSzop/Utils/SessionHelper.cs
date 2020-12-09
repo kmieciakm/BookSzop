@@ -31,5 +31,10 @@ namespace BookSzop.Utils
             _UserId = null;
             OnSessionChanged();
         }
+
+        public static void RefreshSession()
+        {
+            OnSessionChanged();
+        }
     }
 }

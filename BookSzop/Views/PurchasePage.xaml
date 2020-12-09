@@ -11,12 +11,13 @@
 
     <Grid  Margin="0,0,0,10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10*"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
         <Button Grid.Column="0" Height="40" Margin="0" Padding="20,0,20,0" HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -25,7 +26,7 @@
              Back
         </Button>
 
-        <ListView Name="BooksBundlesListBox" ItemsSource="{Binding BookBundles}" Margin="10" Grid.Row="1">
+        <ListView Name="BooksBundlesListBox" ItemsSource="{Binding BookBundles}" Margin="10,10,10,0" Grid.Row="1" Grid.RowSpan="2">
             <ListView.View>
                 <GridView> 
                     <GridView.ColumnHeaderContainerStyle>
@@ -41,7 +42,7 @@
                             </Setter>
                         </Style>
                     </GridView.ColumnHeaderContainerStyle>
-                    <GridViewColumn Header="Title" Width="200">
+                    <GridViewColumn Header="Title" Width="220">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Book.Title}"/>
@@ -55,27 +56,27 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Price" Width="100">
+                    <GridViewColumn Header="Price" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Price}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Quantity left" Width="100">
+                    <GridViewColumn Header="Quantity" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Quantity}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Width="200">
+                    <GridViewColumn Width="150">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Grid.Column="1" Padding="20,5,20,5" Margin="5"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.AddToCardCommand}"
-                                        BorderThickness="0" Cursor="Hand"
-                                        Background="Black" Foreground="White" Focusable="True" IsHitTestVisible="True">
+                                        CommandParameter="{Binding Id}"
+                                        BorderThickness="0" Cursor="Hand" Background="Black" Foreground="White" Focusable="True" IsHitTestVisible="True">
                                     Add to card
                                 </Button>
                             </DataTemplate>
@@ -92,5 +93,93 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
+
+        <ListView Name="BusketListBox" ItemsSource="{Binding Busket, Mode=OneWay}" Margin="10" Grid.Row="1" Grid.Column="1">
+            <ListView.View>
+                <GridView>
+                    <GridView.ColumnHeaderContainerStyle>
+                        <Style TargetType="GridViewColumnHeader">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="GridViewColumnHeader">
+                                        <Border BorderBrush="Gray" BorderThickness="0 0 0 2" Padding="0 5 25 5">
+                                            <TextBox Text="{TemplateBinding Content}" BorderThickness="0" Focusable="False"></TextBox>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GridView.ColumnHeaderContainerStyle>
+                    <GridViewColumn Header="Book" Width="220">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding BookTitle, Mode=OneWay}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Quantity" Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Quantity, Mode=OneWay}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="40">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Width="30"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.IncrementCommand}"
+                                        CommandParameter="{Binding BookBundleId}"
+                                        BorderThickness="0" Cursor="Hand" Background="Black" Foreground="White"
+                                        Focusable="True" IsHitTestVisible="True">
+                                    +
+                                </Button>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="40">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Width="30"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.DecrementCommand}"
+                                        CommandParameter="{Binding BookBundleId}"
+                                        BorderThickness="0" Cursor="Hand" Background="Black" Foreground="White"
+                                        Focusable="True" IsHitTestVisible="True">
+                                    -
+                                </Button>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="40">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Width="30"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.DeleteFromBusketCommand}"
+                                        CommandParameter="{Binding BookBundleId}"
+                                        BorderThickness="0" Cursor="Hand" Background="Black" Foreground="White"
+                                        Focusable="True" IsHitTestVisible="True">
+                                    X
+                                </Button>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Focusable" Value="False" />
+                    <Setter Property="FontSize" Value="15" />
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="IsSelected" Value="False" />
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+
+        <Button Grid.Column="1" Grid.Row="3" Height="40" Width="250" Margin="0" Padding="20,0,20,0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Command="{Binding PurchaseCommand}" BorderThickness="0" Cursor="Hand"
+                    Background="White" Foreground="Black">
+            Purchase
+        </Button>
+
     </Grid>
 </Page>

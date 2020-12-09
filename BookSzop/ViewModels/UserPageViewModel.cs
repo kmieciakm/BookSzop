@@ -20,23 +20,25 @@ namespace BookSzop.ViewModels
         private INavigationHelper _navigation { get; }
         private IUserService _userService { get; }
         private PurchasePage _purchasePage { get; }
+        private TransactionPage _transactionPage { get; }
 
         private UserModel _UserModel { get; }
 
-        public UserPageViewModel(INavigationHelper navigation, IUserService userService, PurchasePage purchasePage)
+        public UserPageViewModel(INavigationHelper navigation, IUserService userService, PurchasePage purchasePage, TransactionPage transactionPage)
         {
             SessionHelper.SessionChanged += UpdateUserData;
             _navigation = navigation;
             _userService = userService;
             _purchasePage = purchasePage;
+            _transactionPage = transactionPage;
             _UserModel = new UserModel();
         }
-      
+
         public string WelcomeMessage
         {
             get => $"Welcome {_UserModel.Name}";
         }
-        public ObservableCollection<Book> Books { get => _UserModel.Books; }
+        public ObservableCollection<BookDetail> Books { get => _UserModel.Books; }
         public ICommand LogoutCommand
         {
             get => new RelayCommand(param =>
@@ -52,6 +54,13 @@ namespace BookSzop.ViewModels
                 NavigationHelper.Navigate(_purchasePage);
             });
         }
+        public ICommand TransactionsCommand
+        {
+            get => new RelayCommand(param =>
+            {
+                NavigationHelper.Navigate(_transactionPage);
+            });
+        }
 
         private void UpdateUserData(object sender, EventArgs eventArgs)
         {
@@ -64,10 +73,18 @@ namespace BookSzop.ViewModels
             _UserModel.Name = _userService.GetUserName(userId);
             OnPropertyChanged(nameof(WelcomeMessage));
 
-            // Update welcome message
+            // Update books collection
+            _UserModel.Books.Clear();
             _userService
                 .GetBooksOfUser(userId)
-                ?.ForEach(book => _UserModel.Books.Add(book));
+                ?.ForEach(book => _UserModel.Books.Add(
+                        new BookDetail()
+                        {
+                            Title = book.Title,
+                            Author = book.Author,
+                            Amount = _userService.GetOwnedBookAmount(userId, book.Id)
+                        }
+                    ));
         }
     }
 }
