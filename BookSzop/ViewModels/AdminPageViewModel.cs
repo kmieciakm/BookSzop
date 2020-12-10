@@ -21,12 +21,15 @@ namespace BookSzop.ViewModels
         private INavigationHelper _navigation { get; }
         private IStoreManagementService _storeManagementService { get; }
         private IDialog<Book> _bookDialog { get; }
+        private IDialog<BookBundle> _bookBundleDialog { get; }
 
-        public AdminPageViewModel(INavigationHelper navigation, IStoreManagementService storeManagementService, IDialog<Book> bookDialog)
+        public AdminPageViewModel(INavigationHelper navigation, IStoreManagementService storeManagementService,
+            IDialog<Book> bookDialog, IDialog<BookBundle> bookBundleDialog)
         {
             _navigation = navigation;
             _storeManagementService = storeManagementService;
             _bookDialog = bookDialog;
+            _bookBundleDialog = bookBundleDialog;
 
             UpdateStoreData();
         }
@@ -118,11 +121,56 @@ namespace BookSzop.ViewModels
                 }
             });
         }
+        public ICommand AddBookBundleCommand
+        {
+            get => new RelayCommand(param =>
+            {
+                BookBundle newBookBundle = new BookBundle();
+                _bookBundleDialog.Show(newBookBundle, () =>
+                {
+                    if (newBookBundle != null)
+                    {
+                        try
+                        {
+                            _storeManagementService.RegisterBookBundle(newBookBundle);
+                            UpdateStoreData();
+                        }
+                        catch (StoreManagementException storeExc)
+                        {
+                            Message = storeExc.Message;
+                        }
+                    }
+                });
+            });
+        }
+        public ICommand EditBookBundleCommand
+        {
+            get => new RelayCommand(bundleId =>
+            {
+                IBookBundle bundle = BookBundles.First(bundle => bundle.Id == (int)bundleId);
+                BookBundle bundleToUpdate = new BookBundle(bundle);
+                _bookBundleDialog.Show(bundleToUpdate, () =>
+                {
+                    if (bundleToUpdate != null)
+                    {
+                        try
+                        {
+                            _storeManagementService.UpdateBookBundle(bundleToUpdate);
+                            UpdateStoreData();
+                        }
+                        catch (StoreManagementException storeExc)
+                        {
+                            Message = storeExc.Message;
+                        }
+                    }
+                });
+            });
+        }
         public ICommand DeleteBookBundleCommand
         {
             get => new RelayCommand(bundleId =>
             {
-                
+
                 try
                 {
                     _storeManagementService.RemoveBookBundle((int)bundleId);

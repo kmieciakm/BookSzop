@@ -119,6 +119,32 @@ namespace ShopService.StoreManagement
             }
         }
 
+        public void UpdateBookBundle(IBookBundle bundle)
+        {
+            var bundleToUpdate = _BookBundleRepository.FindById(bundle.Id);
+            if (bundleToUpdate == null)
+            {
+                throw new StoreManagementException($"Book update impossible, not such bundle of id {bundle.Id} exists.");
+            }
+
+            var bookInBundle = _BookRepository.FindById(bundle.BookId);
+            if (bookInBundle == null)
+            {
+                throw new StoreManagementException($"Book edit impossible, not such book of id {bundle.BookId}.");
+            }
+
+            bundleToUpdate.BookId = bookInBundle.Id;
+            bundleToUpdate.Book = bookInBundle;
+            bundleToUpdate.Quantity = bundle.Quantity;
+            bundleToUpdate.Price = bundle.Price;
+
+            var updateResult = _BookBundleRepository.Update(bundleToUpdate);
+            if (!updateResult)
+            {
+                throw new StoreManagementException($"Bundle impossible to update, unknown error occurred.");
+            }
+        }
+
         public void RemoveBookBundle(int bookBundleId)
         {
             var bookBundleToDelete = _BookBundleRepository

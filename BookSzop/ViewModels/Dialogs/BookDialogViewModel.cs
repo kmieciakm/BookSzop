@@ -9,19 +9,22 @@ using System.Windows.Input;
 
 namespace BookSzop.ViewModels.Dialogs
 {
-    public class BookDialogViewModel : DailogViewModelBase
+    public class BookDialogViewModel : DialogViewModelBase
     {
         private Book _bookToSave { get; set; }
 
         public BookDialogViewModel(Book book)
         {
             _bookToSave = book;
+
+            Author = book.Author;
+            Title = book.Title;
         }
 
         public string Author { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
 
-        public ICommand Save
+        public override ICommand Save
         {
             get => new RelayCommand(param =>
             {
@@ -32,7 +35,7 @@ namespace BookSzop.ViewModels.Dialogs
                 OnClose?.Invoke();
             });
         }
-        public ICommand Cancel
+        public override ICommand Cancel
         {
             get => new RelayCommand(param =>
             {

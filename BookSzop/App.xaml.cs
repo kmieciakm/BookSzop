@@ -43,7 +43,8 @@ namespace BookSzop
             services.AddSingleton(provider => ServiceFactory.CreateStoreManagementService());
 
             // Dialogs
-            services.AddSingleton<IDialog<Book>, BookDailog>();
+            services.AddSingleton<IDialog<Book>, BookDialog>();
+            services.AddSingleton<IDialog<BookBundle>, BookBundleDialog>();
 
             // View Models
             services.AddTransient<TransactionPageViewModel>();
