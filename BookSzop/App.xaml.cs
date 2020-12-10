@@ -1,6 +1,10 @@
-﻿using BookSzop.Utils;
+﻿using BookSzop.Dailogs;
+using BookSzop.Models;
+using BookSzop.Utils;
 using BookSzop.ViewModels;
+using BookSzop.ViewModels.Dialogs;
 using BookSzop.Views;
+using BookSzop.Views.Dialogs;
 using Microsoft.Extensions.DependencyInjection;
 using ShopService;
 using System;
@@ -38,6 +42,9 @@ namespace BookSzop
             services.AddSingleton(provider => ServiceFactory.CreatePurchaseService());
             services.AddSingleton(provider => ServiceFactory.CreateStoreManagementService());
 
+            // Dialogs
+            services.AddSingleton<IDialog<Book>, BookDailog>();
+
             // View Models
             services.AddTransient<TransactionPageViewModel>();
             services.AddTransient<UserPageViewModel>();
@@ -45,6 +52,7 @@ namespace BookSzop
             services.AddTransient<PurchasePageViewModel>();
             services.AddTransient<LoginPageViewModel>();
             services.AddTransient<MainPageViewModel>();
+            services.AddTransient<BookDialogViewModel>();
 
             // Pages
             services.AddTransient<TransactionPage>();
@@ -53,6 +61,7 @@ namespace BookSzop
             services.AddTransient<PurchasePage>();
             services.AddTransient<LoginPage>();
             services.AddTransient<MainPage>();
+            services.AddTransient<BookDialogView>();
 
             services.AddSingleton<MainWindow>();
 

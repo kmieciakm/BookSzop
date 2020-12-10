@@ -30,13 +30,17 @@
                VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"
                Content="Store Management System">
         </Label>
+        <Label Grid.Column="1" Grid.Row="0" Foreground="White" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"
+               Content="{Binding Message}">
+        </Label>
 
         <Border Grid.Row="1" Grid.Column="0" Background="White" Margin="10,0,10,0">
             <StackPanel Grid.Row="1" VerticalAlignment="Center" Orientation="Horizontal">
                 <Label Content="Books" Foreground="Black" FontSize="18" Width="450" Margin="10,0,0,0"/>
                 <Button Padding="20,5,20,5" BorderThickness="0" Cursor="Hand"
                         Background="Black" Foreground="White"
-                        Content="Add new book"/>
+                        Content="Add new book"
+                        Command="{Binding AddBookCommand}"/>
             </StackPanel>
         </Border>
 
@@ -74,7 +78,9 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Grid.Column="1" Padding="10,5,10,5" Margin="5"
-                                        BorderThickness="0" Cursor="Hand" Background="Black" Foreground="White" Focusable="True" IsHitTestVisible="True">
+                                        BorderThickness="0" Cursor="Hand" Background="Black" Foreground="White" Focusable="True" IsHitTestVisible="True"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.EditBookCommand}"
+                                        CommandParameter="{Binding Id}">
                                     Edit
                                 </Button>
                             </DataTemplate>

@@ -59,6 +59,24 @@ namespace ShopService.StoreManagement
             }
         }
 
+        public void UpdateBook(IBook book)
+        {
+            var bookToUpdate = _BookRepository.FindById(book.Id);
+            if (bookToUpdate == null)
+            {
+                throw new StoreManagementException($"Book update impossible, not such book of id {book.Id} exists.");
+            }
+
+            bookToUpdate.Author = book.Author;
+            bookToUpdate.Title = book.Title;
+
+            var updateResult = _BookRepository.Update(bookToUpdate);
+            if (!updateResult)
+            {
+                throw new StoreManagementException($"Book impossible to update, unknown error occurred.");
+            }
+        }
+
         public void RemoveBook(int bookId)
         {
             var bookToDelete = _BookRepository

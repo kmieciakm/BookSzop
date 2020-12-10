@@ -9,6 +9,7 @@ namespace ShopService.StoreManagement
         IEnumerable<IBookBundle> GetAllBookBundles();
         IEnumerable<IBook> GetAllBooks();
         void RegisterBook(IBook book);
+        void UpdateBook(IBook book);
         void RegisterBookBundle(IBookBundle bookBundle);
         void RemoveBook(int bookId);
         void RemoveBookBundle(int bookBundleId);

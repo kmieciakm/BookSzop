@@ -1,6 +1,9 @@
 ﻿using BookSzop.Commands;
+using BookSzop.Dailogs;
+using BookSzop.Models;
 using BookSzop.Utils;
 using BookSzop.ViewModels.Base;
+using BookSzop.ViewModels.Dialogs;
 using ShopService.Models.BookBundleModel;
 using ShopService.Models.BookModel;
 using ShopService.StoreManagement;
@@ -17,18 +20,30 @@ namespace BookSzop.ViewModels
     {
         private INavigationHelper _navigation { get; }
         private IStoreManagementService _storeManagementService { get; }
+        private IDialog<Book> _bookDialog { get; }
 
-        public AdminPageViewModel(INavigationHelper navigation, IStoreManagementService storeManagementService)
+        public AdminPageViewModel(INavigationHelper navigation, IStoreManagementService storeManagementService, IDialog<Book> bookDialog)
         {
             _navigation = navigation;
             _storeManagementService = storeManagementService;
+            _bookDialog = bookDialog;
 
             UpdateStoreData();
         }
 
+        private string _errorMessage;
         private ObservableCollection<IBook> _Books { get; } = new ObservableCollection<IBook>();
         private ObservableCollection<IBookBundle> _BookBundles { get; } = new ObservableCollection<IBookBundle>();
 
+        public string Message
+        {
+            get => _errorMessage;
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged(nameof(Message));
+            }
+        }
         public ObservableCollection<IBook> Books { get => _Books; }
         public ObservableCollection<IBookBundle> BookBundles { get => _BookBundles; }
         public ICommand LogoutCommand
@@ -37,6 +52,51 @@ namespace BookSzop.ViewModels
             {
                 SessionHelper.ClearSession();
                 _navigation.NavigateToLoginPage();
+            });
+        }
+        public ICommand AddBookCommand
+        {
+            get => new RelayCommand(param =>
+            {
+                Book newBook = new Book();
+                _bookDialog.Show(newBook, () =>
+                {
+                    if (newBook != null)
+                    {
+                        try
+                        {
+                            _storeManagementService.RegisterBook(newBook);
+                            UpdateStoreData();
+                        }
+                        catch (StoreManagementException storeExc)
+                        {
+                            Message = storeExc.Message;
+                        }
+                    }
+                });
+            });
+        }
+        public ICommand EditBookCommand
+        {
+            get => new RelayCommand(bookId =>
+            {
+                IBook book = Books.First(book => book.Id == (int)bookId);
+                Book bookToUpdate = new Book(book);
+                _bookDialog.Show(bookToUpdate, () =>
+                {
+                    if (bookToUpdate != null)
+                    {
+                        try
+                        {
+                            _storeManagementService.UpdateBook(bookToUpdate);
+                            UpdateStoreData();
+                        }
+                        catch (StoreManagementException storeExc)
+                        {
+                            Message = storeExc.Message;
+                        }
+                    }
+                });
             });
         }
         public ICommand DeleteBookCommand
@@ -54,7 +114,7 @@ namespace BookSzop.ViewModels
                 }
                 catch (StoreManagementException storeExc)
                 {
-                    
+                    Message = storeExc.Message;
                 }
             });
         }
@@ -72,7 +132,7 @@ namespace BookSzop.ViewModels
                 }
                 catch (StoreManagementException storeExc)
                 {
-
+                    Message = storeExc.Message;
                 }
             });
         }
