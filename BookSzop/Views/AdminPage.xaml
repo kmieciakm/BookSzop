@@ -60,7 +60,14 @@
                             </Setter>
                         </Style>
                     </GridView.ColumnHeaderContainerStyle>
-                    <GridViewColumn Header="Title" Width="250">
+                    <GridViewColumn Header="Id" Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Id}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Title" Width="230">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Title}"/>
@@ -74,7 +81,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Width="80">
+                    <GridViewColumn Width="70">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Grid.Column="1" Padding="10,5,10,5" Margin="5"
@@ -86,7 +93,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Width="120">
+                    <GridViewColumn Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Grid.Column="1" Padding="10,5,10,5" Margin="5"
@@ -115,7 +122,8 @@
                 <Label Content="Books Bundles" Foreground="Black" FontSize="18" Width="450" Margin="10,0,0,0"/>
                 <Button Padding="20,5,20,5" BorderThickness="0" Cursor="Hand"
                         Background="Black" Foreground="White"
-                        Content="Add new bundle"/>
+                        Content="Add new bundle"
+                        Command="{Binding AddBookBundleCommand}"/>
             </StackPanel>
         </Border>
 
@@ -135,38 +143,40 @@
                             </Setter>
                         </Style>
                     </GridView.ColumnHeaderContainerStyle>
-                    <GridViewColumn Header="Title" Width="250">
+                    <GridViewColumn Header="Title" Width="230">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Book.Title}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Quantity" Width="90">
+                    <GridViewColumn Header="Quantity" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Quantity}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Price" Width="60">
+                    <GridViewColumn Header="Price" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Price}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Width="80">
+                    <GridViewColumn Width="70">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Grid.Column="1" Padding="10,5,10,5" Margin="5"
-                                        BorderThickness="0" Cursor="Hand" Background="Black" Foreground="White" Focusable="True" IsHitTestVisible="True">
+                                        BorderThickness="0" Cursor="Hand" Background="Black" Foreground="White" Focusable="True" IsHitTestVisible="True"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.EditBookBundleCommand}"
+                                        CommandParameter="{Binding Id}">
                                     Edit
                                 </Button>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Width="120">
+                    <GridViewColumn Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Grid.Column="1" Padding="10,5,10,5" Margin="5"

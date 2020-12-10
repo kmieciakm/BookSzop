@@ -7,7 +7,7 @@ using System.Text;
 
 namespace BookSzop.Dailogs
 {
-    public class BookDailog : IDialog<Book>
+    public class BookDialog : IDialog<Book>
     {
         private BookDialogView bookDailogView { get; set; }
         private BookDialogViewModel bookDailogViewModel { get; set; }
