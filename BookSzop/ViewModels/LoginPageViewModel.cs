@@ -63,6 +63,7 @@ namespace BookSzop.ViewModels
                 {
                     var isAdmin = _AuthenticationManager.CheckAdminAccess(userId.Value);
                     SessionHelper.SaveUserSession(userId.Value);
+                    ClearFormsData();
                     if (isAdmin)
                     {
                         _Navigation.NavigateToAdminPage();
@@ -175,5 +176,17 @@ namespace BookSzop.ViewModels
                 string.IsNullOrEmpty(ConfirmationPassword));
         }
         #endregion
+
+        private void ClearFormsData()
+        {
+            UserLogin = "";
+            UserPassword = "";
+            Firstname = "";
+            Lastname = "";
+            Login = "";
+            Password = "";
+            ConfirmationPassword = "";
+            Message = "";
+        }
     }
 }

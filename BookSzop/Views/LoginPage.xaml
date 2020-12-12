@@ -52,29 +52,29 @@
         <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center">
             <Label Content="Firstname" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
             <TextBox MaxWidth="250" Height="30" Margin="5,5,5,15"
-                    Text="{Binding Firstname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                    Text="{Binding Firstname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Validation.ErrorTemplate="{StaticResource ResourceKey=errorField}"
                     TextAlignment="Center" VerticalContentAlignment="Center" FontSize="20">
             </TextBox>
             <Label Content="Lastname" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
             <TextBox MaxWidth="250" Height="30" Margin="5,5,5,15"
-                    Text="{Binding Lastname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                    Text="{Binding Lastname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Validation.ErrorTemplate="{StaticResource ResourceKey=errorField}"
                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
             <Label Content="Login" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
             <TextBox MaxWidth="250" Height="30" Margin="5,5,5,15"
-                    Text="{Binding Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                    Text="{Binding Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Validation.ErrorTemplate="{StaticResource ResourceKey=errorField}"
                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
             <Label Content="Password" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
             <TextBox MaxWidth="250" Height="30" Margin="5,5,5,15"
-                    Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                    Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Validation.ErrorTemplate="{StaticResource ResourceKey=errorField}"
                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"
                     FontFamily="..\Resources\#password"/>
             <Label Content="Confirm Password" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
             <TextBox MaxWidth="250" Height="30" Margin="5,5,5,15"
-                    Text="{Binding ConfirmationPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                    Text="{Binding ConfirmationPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Validation.ErrorTemplate="{StaticResource ResourceKey=errorField}"
                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"
                     FontFamily="..\Resources\#password"/>
