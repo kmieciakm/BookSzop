@@ -1,6 +1,7 @@
 ﻿using BookSzop.Commands;
 using BookSzop.Models;
 using BookSzop.ViewModels.Base;
+using ShopService.StoreManagement;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,52 +12,68 @@ namespace BookSzop.ViewModels.Dialogs
     public class BookBundleDialogViewModel : DialogViewModelBase
     {
         private BookBundle _bundleToSave { get; set; }
+        private IStoreManagementService _storeService { get; }
 
-        public BookBundleDialogViewModel(BookBundle bundle)
+        public BookBundleDialogViewModel(BookBundle bundle, IStoreManagementService storeService)
         {
             _bundleToSave = bundle;
+            _storeService = storeService;
 
-            Price = _bundleToSave?.Price.ToString();
-            BooksQuantity = _bundleToSave?.Quantity.ToString();
-            BookId = _bundleToSave?.BookId.ToString();
+            _price = _bundleToSave?.Price == 0 ? "" : _bundleToSave?.Price.ToString();
+            _quantity = _bundleToSave?.Quantity.ToString();
+            _bookId = _bundleToSave?.BookId == 0 ? "" : _bundleToSave?.BookId.ToString();
         }
 
-        private double _price { get; set; }
+        private string _price { get; set; }
         public string Price {
             get => _price.ToString();
             set
             {
-                _price = double.Parse(value);
-                OnPropertyChanged(Price);
-            }}
-        private int _booksQuantity { get; set; }
-        public string BooksQuantity
-        {
-            get => _booksQuantity.ToString();
-            set
-            {
-                _booksQuantity = int.Parse(value);
-                OnPropertyChanged(BooksQuantity);
+                _price = value;
+                ClearErrors(nameof(Price));
+                ValidateIsPositiveRealNumber(nameof(Price), Price);
+                OnPropertyChanged(nameof(Price));
+                OnPropertyChanged(nameof(SaveButtonEnable));
             }
         }
-        private int _bookId { get; set; }
+        private string _quantity { get; set; }
+        public string Quantity
+        {
+            get => _quantity.ToString();
+            set
+            {
+                _quantity = value;
+                ClearErrors(nameof(Quantity));
+                ValidateIsPositiveIntegerNumber(nameof(Quantity), Quantity);
+                OnPropertyChanged(nameof(Quantity));
+                OnPropertyChanged(nameof(SaveButtonEnable));
+            }
+        }
+        private string _bookId { get; set; }
         public string BookId
         {
             get => _bookId.ToString();
             set
             {
-                _bookId = int.Parse(value);
-                OnPropertyChanged(BookId);
+                _bookId = value;
+                ClearErrors(nameof(BookId));
+                ValidateBookId(BookId);
+                OnPropertyChanged(nameof(BookId));
+                OnPropertyChanged(nameof(SaveButtonEnable));
             }
+        }
+        public bool SaveButtonEnable
+        {
+            get => IsFormCorrect();
         }
 
         public override ICommand Save
         {
             get => new RelayCommand(param =>
             {
-                _bundleToSave.BookId = _bookId;
-                _bundleToSave.Price = _price;
-                _bundleToSave.Quantity = _booksQuantity;
+                _bundleToSave.BookId = int.Parse(_bookId);
+                _bundleToSave.Price = Math.Ceiling(double.Parse(_price) * 100) / 100;
+                _bundleToSave.Quantity = int.Parse(_quantity);
 
                 OnSave?.Invoke();
                 OnClose?.Invoke();
@@ -68,6 +85,25 @@ namespace BookSzop.ViewModels.Dialogs
             {
                 OnClose?.Invoke();
             });
+        }
+
+        public bool IsFormCorrect()
+        {
+            return
+                !(
+                    HasErrors ||
+                    string.IsNullOrEmpty(Price) ||
+                    string.IsNullOrEmpty(Quantity) ||
+                    string.IsNullOrEmpty(BookId)
+                );
+        }
+
+        private void ValidateBookId(string bookId)
+        {
+            if (!int.TryParse(bookId, out int result) || !_storeService.BookExists(result))
+            {
+                AddError(nameof(BookId), $"Book of such id does not exist.");
+            }
         }
     }
 }

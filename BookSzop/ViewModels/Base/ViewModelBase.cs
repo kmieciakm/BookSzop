@@ -84,6 +84,22 @@ namespace BookSzop.ViewModels.Base
                 AddError(propertyName, $"{propertyName} exceeded maximum {maxLength} characters length.");
         }
 
+        protected void ValidateIsPositiveIntegerNumber(string propertyName, string value)
+        {
+            if (!int.TryParse(value, out int result) || result <= 0)
+            {
+                AddError(propertyName, $"{propertyName} must be a positive integer number.");
+            }
+        }
+
+        protected void ValidateIsPositiveRealNumber(string propertyName, string value)
+        {
+            if (!double.TryParse(value, out double result) || result <= 0.01)
+            {
+                AddError(propertyName, $"{propertyName} must be a positive real number.");
+            }
+        }
+
         protected void ValidatePasswordPolicy(string propertyName, string password)
         {
             if (PasswordHelper.ValidatePassword(password, out string errorMessage) == false)

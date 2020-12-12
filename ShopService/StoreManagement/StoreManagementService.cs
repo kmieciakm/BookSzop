@@ -38,6 +38,11 @@ namespace ShopService.StoreManagement
                 .ToList();
         }
 
+        public bool BookExists(int bookId)
+        {
+            return _BookRepository.Exists(bookId);
+        }
+
         public void RegisterBook(IBook book)
         {
             if (_BookRepository.Exists(book.Id))

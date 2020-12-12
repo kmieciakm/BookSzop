@@ -8,6 +8,7 @@ namespace ShopService.StoreManagement
     {
         IEnumerable<IBookBundle> GetAllBookBundles();
         IEnumerable<IBook> GetAllBooks();
+        bool BookExists(int bookId);
         void RegisterBook(IBook book);
         void RegisterBookBundle(IBookBundle bookBundle);
         void UpdateBook(IBook book);

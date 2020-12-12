@@ -23,7 +23,7 @@
                     <ItemsControl ItemsSource="{Binding}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding ErrorContent}" Foreground="Red" />
+                                <TextBlock Text="{Binding ErrorContent}" Foreground="#f75a71" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
