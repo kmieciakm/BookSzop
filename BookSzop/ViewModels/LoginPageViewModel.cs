@@ -168,12 +168,14 @@ namespace BookSzop.ViewModels
         private bool IsFormCorrect()
         {
             return
-                !(HasErrors ||
-                string.IsNullOrEmpty(Firstname) ||
-                string.IsNullOrEmpty(Lastname) ||
-                string.IsNullOrEmpty(Login) ||
-                string.IsNullOrEmpty(Password) ||
-                string.IsNullOrEmpty(ConfirmationPassword));
+                !(
+                    HasErrors ||
+                    string.IsNullOrEmpty(Firstname) ||
+                    string.IsNullOrEmpty(Lastname) ||
+                    string.IsNullOrEmpty(Login) ||
+                    string.IsNullOrEmpty(Password) ||
+                    string.IsNullOrEmpty(ConfirmationPassword)
+                );
         }
         #endregion
 

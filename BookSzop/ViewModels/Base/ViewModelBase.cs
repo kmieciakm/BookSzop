@@ -74,7 +74,7 @@ namespace BookSzop.ViewModels.Base
         #region Validators
         protected void ValidateMinLength(string propertyName, string value, int minLength)
         {
-            if (string.IsNullOrWhiteSpace(value) || value?.Length <= minLength)
+            if (string.IsNullOrWhiteSpace(value) || value?.Length < minLength)
                 AddError(propertyName, $"{propertyName} must be at least {minLength} characters long.");
         }
 

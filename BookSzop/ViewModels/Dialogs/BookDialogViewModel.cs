@@ -16,13 +16,42 @@ namespace BookSzop.ViewModels.Dialogs
         public BookDialogViewModel(Book book)
         {
             _bookToSave = book;
-
-            Author = book.Author;
-            Title = book.Title;
+            _author = book.Author;
+            _title = book.Title;
         }
 
-        public string Author { get; set; } = string.Empty;
-        public string Title { get; set; } = string.Empty;
+        private string _author;
+        public string Author
+        {
+            get => _author;
+            set
+            {
+                _author = value;
+                ClearErrors(nameof(Author));
+                ValidateMinLength(nameof(Author), _author, 5);
+                ValidateMaxLength(nameof(Author), _author, 40);
+                OnPropertyChanged(nameof(Author));
+                OnPropertyChanged(nameof(SaveButtonEnable));
+            }
+        }
+        private string _title;
+        public string Title
+        {
+            get => _title;
+            set
+            {
+                _title = value;
+                ClearErrors(nameof(Title));
+                ValidateMinLength(nameof(Title), _title, 2);
+                ValidateMaxLength(nameof(Title), _title, 50);
+                OnPropertyChanged(nameof(Title));
+                OnPropertyChanged(nameof(SaveButtonEnable));
+            }
+        }
+        public bool SaveButtonEnable
+        {
+            get => IsFormCorrect();
+        }
 
         public override ICommand Save
         {
@@ -41,6 +70,16 @@ namespace BookSzop.ViewModels.Dialogs
             {
                 OnClose?.Invoke();
             });
+        }
+
+        public bool IsFormCorrect()
+        {
+            return
+                !(
+                    HasErrors ||
+                    string.IsNullOrEmpty(Author) ||
+                    string.IsNullOrEmpty(Title)
+                );
         }
     }
 }

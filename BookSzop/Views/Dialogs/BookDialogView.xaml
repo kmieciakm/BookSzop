@@ -16,18 +16,37 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <Grid.Resources>
+            <ControlTemplate x:Key="errorField">
+                <StackPanel>
+                    <AdornedElementPlaceholder x:Name="textBox" />
+                    <ItemsControl ItemsSource="{Binding}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding ErrorContent}" Foreground="Red" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ControlTemplate>
+        </Grid.Resources>
+
         <StackPanel Grid.Row="0" VerticalAlignment="Center">
             <Label Content="Author" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
-            <TextBox MaxWidth="250" Height="30" Margin="5"
-                    Text="{Binding Author}" TextAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
+            <TextBox MaxWidth="250" Height="30" Margin="5,5,5,15"
+                    Validation.ErrorTemplate="{StaticResource ResourceKey=errorField}"
+                    Text="{Binding Author, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    TextAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
             <Label Content="Title" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
-            <TextBox MaxWidth="250" Height="30" Margin="5"
-                    Text="{Binding Title}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
+            <TextBox MaxWidth="250" Height="30" Margin="5,5,5,15"
+                    Validation.ErrorTemplate="{StaticResource ResourceKey=errorField}"
+                    Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Width="150" Height="30" Margin="20" Cursor="Hand"
-                        Command="{Binding Save}"
+                        Command="{Binding Save}" IsEnabled="{Binding SaveButtonEnable}"
                         Background="White" BorderBrush="Black" BorderThickness="0">
                 Save
             </Button>
