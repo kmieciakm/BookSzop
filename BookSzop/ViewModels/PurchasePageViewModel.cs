@@ -30,6 +30,8 @@ namespace BookSzop.ViewModels
             _purchaseService = purchaseService;
             _storeManagementService = storeManagementService;
             _purchaseModel = new PurchaseModel();
+
+            UpdateBasketData(this, new EventArgs());
         }
 
         public ObservableCollection<IBookBundle> BookBundles { get => _purchaseModel.BookBundles; }

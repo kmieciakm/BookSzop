@@ -1,9 +1,9 @@
 ﻿using BookSzop.Commands;
 using BookSzop.Dailogs;
 using BookSzop.Models;
+using BookSzop.Models.PagesModels;
 using BookSzop.Utils;
 using BookSzop.ViewModels.Base;
-using BookSzop.ViewModels.Dialogs;
 using ShopService.Models.BookBundleModel;
 using ShopService.Models.BookModel;
 using ShopService.StoreManagement;
@@ -20,6 +20,9 @@ namespace BookSzop.ViewModels
     {
         private INavigationHelper _navigation { get; }
         private IStoreManagementService _storeManagementService { get; }
+
+        private AdminStoreModel _adminModel { get; }
+
         private IDialog<Book> _bookDialog { get; }
         private IDialog<BookBundle> _bookBundleDialog { get; }
 
@@ -28,27 +31,24 @@ namespace BookSzop.ViewModels
         {
             _navigation = navigation;
             _storeManagementService = storeManagementService;
+            _adminModel = new AdminStoreModel();
             _bookDialog = bookDialog;
             _bookBundleDialog = bookBundleDialog;
 
             UpdateStoreData();
         }
 
-        private string _errorMessage;
-        private ObservableCollection<IBook> _Books { get; } = new ObservableCollection<IBook>();
-        private ObservableCollection<IBookBundle> _BookBundles { get; } = new ObservableCollection<IBookBundle>();
-
         public string Message
         {
-            get => _errorMessage;
+            get => _adminModel.ErrorMessage;
             set
             {
-                _errorMessage = value;
+                _adminModel.ErrorMessage = value;
                 OnPropertyChanged(nameof(Message));
             }
         }
-        public ObservableCollection<IBook> Books { get => _Books; }
-        public ObservableCollection<IBookBundle> BookBundles { get => _BookBundles; }
+        public ObservableCollection<IBook> Books { get => _adminModel.Books; }
+        public ObservableCollection<IBookBundle> BookBundles { get => _adminModel.BookBundles; }
         public ICommand LogoutCommand
         {
             get => new RelayCommand(param =>

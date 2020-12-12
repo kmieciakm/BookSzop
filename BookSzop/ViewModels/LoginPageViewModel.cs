@@ -3,7 +3,6 @@ using BookSzop.Models;
 using BookSzop.Models.PagesModels;
 using BookSzop.Utils;
 using BookSzop.ViewModels.Base;
-using BookSzop.Views;
 using ShopService.Authentication;
 using ShopService.Models.UserModel;
 using System;
@@ -16,14 +15,12 @@ namespace BookSzop.ViewModels
     public class LoginPageViewModel : ViewModelBase
     {
         private IAuthenticationManager _AuthenticationManager { get; }
-        private UserPage _UserPage { get; }
-        private AdminPage _AdminPage { get; }
+        private INavigationHelper _Navigation { get; }
 
-        public LoginPageViewModel(IAuthenticationManager authenticationManager, UserPage userPage, AdminPage adminPage)
+        public LoginPageViewModel(IAuthenticationManager authenticationManager, INavigationHelper navigation)
         {
             _AuthenticationManager = authenticationManager;
-            _UserPage = userPage;
-            _AdminPage = adminPage;
+            _Navigation = navigation;
             _loginModel = new LoginModel();
             _userCreateModel = new UserCreate();
         }
@@ -68,11 +65,11 @@ namespace BookSzop.ViewModels
                     SessionHelper.SaveUserSession(userId.Value);
                     if (isAdmin)
                     {
-                        NavigationHelper.Navigate(_AdminPage);
+                        _Navigation.NavigateToAdminPage();
                     }
                     else
                     {
-                        NavigationHelper.Navigate(_UserPage);
+                        _Navigation.NavigateToUserPage();
                     }
                 }
                 else
