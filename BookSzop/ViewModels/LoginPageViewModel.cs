@@ -28,20 +28,20 @@ namespace BookSzop.ViewModels
         #region Login
         private LoginModel _loginModel;
 
-        public string Login {
+        public string UserLogin {
             get => _loginModel.Login;
             set {
                 _loginModel.Login = value;
-                OnPropertyChanged(nameof(Login));
+                OnPropertyChanged(nameof(UserLogin));
             }
         }
-        public string Password
+        public string UserPassword
         {
             get => _loginModel.Password;
             set
             {
                 _loginModel.Password = value;
-                OnPropertyChanged(nameof(Password));
+                OnPropertyChanged(nameof(UserPassword));
             }
         }
         public string Message
@@ -89,6 +89,9 @@ namespace BookSzop.ViewModels
             set
             {
                 _userCreateModel.FirstName = value;
+                ClearErrors(nameof(Firstname));
+                ValidateMinLength(nameof(Firstname), Firstname, 6);
+                ValidateMaxLength(nameof(Firstname), Firstname, 40);
                 OnPropertyChanged(nameof(Firstname));
             }
         }
@@ -98,50 +101,78 @@ namespace BookSzop.ViewModels
             set
             {
                 _userCreateModel.LastName = value;
+                ClearErrors(nameof(Lastname));
+                ValidateMinLength(nameof(Lastname), Lastname, 6);
+                ValidateMaxLength(nameof(Lastname), Lastname, 40);
                 OnPropertyChanged(nameof(Lastname));
             }
         }
-        public string LoginRegister
+        public string Login
         {
             get => _userCreateModel.Login;
             set
             {
                 _userCreateModel.Login = value;
-                OnPropertyChanged(nameof(LoginRegister));
+                ClearErrors(nameof(Login));
+                ValidateMinLength(nameof(Login), Login, 6);
+                ValidateMaxLength(nameof(Login), Login, 24);
+                OnPropertyChanged(nameof(Login));
             }
         }
-        public string PasswordRegister
+        public string Password
         {
             get => _userCreateModel.Password;
             set
             {
                 _userCreateModel.Password = value;
-                OnPropertyChanged(nameof(PasswordRegister));
+                ClearErrors(nameof(Password));
+                ValidatePasswordPolicy(nameof(Password), Password);
+                OnPropertyChanged(nameof(Password));
             }
         }
-        public string ConfirmPasswordRegister
+        public string ConfirmationPassword
         {
             get => _userCreateModel.ConfirmPassword;
             set
             {
                 _userCreateModel.ConfirmPassword = value;
-                OnPropertyChanged(nameof(ConfirmPasswordRegister));
+                ClearErrors(nameof(ConfirmationPassword));
+                ValidatePasswordConfirmation(nameof(ConfirmationPassword), ConfirmationPassword, Password);
+                OnPropertyChanged(nameof(ConfirmationPassword));
             }
         }
 
         public ICommand RegisterCommand
         {
             get => new RelayCommand(param => {
-                try
+                if (IsFormCorrect())
                 {
-                    _AuthenticationManager.RegisterUser(_userCreateModel);
-                    Message = "Registraction succeeded, please login now.";
+                    try
+                    {
+                        _AuthenticationManager.RegisterUser(_userCreateModel);
+                        Message = "Registraction succeeded, please login now.";
+                    }
+                    catch (AuthenticationException authException)
+                    {
+                        Message = authException.Message;
+                    }
                 }
-                catch (AuthenticationException authException)
+                else
                 {
-                    Message = authException.Message;
+                    Message = "Registration form contains invalid values, please ensure all fields are filled correctly.";
                 }
             });
+        }
+
+        private bool IsFormCorrect()
+        {
+            return
+                !(HasErrors ||
+                string.IsNullOrEmpty(Firstname) ||
+                string.IsNullOrEmpty(Lastname) ||
+                string.IsNullOrEmpty(Login) ||
+                string.IsNullOrEmpty(Password) ||
+                string.IsNullOrEmpty(ConfirmationPassword));
         }
         #endregion
     }
