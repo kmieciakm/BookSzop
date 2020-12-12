@@ -47,26 +47,26 @@ namespace BookSzop
             services.AddSingleton<IDialog<BookBundle>, BookBundleDialog>();
 
             // View Models
-            services.AddTransient<TransactionPageViewModel>();
-            services.AddTransient<UserPageViewModel>();
-            services.AddTransient<AdminPageViewModel>();
-            services.AddTransient<PurchasePageViewModel>();
-            services.AddTransient<LoginPageViewModel>();
-            services.AddTransient<MainPageViewModel>();
-            services.AddTransient<BookDialogViewModel>();
+            services.AddSingleton<TransactionPageViewModel>();
+            services.AddSingleton<UserPageViewModel>();
+            services.AddSingleton<AdminPageViewModel>();
+            services.AddSingleton<PurchasePageViewModel>();
+            services.AddSingleton<LoginPageViewModel>();
+            services.AddSingleton<MainPageViewModel>();
+            services.AddSingleton<BookDialogViewModel>();
 
             // Pages
-            services.AddTransient<TransactionPage>();
-            services.AddTransient<UserPage>();
-            services.AddTransient<AdminPage>();
-            services.AddTransient<PurchasePage>();
-            services.AddTransient<LoginPage>();
-            services.AddTransient<MainPage>();
-            services.AddTransient<BookDialogView>();
+            services.AddSingleton<LoginPage>();
+            services.AddSingleton<TransactionPage>();
+            services.AddSingleton<UserPage>();
+            services.AddSingleton<AdminPage>();
+            services.AddSingleton<PurchasePage>();
+            services.AddSingleton<MainPage>();
+            services.AddSingleton<BookDialogView>();
 
             services.AddSingleton<MainWindow>();
 
-            services.AddTransient<INavigationHelper, NavigationHelper>();
+            services.AddSingleton<INavigationHelper, NavigationHelper>();
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)

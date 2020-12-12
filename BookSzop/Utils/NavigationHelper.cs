@@ -24,9 +24,10 @@ namespace BookSzop.Utils
             NavigationService.Navigate(page);
         }
 
-        public void NavigateToLoginPage()
-        {
-            Navigate(_serviceProvider.GetRequiredService<LoginPage>());
-        }
+        public void NavigateToLoginPage() => Navigate(_serviceProvider.GetRequiredService<LoginPage>());
+        public void NavigateToAdminPage() => Navigate(_serviceProvider.GetRequiredService<AdminPage>());
+        public void NavigateToUserPage() => Navigate(_serviceProvider.GetRequiredService<UserPage>());
+        public void NavigateToPurchasePage() => Navigate(_serviceProvider.GetRequiredService<PurchasePage>());
+        public void NavigateToTransactionPage() => Navigate(_serviceProvider.GetRequiredService<TransactionPage>());
     }
 }
