@@ -34,7 +34,6 @@ namespace BookSzop.ViewModels
                 OnPropertyChanged(nameof(Title));
             }
         }
-
         public ICommand ContinueButtonCommand
         {
             get
@@ -42,6 +41,5 @@ namespace BookSzop.ViewModels
                 return new RelayCommand(param => NavigationHelper.Navigate(LoginPage));
             }
         }
-
     }
 }

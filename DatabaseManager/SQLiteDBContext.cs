@@ -10,5 +10,9 @@ namespace DatabaseManager
     {
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite("Data Source = szopDatabase.db");
+
+        public override void SeedData()
+        {
+        }
     }
 }

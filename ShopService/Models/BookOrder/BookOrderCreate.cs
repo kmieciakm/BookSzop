@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace ShopService.Models
+namespace ShopService.Models.BookOrderModel
 {
-    public class BookOrderCreate : IBookOrderCreate
+    class BookOrderCreate : IBookOrderCreate
     {
-        [Range(0, 1000)]
         public int Quantity { get; set; }
         public int BookBundleId { get; set; }
 

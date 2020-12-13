@@ -26,6 +26,9 @@ namespace DatabaseManager.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Title")
                         .HasMaxLength(128)
                         .HasColumnType("TEXT");
@@ -42,6 +45,9 @@ namespace DatabaseManager.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("BookId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsAvailable")
                         .HasColumnType("INTEGER");
 
                     b.Property<double>("Price")

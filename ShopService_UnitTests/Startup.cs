@@ -19,7 +19,7 @@ namespace ShopService_UnitTests
         public void ConfigureServices(IServiceCollection services)
         {
             // Database access
-            services.AddScoped(serviceProvider => new MockDbFactory().CreateMockDbContext());
+            services.AddScoped(serviceProvider => new InMemoryDbFactory().CreateDbContext());
 
             services.AddTransient<IBookRepository, BookRepository>();
             services.AddTransient<IBookBundleRepositiory, BookBundleRepositiory>();

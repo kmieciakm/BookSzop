@@ -7,5 +7,6 @@ namespace DatabaseManager.Repository.Contracts
 {
     public interface IBookRepository : IRepositoryBase<Book>
     {
+        bool SoftDelete(Book bookToDelete);
     }
 }

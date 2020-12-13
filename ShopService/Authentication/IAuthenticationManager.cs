@@ -1,5 +1,4 @@
-﻿using DatabaseManager.Models;
-using ShopService.Models;
+﻿using ShopService.Models.UserModel;
 
 namespace ShopService.Authentication
 {

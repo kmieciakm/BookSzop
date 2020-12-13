@@ -1,8 +1,6 @@
 ﻿using BookSzop.Utils;
 using BookSzop.ViewModels;
 using BookSzop.Views;
-using DatabaseManager;
-using DatabaseManager.Repository.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using ShopService;
 using System;
@@ -14,7 +12,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using UnitTests_MockDatabase;
 
 namespace BookSzop
 {
@@ -35,45 +32,25 @@ namespace BookSzop
 
         private void ConfigureServices(IServiceCollection services)
         {
-            // Database setup
-            // THIS IS ONLY FOR MANUAL TESTING, REMEMBER TO DELETE PROJECT REFERENCE !!!
-            var dbContext = new MockDbFactory().CreateMockDbContext();
-            // var dbContext = DbFactory.CreateSQLiteDb();
-            services.AddSingleton(provider => dbContext);
-            services.AddSingleton(provider => DbFactory.CreateUserRepository(dbContext));
-            services.AddSingleton(provider => DbFactory.CreateBookRepository(dbContext));
-            services.AddSingleton(provider => DbFactory.CreateBookBundleRepository(dbContext));
-            services.AddSingleton(provider => DbFactory.CreateBookOrderRepository(dbContext));
-            services.AddSingleton(provider => DbFactory.CreateEventsRepository(dbContext));
-
             // Services
-            services.AddSingleton(provider =>
-                ServiceFactory.CreateAuthenticationManager(
-                    provider.GetRequiredService<IUserRepository>()
-                ));
-            services.AddSingleton(provider => 
-                ServiceFactory.CreateAuthenticationManager(
-                    provider.GetRequiredService<IUserRepository>()
-                ));
-            services.AddSingleton(provider =>
-                ServiceFactory.CreatePurchaseService(
-                    provider.GetRequiredService<IEventsRepository>(),
-                    provider.GetRequiredService<IUserRepository>(),
-                    provider.GetRequiredService<IBookBundleRepositiory>()
-                ));
-            services.AddSingleton(provider =>
-                ServiceFactory.CreateStoreManagementService(
-                    provider.GetRequiredService<IBookRepository>(),
-                    provider.GetRequiredService<IBookBundleRepositiory>()
-                ));
+            services.AddSingleton(provider => ServiceFactory.CreateAuthenticationManager());
+            services.AddSingleton(provider => ServiceFactory.CreateUserService());
+            services.AddSingleton(provider => ServiceFactory.CreatePurchaseService());
+            services.AddSingleton(provider => ServiceFactory.CreateStoreManagementService());
 
             // View Models
+            services.AddTransient<TransactionPageViewModel>();
             services.AddTransient<UserPageViewModel>();
+            services.AddTransient<AdminPageViewModel>();
+            services.AddTransient<PurchasePageViewModel>();
             services.AddTransient<LoginPageViewModel>();
             services.AddTransient<MainPageViewModel>();
 
             // Pages
+            services.AddTransient<TransactionPage>();
             services.AddTransient<UserPage>();
+            services.AddTransient<AdminPage>();
+            services.AddTransient<PurchasePage>();
             services.AddTransient<LoginPage>();
             services.AddTransient<MainPage>();
 

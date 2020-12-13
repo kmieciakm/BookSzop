@@ -31,6 +31,12 @@ namespace DatabaseManager.Models
             }
         }
         [NotMapped]
+        public string FullName {
+            get {
+                return $"{FirstName} {LastName}";
+            }
+        }
+        [NotMapped]
         public List<Event> Refunds
         {
             get
@@ -42,12 +48,11 @@ namespace DatabaseManager.Models
         public List<Book> OwnedBooks {
             get
             {
-                return Purchases
+                return Purchases?
                     .Select(purchase => purchase.OrderedBooks)
-                    .Except(
-                        Refunds.Select(refund => refund.OrderedBooks))
                     .SelectMany(orders => orders)
                     .Select(order => order.BookBundle.Book)
+                    .Distinct()
                     .ToList();
             }
         }

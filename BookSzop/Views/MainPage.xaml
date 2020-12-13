@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:BookSzop.Views"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="BookSzop">
+      Title="BookSzop"
+      Background="#222">
     
     <Grid>
         <Grid.ColumnDefinitions>
@@ -18,16 +19,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+        <Label Grid.Column="0" Grid.Row="0" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
                Content="{Binding Title}" FontSize="30" />
 
         <Image Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"
                 Width="400" Height="400" Margin="20"
                 Source="..\Resources\szop.png" Panel.ZIndex="5"/>
 
-        <Button Grid.Column="0" Grid.Row="2" MaxWidth="200" MaxHeight="40"
+        <Button Grid.Column="0" Grid.Row="2" MaxWidth="200" MaxHeight="40" Cursor="Hand"
                 Name="continueBtn" Command="{Binding ContinueButtonCommand}"
-                Background="Pink" BorderBrush="Black" BorderThickness="1">
+                Background="White" BorderBrush="Black" BorderThickness="1">
             Continue
         </Button>
     </Grid>

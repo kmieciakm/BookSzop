@@ -14,6 +14,7 @@ namespace DatabaseManager.Models
         public string Title { get; set; }
         [MaxLength(128)]
         public string Author { get; set; }
+        public bool IsAvailable { get; set; } = true;
 
         public ICollection<BookBundle> BookBundles { get; set; }
 
@@ -22,7 +23,7 @@ namespace DatabaseManager.Models
             return obj is Book book &&
                    Title == book.Title &&
                    Author == book.Author &&
-                   BookBundles.SequenceEqual(book.BookBundles);
+                   EqualityComparer<ICollection<BookBundle>>.Default.Equals(BookBundles, book.BookBundles);
         }
 
         public override int GetHashCode()

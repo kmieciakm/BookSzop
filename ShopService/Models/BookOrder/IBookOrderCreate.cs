@@ -1,4 +1,4 @@
-﻿namespace ShopService.Models
+﻿namespace ShopService.Models.BookOrderModel
 {
     public interface IBookOrderCreate
     {

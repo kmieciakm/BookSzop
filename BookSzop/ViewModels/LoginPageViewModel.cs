@@ -1,10 +1,11 @@
 ﻿using BookSzop.Commands;
 using BookSzop.Models;
+using BookSzop.Models.PagesModels;
 using BookSzop.Utils;
 using BookSzop.ViewModels.Base;
 using BookSzop.Views;
 using ShopService.Authentication;
-using ShopService.Models;
+using ShopService.Models.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,17 +17,20 @@ namespace BookSzop.ViewModels
     {
         private IAuthenticationManager _AuthenticationManager { get; }
         private UserPage _UserPage { get; }
+        private AdminPage _AdminPage { get; }
 
-        public LoginPageViewModel(IAuthenticationManager authenticationManager, UserPage userPage)
+        public LoginPageViewModel(IAuthenticationManager authenticationManager, UserPage userPage, AdminPage adminPage)
         {
             _AuthenticationManager = authenticationManager;
             _UserPage = userPage;
+            _AdminPage = adminPage;
             _loginModel = new LoginModel();
             _userCreateModel = new UserCreate();
         }
 
         #region Login
         private LoginModel _loginModel;
+
         public string Login {
             get => _loginModel.Login;
             set {
@@ -60,8 +64,16 @@ namespace BookSzop.ViewModels
                 var userId = _AuthenticationManager.GetUserIdByLogin(_loginModel.Login);
                 if (loginCorrect && userId.HasValue)
                 {
+                    var isAdmin = _AuthenticationManager.CheckAdminAccess(userId.Value);
                     SessionHelper.SaveUserSession(userId.Value);
-                    NavigationHelper.Navigate(_UserPage);
+                    if (isAdmin)
+                    {
+                        NavigationHelper.Navigate(_AdminPage);
+                    }
+                    else
+                    {
+                        NavigationHelper.Navigate(_UserPage);
+                    }
                 }
                 else
                 {
@@ -73,6 +85,7 @@ namespace BookSzop.ViewModels
 
         #region Register
         private IUserCreate _userCreateModel;
+
         public string Firstname
         {
             get => _userCreateModel.FirstName;

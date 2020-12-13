@@ -6,15 +6,68 @@
       xmlns:local="clr-namespace:BookSzop.Views"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="UserPage">
+      Title="UserPage"
+      Background="#222">
 
-    <Grid>
-        <Label Margin="10" Content="{Binding WelcomeMessage}" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+    <Grid Margin="0,0,0,10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="6*"/>
+        </Grid.RowDefinitions>
 
-        <Button Height="30" Margin="0" Padding="5" HorizontalAlignment="Right" VerticalAlignment="Top"
-                    Command="{Binding LogoutCommand}"
-                    Background="Black" Foreground="White">
+        <Grid.Resources>
+            <Style x:Key="LabelHide" TargetType="{x:Type Label}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=SelectedItem, Mode=OneWay, ElementName=BooksListBox}" Value="{x:Null}">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
+
+        <Label Grid.Column="1" Margin="10" Content="{Binding WelcomeMessage}" Foreground="White" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Button Grid.Column="1" Height="30" Margin="0" Padding="20,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Top"
+                    Command="{Binding LogoutCommand}" BorderThickness="0" Cursor="Hand"
+                    Background="White" Foreground="Black">
             Logout
         </Button>
+
+        <StackPanel Orientation="Horizontal">
+            <Button Width="200" Height="30" Margin="10" Cursor="Hand"
+                        Command="{Binding PurchaseBooksCommand}"
+                        Background="White" BorderBrush="Black" BorderThickness="0">
+                Purchase books
+            </Button>
+            <Button Width="200" Height="30" Margin="10" Cursor="Hand"
+                        Command="{Binding TransactionsCommand}"
+                        Background="White" BorderBrush="Black" BorderThickness="0">
+                My transactions
+            </Button>
+        </StackPanel>
+
+        <ListBox Name="BooksListBox" Margin="10" Grid.Row="1" ItemsSource="{Binding Books, Mode=OneWay}" SelectionMode="Single">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock FontSize="18" Foreground="Black" Text="{Binding Title}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Border Grid.Row="1" Grid.Column="2" Background="White" Margin="10">
+            <StackPanel Margin="10">
+                <Label Content="Title: " Foreground="Black" FontSize="18" Style="{Binding Source={StaticResource LabelHide}}"/>
+                <TextBlock FontSize="18" FontWeight="Bold" Foreground="Black" Text="{Binding Path=SelectedItem.Title, Mode=OneWay, ElementName=BooksListBox}" />
+                <Label Content="Author: " Foreground="Black" FontSize="18" Style="{Binding Source={StaticResource LabelHide}}"/>
+                <TextBlock FontSize="18" FontWeight="Bold" Foreground="Black" Text="{Binding Path=SelectedItem.Author, Mode=OneWay, ElementName=BooksListBox}" />
+                <Label Content="Owned copies: " Foreground="Black" FontSize="18" Style="{Binding Source={StaticResource LabelHide}}"/>
+                <TextBlock FontSize="18" FontWeight="Bold" Foreground="Black" Text="{Binding Path=SelectedItem.Amount, Mode=OneWay, ElementName=BooksListBox}" />
+            </StackPanel>
+        </Border>
     </Grid>
 </Page>

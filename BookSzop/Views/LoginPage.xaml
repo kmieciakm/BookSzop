@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:BookSzop.Views"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="BookSzop - Login">
+      Title="BookSzop - Login"
+      Background="#222">
 
     <Grid Margin="40">
         <Grid.ColumnDefinitions>
@@ -19,48 +20,45 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center">
-            <Label Margin="10" Content="Login" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label Content="Login" FontSize="12" HorizontalAlignment="Center"/>
+            <Label Content="Login" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
             <TextBox MaxWidth="250" Height="30" Margin="5"
                     Text="{Binding Login}" TextAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
-            <Label Content="Password" FontSize="12" HorizontalAlignment="Center"/>
+            <Label Content="Password" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
             <TextBox MaxWidth="250" Height="30" Margin="5"
                     Text="{Binding Password}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"
                     FontFamily="..\Resources\#password"/>
-            <Button MaxWidth="200" Height="30" Margin="10"
-                    Command="{Binding LoginCommand}"
-                    Background="Pink" BorderBrush="Black" BorderThickness="1">
+            <Button MaxWidth="200" Height="40" Margin="20"
+                    Command="{Binding LoginCommand}" Cursor="Hand"
+                    Background="White" BorderBrush="Black" BorderThickness="1">
                 Login
             </Button>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center">
-            <Label Content="Register" FontSize="25" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label Content="Firstname" FontSize="12" HorizontalAlignment="Center"/>
+            <Label Content="Firstname" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
             <TextBox MaxWidth="250" Height="30" Margin="5"
                     Text="{Binding Firstname}" TextAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
-            <Label Content="Lastname" FontSize="12" HorizontalAlignment="Center"/>
+            <Label Content="Lastname" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
             <TextBox MaxWidth="250" Height="30" Margin="5"
                     Text="{Binding Lastname}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
-            <Label Content="Login" FontSize="12" HorizontalAlignment="Center"/>
+            <Label Content="Login" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
             <TextBox MaxWidth="250" Height="30" Margin="5"
                     Text="{Binding LoginRegister}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
-            <Label Content="Password" FontSize="12" HorizontalAlignment="Center"/>
+            <Label Content="Password" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
             <TextBox MaxWidth="250" Height="30" Margin="5"
                     Text="{Binding PasswordRegister}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"
                     FontFamily="..\Resources\#password"/>
-            <Label Content="Confirm Password" FontSize="12" HorizontalAlignment="Center"/>
+            <Label Content="Confirm Password" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
             <TextBox MaxWidth="250" Height="30" Margin="5"
                     Text="{Binding ConfirmPasswordRegister}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"
                     FontFamily="..\Resources\#password"/>
-            <Button MaxWidth="200" Height="30" Margin="10"
-                    Command="{Binding RegisterCommand}"
-                    Background="Pink" BorderBrush="Black" BorderThickness="1">
+            <Button MaxWidth="200" Height="40" Margin="20"
+                    Command="{Binding RegisterCommand}" Cursor="Hand"
+                    Background="White" BorderBrush="Black" BorderThickness="1">
                 Register
             </Button>
         </StackPanel>
 
-        <Border Background="#474954" Grid.Row="1" Grid.ColumnSpan="2"/>
         <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"
                Content="{Binding Message}" Foreground="#fff" FontSize="20" />
     </Grid>
