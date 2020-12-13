@@ -109,8 +109,6 @@
             </ListView.ItemContainerStyle>
         </ListView>
 
-
-
         <ListView Name="RefundsBox" ItemsSource="{Binding Refunds}" Margin="10,8,10,10" Grid.Column="1" Grid.Row="1">
             <ListView.View>
                 <GridView>
@@ -178,7 +176,6 @@
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
-
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="FontSize" Value="15" />
@@ -190,6 +187,7 @@
         </ListView>
         
         <Button Content="Place refund" HorizontalAlignment="Center"  Grid.Row="2" VerticalAlignment="Center" Height="30" Width="120"
+                BorderThickness="0" Cursor="Hand" Background="White" Foreground="Black"
                 CommandParameter="{Binding Path=SelectedItem.EventId, Mode=OneWay, ElementName=OrdersBox}" Command="{Binding PlaceRefundCommand}"/>
     </Grid>
 </Page>
