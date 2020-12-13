@@ -1,4 +1,7 @@
 ﻿using BookSzop.Commands;
+using BookSzop.Dailogs;
+using BookSzop.Models;
+using BookSzop.Models.PagesModels;
 using BookSzop.Utils;
 using BookSzop.ViewModels.Base;
 using ShopService.Models.BookBundleModel;
@@ -18,25 +21,85 @@ namespace BookSzop.ViewModels
         private INavigationHelper _navigation { get; }
         private IStoreManagementService _storeManagementService { get; }
 
-        public AdminPageViewModel(INavigationHelper navigation, IStoreManagementService storeManagementService)
+        private AdminStoreModel _adminModel { get; }
+
+        private IDialog<Book> _bookDialog { get; }
+        private IDialog<BookBundle> _bookBundleDialog { get; }
+
+        public AdminPageViewModel(INavigationHelper navigation, IStoreManagementService storeManagementService,
+            IDialog<Book> bookDialog, IDialog<BookBundle> bookBundleDialog)
         {
             _navigation = navigation;
             _storeManagementService = storeManagementService;
+            _adminModel = new AdminStoreModel();
+            _bookDialog = bookDialog;
+            _bookBundleDialog = bookBundleDialog;
 
             UpdateStoreData();
         }
 
-        private ObservableCollection<IBook> _Books { get; } = new ObservableCollection<IBook>();
-        private ObservableCollection<IBookBundle> _BookBundles { get; } = new ObservableCollection<IBookBundle>();
-
-        public ObservableCollection<IBook> Books { get => _Books; }
-        public ObservableCollection<IBookBundle> BookBundles { get => _BookBundles; }
+        public string Message
+        {
+            get => _adminModel.ErrorMessage;
+            set
+            {
+                _adminModel.ErrorMessage = value;
+                OnPropertyChanged(nameof(Message));
+            }
+        }
+        public ObservableCollection<IBook> Books { get => _adminModel.Books; }
+        public ObservableCollection<IBookBundle> BookBundles { get => _adminModel.BookBundles; }
         public ICommand LogoutCommand
         {
             get => new RelayCommand(param =>
             {
                 SessionHelper.ClearSession();
                 _navigation.NavigateToLoginPage();
+            });
+        }
+        public ICommand AddBookCommand
+        {
+            get => new RelayCommand(param =>
+            {
+                Book newBook = new Book();
+                _bookDialog.Show(newBook, () =>
+                {
+                    if (newBook != null)
+                    {
+                        try
+                        {
+                            _storeManagementService.RegisterBook(newBook);
+                            UpdateStoreData();
+                        }
+                        catch (StoreManagementException storeExc)
+                        {
+                            Message = storeExc.Message;
+                        }
+                    }
+                });
+            });
+        }
+        public ICommand EditBookCommand
+        {
+            get => new RelayCommand(bookId =>
+            {
+                IBook book = Books.First(book => book.Id == (int)bookId);
+                Book bookToUpdate = new Book(book);
+                _bookDialog.Show(bookToUpdate, () =>
+                {
+                    if (bookToUpdate != null)
+                    {
+                        try
+                        {
+                            _storeManagementService.UpdateBook(bookToUpdate);
+                            UpdateStoreData();
+                        }
+                        catch (StoreManagementException storeExc)
+                        {
+                            Message = storeExc.Message;
+                        }
+                    }
+                });
             });
         }
         public ICommand DeleteBookCommand
@@ -54,15 +117,60 @@ namespace BookSzop.ViewModels
                 }
                 catch (StoreManagementException storeExc)
                 {
-                    
+                    Message = storeExc.Message;
                 }
+            });
+        }
+        public ICommand AddBookBundleCommand
+        {
+            get => new RelayCommand(param =>
+            {
+                BookBundle newBookBundle = new BookBundle();
+                _bookBundleDialog.Show(newBookBundle, () =>
+                {
+                    if (newBookBundle != null)
+                    {
+                        try
+                        {
+                            _storeManagementService.RegisterBookBundle(newBookBundle);
+                            UpdateStoreData();
+                        }
+                        catch (StoreManagementException storeExc)
+                        {
+                            Message = storeExc.Message;
+                        }
+                    }
+                });
+            });
+        }
+        public ICommand EditBookBundleCommand
+        {
+            get => new RelayCommand(bundleId =>
+            {
+                IBookBundle bundle = BookBundles.First(bundle => bundle.Id == (int)bundleId);
+                BookBundle bundleToUpdate = new BookBundle(bundle);
+                _bookBundleDialog.Show(bundleToUpdate, () =>
+                {
+                    if (bundleToUpdate != null)
+                    {
+                        try
+                        {
+                            _storeManagementService.UpdateBookBundle(bundleToUpdate);
+                            UpdateStoreData();
+                        }
+                        catch (StoreManagementException storeExc)
+                        {
+                            Message = storeExc.Message;
+                        }
+                    }
+                });
             });
         }
         public ICommand DeleteBookBundleCommand
         {
             get => new RelayCommand(bundleId =>
             {
-                
+
                 try
                 {
                     _storeManagementService.RemoveBookBundle((int)bundleId);
@@ -72,7 +180,7 @@ namespace BookSzop.ViewModels
                 }
                 catch (StoreManagementException storeExc)
                 {
-
+                    Message = storeExc.Message;
                 }
             });
         }

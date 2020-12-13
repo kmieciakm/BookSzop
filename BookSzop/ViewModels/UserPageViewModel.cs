@@ -3,7 +3,6 @@ using BookSzop.Models;
 using BookSzop.Models.PagesModels;
 using BookSzop.Utils;
 using BookSzop.ViewModels.Base;
-using BookSzop.Views;
 using ShopService.UserServ;
 using System;
 using System.Collections.Generic;
@@ -19,19 +18,17 @@ namespace BookSzop.ViewModels
     {
         private INavigationHelper _navigation { get; }
         private IUserService _userService { get; }
-        private PurchasePage _purchasePage { get; }
-        private TransactionPage _transactionPage { get; }
 
         private UserModel _UserModel { get; }
 
-        public UserPageViewModel(INavigationHelper navigation, IUserService userService, PurchasePage purchasePage, TransactionPage transactionPage)
+        public UserPageViewModel(INavigationHelper navigation, IUserService userService)
         {
             SessionHelper.SessionChanged += UpdateUserData;
             _navigation = navigation;
             _userService = userService;
-            _purchasePage = purchasePage;
-            _transactionPage = transactionPage;
             _UserModel = new UserModel();
+
+            UpdateUserData(this, new EventArgs());
         }
 
         public string WelcomeMessage
@@ -51,14 +48,14 @@ namespace BookSzop.ViewModels
         {
             get => new RelayCommand(param =>
             {
-                NavigationHelper.Navigate(_purchasePage);
+                _navigation.NavigateToPurchasePage();
             });
         }
         public ICommand TransactionsCommand
         {
             get => new RelayCommand(param =>
             {
-                NavigationHelper.Navigate(_transactionPage);
+                _navigation.NavigateToTransactionPage();
             });
         }
 

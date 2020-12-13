@@ -38,6 +38,11 @@ namespace ShopService.StoreManagement
                 .ToList();
         }
 
+        public bool BookExists(int bookId)
+        {
+            return _BookRepository.Exists(bookId);
+        }
+
         public void RegisterBook(IBook book)
         {
             if (_BookRepository.Exists(book.Id))
@@ -56,6 +61,24 @@ namespace ShopService.StoreManagement
             if (!registerBookResult)
             {
                 throw new StoreManagementException($"Book registration impossible, an unexpected error occurred.");
+            }
+        }
+
+        public void UpdateBook(IBook book)
+        {
+            var bookToUpdate = _BookRepository.FindById(book.Id);
+            if (bookToUpdate == null)
+            {
+                throw new StoreManagementException($"Book update impossible, not such book of id {book.Id} exists.");
+            }
+
+            bookToUpdate.Author = book.Author;
+            bookToUpdate.Title = book.Title;
+
+            var updateResult = _BookRepository.Update(bookToUpdate);
+            if (!updateResult)
+            {
+                throw new StoreManagementException($"Book impossible to update, unknown error occurred.");
             }
         }
 
@@ -98,6 +121,32 @@ namespace ShopService.StoreManagement
             if (!registerBookBundleResult)
             {
                 throw new StoreManagementException($"{nameof(bookBundle)} registration impossible, an unexpected error occurred.");
+            }
+        }
+
+        public void UpdateBookBundle(IBookBundle bundle)
+        {
+            var bundleToUpdate = _BookBundleRepository.FindById(bundle.Id);
+            if (bundleToUpdate == null)
+            {
+                throw new StoreManagementException($"Book update impossible, not such bundle of id {bundle.Id} exists.");
+            }
+
+            var bookInBundle = _BookRepository.FindById(bundle.BookId);
+            if (bookInBundle == null)
+            {
+                throw new StoreManagementException($"Book edit impossible, not such book of id {bundle.BookId}.");
+            }
+
+            bundleToUpdate.BookId = bookInBundle.Id;
+            bundleToUpdate.Book = bookInBundle;
+            bundleToUpdate.Quantity = bundle.Quantity;
+            bundleToUpdate.Price = bundle.Price;
+
+            var updateResult = _BookBundleRepository.Update(bundleToUpdate);
+            if (!updateResult)
+            {
+                throw new StoreManagementException($"Bundle impossible to update, unknown error occurred.");
             }
         }
 

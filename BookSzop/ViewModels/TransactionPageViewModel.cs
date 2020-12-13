@@ -1,5 +1,4 @@
 ﻿using BookSzop.Commands;
-using BookSzop.Models;
 using BookSzop.Models.PagesModels;
 using BookSzop.Utils;
 using BookSzop.ViewModels.Base;
@@ -18,15 +17,29 @@ namespace BookSzop.ViewModels
     public class TransactionPageViewModel : ViewModelBase
     {
         private IPurchaseService _purchaseService { get; }
-        private IStoreManagementService _storeManagementService { get; }
         private TransactionsModel _transactionsModel { get; }
 
         public ObservableCollection<IEvent> Orders { get => _transactionsModel.Orders; }
         public ObservableCollection<IEvent> Refunds { get => _transactionsModel.Refunds; }
 
+        public TransactionPageViewModel(IPurchaseService purchaseService)
+        {
+            SessionHelper.SessionChanged += UpdateTransactionData;
+            _purchaseService = purchaseService;
+            _transactionsModel = new TransactionsModel();
 
+            UpdateTransactionData(this, new EventArgs());
+        }
 
-
+        public string Message
+        {
+            get => _transactionsModel.ErrorMessage;
+            set
+            {
+                _transactionsModel.ErrorMessage = value;
+                OnPropertyChanged(nameof(Message));
+            }
+        }
         public ICommand BackCommand
         {
             get => new RelayCommand(param =>
@@ -35,17 +48,6 @@ namespace BookSzop.ViewModels
                 NavigationHelper.NavigationService.GoBack();
             });
         }
-
-        public TransactionPageViewModel(IPurchaseService purchaseService, IStoreManagementService storeManagementService)
-        {
-            SessionHelper.SessionChanged += UpdateTransactionData;
-            _purchaseService = purchaseService;
-            _storeManagementService = storeManagementService;
-            _transactionsModel = new TransactionsModel();
-
-        }
-
-
         public ICommand PlaceRefundCommand
         {
             get => new RelayCommand(eventId =>
@@ -70,16 +72,6 @@ namespace BookSzop.ViewModels
             });
         }
 
-        public string Message
-        {
-            get => _transactionsModel.ErrorMessage;
-            set
-            {
-                _transactionsModel.ErrorMessage = value;
-                OnPropertyChanged(nameof(Message));
-            }
-        }
-
         public void UpdateTransactionData(object sender, EventArgs e)
         {
             _transactionsModel.UserId = SessionHelper.GetSessionUserId();
@@ -100,8 +92,5 @@ namespace BookSzop.ViewModels
                 .ToList()
                 .ForEach(refund => _transactionsModel.Refunds.Add(refund));
         }
-
-
-
     }
 }
