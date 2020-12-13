@@ -8,14 +8,13 @@ using ShopService.UserServ;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using UnitTests_MockDatabase;
 
 namespace ShopService
 {
     public static class ServiceFactory
     {
         public static IServiceProvider databaseServiceProvider { get; } = new ServiceCollection()
-            .AddSingleton(provider => new InMemoryDbFactory().CreateDbContext())
+            .AddSingleton(provider => DbFactory.CreateSQLiteDb())
             .AddSingleton(provider => DbFactory.CreateUserRepository(provider.GetRequiredService<DbContextBase>()))
             .AddSingleton(provider => DbFactory.CreateBookRepository(provider.GetRequiredService<DbContextBase>()))
             .AddSingleton(provider => DbFactory.CreateBookBundleRepository(provider.GetRequiredService<DbContextBase>()))
