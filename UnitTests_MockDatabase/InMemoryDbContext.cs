@@ -63,7 +63,7 @@ namespace UnitTests_MockDatabase
                 {
                     Id = 1,
                     BookId = 1,
-                    Book = Catalogs.FirstOrDefault(book => book.Id == 1), 
+                    Book = Catalogs.FirstOrDefault(book => book.Id == 1),
                     Price = 42,
                     Quantity = 120
                 },
@@ -105,11 +105,6 @@ namespace UnitTests_MockDatabase
 
         private void SeedEvents()
         {
-            var orderedAndRefundBooks = new List<BookOrder>()
-            {
-                Orders.FirstOrDefault(order => order.Id == 1),
-                Orders.FirstOrDefault(order => order.Id == 2)
-            };
 
             var events = new List<Event>()
             {
@@ -119,7 +114,12 @@ namespace UnitTests_MockDatabase
                     UserId = 10,
                     User = new User() { Id = 10 },
                     EventType = EventType.Purchase,
-                    OrderedBooks = orderedAndRefundBooks
+                    OrderedBooks = new List<BookOrder>()
+                    {
+                        Orders.FirstOrDefault(order => order.Id == 1),
+                        Orders.FirstOrDefault(order => order.Id == 2)
+                    },
+                    PlacedDate = DateTime.UtcNow
                 },
                 new Event()
                 {
@@ -127,7 +127,12 @@ namespace UnitTests_MockDatabase
                     UserId = 20,
                     User = new User() { Id = 20 },
                     EventType = EventType.Refund,
-                    OrderedBooks = orderedAndRefundBooks
+                    OrderedBooks = new List<BookOrder>()
+                    {
+                        Orders.FirstOrDefault(order => order.Id == 1),
+                        Orders.FirstOrDefault(order => order.Id == 2)
+                    },
+                    PlacedDate = DateTime.UtcNow
                 },
                 new Event()
                 {
@@ -137,8 +142,10 @@ namespace UnitTests_MockDatabase
                     EventType = EventType.Purchase,
                     OrderedBooks = new List<BookOrder>()
                     {
-                        Orders.FirstOrDefault(order => order.Id == 1)
-                    }
+                        Orders.FirstOrDefault(order => order.Id == 1),
+                        Orders.FirstOrDefault(order => order.Id == 2)
+                    },
+                    PlacedDate = DateTime.UtcNow
                 },
                 new Event()
                 {
@@ -149,7 +156,8 @@ namespace UnitTests_MockDatabase
                     OrderedBooks = new List<BookOrder>()
                     {
                         Orders.FirstOrDefault(order => order.Id == 2)
-                    }
+                    },
+                    PlacedDate = DateTime.UtcNow
                 }
             };
             Events.AddRange(events);

@@ -9,6 +9,7 @@ namespace BookSzop.Models
     class TransactionsModel
     {
         public int? UserId { get; set; }
+        public string ErrorMessage { get; set; }
         public ObservableCollection<IEvent> Orders { get; } = new ObservableCollection<IEvent>();
         public ObservableCollection<IEvent> Refunds { get; } = new ObservableCollection<IEvent>();
     }

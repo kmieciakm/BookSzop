@@ -52,19 +52,38 @@ namespace BookSzop.ViewModels
             {
                 try
                 {
-                    _purchaseService.PlaceRefund(_transactionsModel.UserId.Value, (int)eventId);
-                    UpdateTransactionData(this, new EventArgs());
+                    if (eventId == null)
+                    {
+                        Message = "Choose order which you want to refund";
+                    }
+                    else
+                    {
+                        _purchaseService.PlaceRefund(_transactionsModel.UserId.Value, (int)eventId);
+                        UpdateTransactionData(this, new EventArgs());
+                    }
+
                 }
                 catch (PurchaseException purchaseExc)
                 {
-                    throw purchaseExc;
+                    Message = purchaseExc.Message;
                 }
             });
+        }
+
+        public string Message
+        {
+            get => _transactionsModel.ErrorMessage;
+            set
+            {
+                _transactionsModel.ErrorMessage = value;
+                OnPropertyChanged(nameof(Message));
+            }
         }
 
         public void UpdateTransactionData(object sender, EventArgs e)
         {
             _transactionsModel.UserId = SessionHelper.GetSessionUserId();
+            if (!_transactionsModel.UserId.HasValue) return;
 
             _transactionsModel.Orders.Clear();
             _transactionsModel.Refunds.Clear();
