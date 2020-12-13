@@ -39,7 +39,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="GridViewColumnHeader">
-                                        <Border BorderBrush="Gray" BorderThickness="0 0 0 2" Padding="0 5 25 5">
+                                        <Border BorderBrush="Gray" BorderThickness="0 0 0 2" Padding="5 5 25 5">
                                             <TextBox Text="{TemplateBinding Content}" BorderThickness="0" Focusable="False"></TextBox>
                                         </Border>
                                     </ControlTemplate>
@@ -54,17 +54,45 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Amount of books" Width="150">
+                    <GridViewColumn Header="Ordered books" Width="300">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding BookAmount}"/>
+                                <ListBox ItemsSource="{Binding OrderedBooks}">
+                                    <ListBox.Style>
+                                        <Style TargetType="ListBox">
+                                            <Setter Property="BorderThickness" Value="0"/>
+                                            <Setter Property="Padding" Value="0"/>
+                                            <Setter Property="Margin" Value="0"/>
+                                        </Style>
+                                    </ListBox.Style>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Title}"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="ListBoxItem">
+                                            <Setter Property="Padding" Value="0"/>
+                                            <Setter Property="Margin" Value="0"/>
+                                            <Setter Property="Focusable" Value="False"/>
+                                            <Setter Property="IsHitTestVisible" Value="False"/>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                </ListBox>                             
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Bill" Width="130">
+                    <GridViewColumn Header="Total" Width="65">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Bill}"/>
+                                <TextBlock Text="{Binding BookAmount}" Padding="3 0 0 0"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Bill" Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Bill}" Padding="3 0 0 0"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -75,6 +103,8 @@
                 <Style TargetType="ListViewItem">
                     <Setter Property="FontSize" Value="15" />
                     <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="BorderThickness" Value="0 0 0 1"/>
+                    <Setter Property="BorderBrush" Value="Gray"/>
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
@@ -89,7 +119,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="GridViewColumnHeader">
-                                        <Border BorderBrush="Gray" BorderThickness="0 0 0 2" Padding="0 5 25 5">
+                                        <Border BorderBrush="Gray" BorderThickness="0 0 0 2" Padding="5 5 25 5">
                                             <TextBox Text="{TemplateBinding Content}" BorderThickness="0" Focusable="False"></TextBox>
                                         </Border>
                                     </ControlTemplate>
@@ -104,27 +134,57 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Amount of books" Width="150">
+                    <GridViewColumn Header="Ordered books" Width="300">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding BookAmount}"/>
+                                <ListBox ItemsSource="{Binding OrderedBooks}">
+                                    <ListBox.Style>
+                                        <Style TargetType="ListBox">
+                                            <Setter Property="Padding" Value="0"/>
+                                            <Setter Property="Margin" Value="0"/>
+                                            <Setter Property="BorderThickness" Value="0"/>
+                                        </Style>
+                                    </ListBox.Style>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Title}"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="ListBoxItem">
+                                            <Setter Property="Padding" Value="0"/>
+                                            <Setter Property="Margin" Value="0"/>
+                                            <Setter Property="Focusable" Value="False"/>
+                                            <Setter Property="IsHitTestVisible" Value="False"/>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                </ListBox>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Bill" Width="130">
+                    <GridViewColumn Header="Total" Width="65">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Bill}"/>
+                                <TextBlock Text="{Binding BookAmount}" Padding="3 0 0 0"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Bill" Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Bill}" Padding="3 0 0 0"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
-            
+
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="FontSize" Value="15" />
                     <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="BorderThickness" Value="0 0 0 1"/>
+                    <Setter Property="BorderBrush" Value="Gray"/>
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
