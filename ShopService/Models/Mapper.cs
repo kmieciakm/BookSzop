@@ -58,6 +58,7 @@ namespace ShopService.Models
         {
             return new Event()
             {
+                EventId = @event.Id,
                 Bill = @event.Bill,
                 UserId = @event.UserId,
                 PlacedDate = @event.PlacedDate,

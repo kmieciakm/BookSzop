@@ -20,7 +20,9 @@ namespace BookSzop.ViewModels
         private IPurchaseService _purchaseService { get; }
         private IStoreManagementService _storeManagementService { get; }
         private TransactionsModel _transactionsModel { get; }
-        public ObservableCollection<IEvent> Transactions { get => _transactionsModel.Transactions; }
+
+        public ObservableCollection<IEvent> Orders { get => _transactionsModel.Orders; }
+        public ObservableCollection<IEvent> Refunds { get => _transactionsModel.Refunds; }
 
 
 
@@ -44,18 +46,42 @@ namespace BookSzop.ViewModels
         }
 
 
+        public ICommand PlaceRefundCommand
+        {
+            get => new RelayCommand(eventId =>
+            {
+                try
+                {
+                    _purchaseService.PlaceRefund(_transactionsModel.UserId.Value, (int)eventId);
+                    UpdateTransactionData(this, new EventArgs());
+                }
+                catch (PurchaseException purchaseExc)
+                {
+                    throw purchaseExc;
+                }
+            });
+        }
+
         public void UpdateTransactionData(object sender, EventArgs e)
         {
-            int? userId = SessionHelper.GetSessionUserId();
+            _transactionsModel.UserId = SessionHelper.GetSessionUserId();
 
-            _transactionsModel.Transactions.Clear();
+            _transactionsModel.Orders.Clear();
+            _transactionsModel.Refunds.Clear();
 
+            // Updates transactions list for logged in user
             _purchaseService
-                .GetUserPurchases((int)userId)
+                .GetUserPurchases((int)_transactionsModel.UserId)
                 .ToList()
-                .ForEach(purchase => _transactionsModel.Transactions.Add(purchase));
+                .ForEach(purchase => _transactionsModel.Orders.Add(purchase));
 
+            // Updates refunds list for logged in user
+            _purchaseService
+                .GetUserRefunds((int)_transactionsModel.UserId)
+                .ToList()
+                .ForEach(refund => _transactionsModel.Refunds.Add(refund));
         }
+
 
 
     }

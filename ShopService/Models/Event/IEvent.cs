@@ -7,6 +7,7 @@ namespace ShopService.Models.EventModel
 {
     public interface IEvent
     {
+        int EventId { get; set; }
         DateTime PlacedDate { get; set; }
         int UserId { get; set; }
         IEnumerable<IBook> OrderedBooks { get; set; }

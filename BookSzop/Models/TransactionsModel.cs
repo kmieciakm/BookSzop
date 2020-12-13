@@ -8,6 +8,8 @@ namespace BookSzop.Models
 {
     class TransactionsModel
     {
-        public ObservableCollection<IEvent> Transactions { get; } = new ObservableCollection<IEvent>();
+        public int? UserId { get; set; }
+        public ObservableCollection<IEvent> Orders { get; } = new ObservableCollection<IEvent>();
+        public ObservableCollection<IEvent> Refunds { get; } = new ObservableCollection<IEvent>();
     }
 }
