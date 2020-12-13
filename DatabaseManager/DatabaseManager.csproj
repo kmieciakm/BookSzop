@@ -34,7 +34,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="szopDatabase.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
 
