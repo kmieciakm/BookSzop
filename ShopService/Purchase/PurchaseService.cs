@@ -140,16 +140,12 @@ namespace ShopService.Purchase
             {
                 throw new PurchaseException($"Refund unavailable, user does not have order of id {eventId}");
             };
+            var oldDate = purchase.PlacedDate;
 
-            var refund = new DatabaseManager.Models.Event()
-            {
-                EventType = EventType.Refund,
-                PlacedDate = DateTime.UtcNow,
-                UserId = userId,
-                OrderedBooks = purchase.OrderedBooks
-            };
+            purchase.EventType = EventType.Refund;
+            purchase.PlacedDate = DateTime.UtcNow;
 
-            var refundPlacedResult = _EventsRepository.Create(refund);
+            var refundPlacedResult = _EventsRepository.Update(purchase);
 
             if (!refundPlacedResult)
             {
@@ -168,7 +164,9 @@ namespace ShopService.Purchase
             var bundlesUpdateResult = _BookBundleRepository.UpdateBundles(bundles);
             if (!bundlesUpdateResult)
             {
-                _EventsRepository.Delete(refund);
+                purchase.EventType = EventType.Purchase;
+                purchase.PlacedDate = oldDate;
+                _EventsRepository.Update(purchase);
                 throw new PurchaseException($"Refund unavailable, an unexpected error occurred.");
             }
         }

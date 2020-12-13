@@ -50,8 +50,6 @@ namespace DatabaseManager.Models
             {
                 return Purchases?
                     .Select(purchase => purchase.OrderedBooks)
-                    .Except(
-                        Refunds.Select(refund => refund.OrderedBooks))
                     .SelectMany(orders => orders)
                     .Select(order => order.BookBundle.Book)
                     .Distinct()
