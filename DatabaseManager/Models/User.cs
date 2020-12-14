@@ -22,7 +22,7 @@ namespace DatabaseManager.Models
         public string Password { get; set; }
         public bool AdminPermission { get; set; }
 
-        public ICollection<Event> Events { get; set; }
+        public ICollection<Event> Events { get; set; } = new List<Event>();
 
         [NotMapped]
         public List<Event> Purchases {

@@ -60,7 +60,6 @@ namespace ShopService.Models
             {
                 EventId = @event.Id,
                 Bill = @event.Bill,
-                UserId = @event.UserId,
                 PlacedDate = @event.PlacedDate,
                 BookAmount = @event.BookAmount,
                 OrderedBooks = @event.OrderedBooks

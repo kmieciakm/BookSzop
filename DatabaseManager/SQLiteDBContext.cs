@@ -15,7 +15,6 @@ namespace DatabaseManager
             var dbPath = Path.Combine(Path.GetDirectoryName(appPath), "szopDatabase.db");
             options.UseSqlite("Data Source =" + dbPath);
         }
-             
 
         public override void SeedData()
         {
