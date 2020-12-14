@@ -45,29 +45,40 @@ namespace ShopService.Purchase
 
         public IEnumerable<IEvent> GetUserPurchases(int userId)
         {
-            return _EventsRepository
-               .FindAll()
-               .Where(@event =>
-                    @event.EventType == EventType.Purchase &&
-                    @event.UserId == userId)
-               .Select(@event => Mapper.DatabaseEventToServiceEvent(@event))
-               .ToList<IEvent>();
+            var user = _UserRepository
+                .FindById(userId);
+
+            if (user == null)
+            {
+                return new List<IEvent>();
+            }
+
+            return user?
+                .Purchases
+                .Select(@event => Mapper.DatabaseEventToServiceEvent(@event))
+                .ToList<IEvent>();
         }
 
         public IEnumerable<IEvent> GetUserRefunds(int userId)
         {
-            return _EventsRepository
-               .FindAll()
-               .Where(@event =>
-                    @event.EventType == EventType.Refund &&
-                    @event.UserId == userId)
-               .Select(@event => Mapper.DatabaseEventToServiceEvent(@event))
-               .ToList<IEvent>();
+            var user = _UserRepository
+                .FindById(userId);
+
+            if (user == null)
+            {
+                return new List<IEvent>();
+            }
+
+            return user
+                .Refunds
+                .Select(@event => Mapper.DatabaseEventToServiceEvent(@event))
+                .ToList<IEvent>();
         }
 
         public void MakePurchase(int userId, IEnumerable<IBookOrderCreate> booksToOrder)
         {
-            if (!_UserRepository.Exists(userId))
+            var user = _UserRepository.FindById(userId);
+            if (user == null)
             {
                 throw new PurchaseException($"Purchase unavailable, wrong {nameof(userId)} {userId}");
             };
@@ -101,15 +112,17 @@ namespace ShopService.Purchase
             {
                 EventType = EventType.Purchase,
                 PlacedDate = DateTime.UtcNow,
-                UserId = userId,
                 OrderedBooks = orderedBooks
             };
 
-            var orderPlacedResult = _EventsRepository.Create(purchase);
+            user.Events.Add(purchase);
+            _UserRepository.Update(user);
+
+/*            var orderPlacedResult = _EventsRepository.Create(purchase);
             if (!orderPlacedResult)
             {
                 throw new PurchaseException($"Purchase unavailable, an unexpected error occurred.");
-            }
+            }*/
 
             var bundles = new List<BookBundle>();
             foreach (var bookToOrder in booksToOrder)

@@ -111,8 +111,6 @@ namespace UnitTests_MockDatabase
                 new Event()
                 {
                     Id = 1,
-                    UserId = 10,
-                    User = new User() { Id = 10 },
                     EventType = EventType.Purchase,
                     OrderedBooks = new List<BookOrder>()
                     {
@@ -124,8 +122,6 @@ namespace UnitTests_MockDatabase
                 new Event()
                 {
                     Id = 2,
-                    UserId = 20,
-                    User = new User() { Id = 20 },
                     EventType = EventType.Refund,
                     OrderedBooks = new List<BookOrder>()
                     {
@@ -137,8 +133,6 @@ namespace UnitTests_MockDatabase
                 new Event()
                 {
                     Id = 3,
-                    UserId = 30,
-                    User = new User() { Id = 30 },
                     EventType = EventType.Purchase,
                     OrderedBooks = new List<BookOrder>()
                     {
@@ -150,8 +144,6 @@ namespace UnitTests_MockDatabase
                 new Event()
                 {
                     Id = 4,
-                    UserId = 40,
-                    User = new User() { Id = 40 },
                     EventType = EventType.Purchase,
                     OrderedBooks = new List<BookOrder>()
                     {
@@ -205,16 +197,18 @@ namespace UnitTests_MockDatabase
         private void UpdateEvents()
         {
             // UserId = 2 events
-            Events.FirstOrDefault(eve => eve.Id == 1).User = Users.FirstOrDefault(user => user.Id == 2);
-            Events.FirstOrDefault(eve => eve.Id == 1).UserId = Users.FirstOrDefault(user => user.Id == 2).Id;
-            Events.FirstOrDefault(eve => eve.Id == 2).User = Users.FirstOrDefault(user => user.Id == 2);
-            Events.FirstOrDefault(eve => eve.Id == 2).UserId = Users.FirstOrDefault(user => user.Id == 2).Id;
-            Events.FirstOrDefault(eve => eve.Id == 3).User = Users.FirstOrDefault(user => user.Id == 2);
-            Events.FirstOrDefault(eve => eve.Id == 3).UserId = Users.FirstOrDefault(user => user.Id == 2).Id;
+            Users.FirstOrDefault(user => user.Id == 2).Events = new List<Event>()
+            {
+                Events.FirstOrDefault(eve => eve.Id == 1),
+                Events.FirstOrDefault(eve => eve.Id == 2),
+                Events.FirstOrDefault(eve => eve.Id == 3)
+            };
 
             // UserId = 3 events
-            Events.FirstOrDefault(eve => eve.Id == 4).User = Users.FirstOrDefault(user => user.Id == 3);
-            Events.FirstOrDefault(eve => eve.Id == 4).UserId = Users.FirstOrDefault(user => user.Id == 3).Id;
+            Users.FirstOrDefault(user => user.Id == 3).Events = new List<Event>()
+            {
+                Events.FirstOrDefault(eve => eve.Id == 4)
+            };
 
             SaveChanges();
         }

@@ -16,19 +16,16 @@ namespace DatabaseManager.Models
         public string Author { get; set; }
         public bool IsAvailable { get; set; } = true;
 
-        public ICollection<BookBundle> BookBundles { get; set; }
-
         public override bool Equals(object obj)
         {
             return obj is Book book &&
                    Title == book.Title &&
-                   Author == book.Author &&
-                   EqualityComparer<ICollection<BookBundle>>.Default.Equals(BookBundles, book.BookBundles);
+                   Author == book.Author;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Title, Author, BookBundles);
+            return HashCode.Combine(Title, Author);
         }
     }
 }

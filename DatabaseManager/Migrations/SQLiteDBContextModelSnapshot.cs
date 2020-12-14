@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatabaseManager.Migrations
 {
     [DbContext(typeof(SQLiteDbContext))]
-    partial class SQLiteDBContextModelSnapshot : ModelSnapshot
+    partial class SQLiteDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -99,7 +99,7 @@ namespace DatabaseManager.Migrations
                     b.Property<DateTime>("PlacedDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -142,7 +142,7 @@ namespace DatabaseManager.Migrations
             modelBuilder.Entity("DatabaseManager.Models.BookBundle", b =>
                 {
                     b.HasOne("DatabaseManager.Models.Book", "Book")
-                        .WithMany("BookBundles")
+                        .WithMany()
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -167,18 +167,9 @@ namespace DatabaseManager.Migrations
 
             modelBuilder.Entity("DatabaseManager.Models.Event", b =>
                 {
-                    b.HasOne("DatabaseManager.Models.User", "User")
+                    b.HasOne("DatabaseManager.Models.User", null)
                         .WithMany("Events")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DatabaseManager.Models.Book", b =>
-                {
-                    b.Navigation("BookBundles");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("DatabaseManager.Models.Event", b =>
