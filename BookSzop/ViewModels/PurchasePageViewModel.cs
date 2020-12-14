@@ -135,9 +135,8 @@ namespace BookSzop.ViewModels
                 var element = Basket.FirstOrDefault(element => element.BookBundleId == (int)id);
                 if (element != null)
                 {
-                    Basket.Remove(element);
                     element.Increase();
-                    Basket.Add(element);
+                    RefreshBasket();
                     UpdateTotalPrice();
                 }
             });
@@ -149,9 +148,8 @@ namespace BookSzop.ViewModels
                 var element = Basket.FirstOrDefault(element => element.BookBundleId == (int)id);
                 if (element != null)
                 {
-                    Basket.Remove(element);
                     element.Decrease();
-                    Basket.Add(element);
+                    RefreshBasket();
                     UpdateTotalPrice();
                 }
             });
@@ -173,6 +171,15 @@ namespace BookSzop.ViewModels
                 .GetAllBookBundles()
                 ?.ToList()
                 .ForEach(bundle => BookBundles.Add(bundle));
+        }
+        private void RefreshBasket()
+        {
+            var basketClone = new ObservableCollection<BasketElement>(Basket);
+            foreach (var element in basketClone)
+            {
+                Basket.Remove(element);
+                Basket.Add(element);
+            }
         }
         private void UpdateTotalPrice()
         {
