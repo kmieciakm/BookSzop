@@ -1,14 +1,17 @@
-﻿using System;
+﻿using DatabaseManager.Models.Abstracts;
+using DatabaseManager.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Text;
 
 namespace DatabaseManager.Models
 {
-    public class User
+    [Serializable]
+    public class User : EntityBase
     {
-        [Key]
-        public int Id { get; set; }
         [MaxLength(128)]
         public string FirstName { get; set; }
         [MaxLength(128)]
@@ -17,7 +20,57 @@ namespace DatabaseManager.Models
         public string Login { get; set; }
         [MinLength(8), MaxLength(128)]
         public string Password { get; set; }
-        [MinLength(8), MaxLength(128)]
         public bool AdminPermission { get; set; }
+
+        public ICollection<Event> Events { get; set; } = new List<Event>();
+
+        [NotMapped]
+        public List<Event> Purchases {
+            get {
+                return Events?.Where(e => e.EventType == EventType.Purchase).ToList();
+            }
+        }
+        [NotMapped]
+        public string FullName {
+            get {
+                return $"{FirstName} {LastName}";
+            }
+        }
+        [NotMapped]
+        public List<Event> Refunds
+        {
+            get
+            {
+                return Events?.Where(e => e.EventType == EventType.Refund).ToList();
+            }
+        }
+        [NotMapped]
+        public List<Book> OwnedBooks {
+            get
+            {
+                return Purchases?
+                    .Select(purchase => purchase.OrderedBooks)
+                    .SelectMany(orders => orders)
+                    .Select(order => order.BookBundle.Book)
+                    .Distinct()
+                    .ToList();
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is User user &&
+                   FirstName == user.FirstName &&
+                   LastName == user.LastName &&
+                   Login == user.Login &&
+                   Password == user.Password &&
+                   AdminPermission == user.AdminPermission &&
+                   Events.SequenceEqual(user.Events);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(FirstName, LastName, Login, Password, AdminPermission, Events);
+        }
     }
 }

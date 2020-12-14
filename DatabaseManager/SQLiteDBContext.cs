@@ -2,17 +2,22 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace DatabaseManager
 {
-    public class SQLiteDBContext : DbContext
+    class SQLiteDbContext : DbContextBase
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<Book> Books { get; set; }
-
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite("Data Source = szopDatabase.db");
+        {
+            var appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            var dbPath = Path.Combine(Path.GetDirectoryName(appPath), "szopDatabase.db");
+            options.UseSqlite("Data Source =" + dbPath);
+        }
+
+        public override void SeedData()
+        {
+        }
     }
 }

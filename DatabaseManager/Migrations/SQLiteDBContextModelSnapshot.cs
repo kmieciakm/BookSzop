@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DatabaseManager.Migrations
 {
-    [DbContext(typeof(SQLiteDBContext))]
-    partial class SQLiteDBContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(SQLiteDbContext))]
+    partial class SQLiteDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9");
+                .HasAnnotation("ProductVersion", "5.0.0");
 
             modelBuilder.Entity("DatabaseManager.Models.Book", b =>
                 {
@@ -23,46 +23,90 @@ namespace DatabaseManager.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Author")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
 
-                    b.Property<int?>("OrderId")
+                    b.Property<bool>("IsAvailable")
                         .HasColumnType("INTEGER");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("REAL");
-
                     b.Property<string>("Title")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("Books");
+                    b.ToTable("Catalogs");
                 });
 
-            modelBuilder.Entity("DatabaseManager.Models.Order", b =>
+            modelBuilder.Entity("DatabaseManager.Models.BookBundle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("Bill")
-                        .HasColumnType("REAL");
-
-                    b.Property<int>("Status")
+                    b.Property<int>("BookId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserFK")
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserFK");
+                    b.HasIndex("BookId");
+
+                    b.ToTable("States");
+                });
+
+            modelBuilder.Entity("DatabaseManager.Models.BookOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BookBundleId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("EventId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookBundleId");
+
+                    b.HasIndex("EventId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("DatabaseManager.Models.Event", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("EventType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("PlacedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("DatabaseManager.Models.User", b =>
@@ -72,44 +116,70 @@ namespace DatabaseManager.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("AdminPermission")
-                        .HasColumnType("INTEGER")
-                        .HasMaxLength(128);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Login")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DatabaseManager.Models.Book", b =>
+            modelBuilder.Entity("DatabaseManager.Models.BookBundle", b =>
                 {
-                    b.HasOne("DatabaseManager.Models.Order", null)
-                        .WithMany("Books")
-                        .HasForeignKey("OrderId");
-                });
-
-            modelBuilder.Entity("DatabaseManager.Models.Order", b =>
-                {
-                    b.HasOne("DatabaseManager.Models.User", "User")
+                    b.HasOne("DatabaseManager.Models.Book", "Book")
                         .WithMany()
-                        .HasForeignKey("UserFK")
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("DatabaseManager.Models.BookOrder", b =>
+                {
+                    b.HasOne("DatabaseManager.Models.BookBundle", "BookBundle")
+                        .WithMany()
+                        .HasForeignKey("BookBundleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DatabaseManager.Models.Event", null)
+                        .WithMany("OrderedBooks")
+                        .HasForeignKey("EventId");
+
+                    b.Navigation("BookBundle");
+                });
+
+            modelBuilder.Entity("DatabaseManager.Models.Event", b =>
+                {
+                    b.HasOne("DatabaseManager.Models.User", null)
+                        .WithMany("Events")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("DatabaseManager.Models.Event", b =>
+                {
+                    b.Navigation("OrderedBooks");
+                });
+
+            modelBuilder.Entity("DatabaseManager.Models.User", b =>
+                {
+                    b.Navigation("Events");
                 });
 #pragma warning restore 612, 618
         }
